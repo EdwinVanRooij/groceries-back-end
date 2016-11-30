@@ -1,4 +1,4 @@
-package evrooij;
+package me.evrooij;
 
 import java.util.ArrayList;
 import java.util.HashMap;

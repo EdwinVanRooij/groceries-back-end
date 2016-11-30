@@ -1,4 +1,4 @@
-package evrooij; /**
+package me.evrooij; /**
  * @author eddy on 30-11-16.
  */
 
@@ -9,11 +9,6 @@ import lombok.Data;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
