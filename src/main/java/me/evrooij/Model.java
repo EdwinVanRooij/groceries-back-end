@@ -15,7 +15,7 @@ public class Model {
     private Map<Integer, Post> posts = new HashMap<>();
 
     public Model() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             posts.put(i + 100, new Post(i + 100, String.format("Title %s", i), new ArrayList<String>(), String.format("This is some content, %s", i)));
         }
     }
