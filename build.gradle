@@ -3,7 +3,7 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
-mainClassName = 'BlogService'
+mainClassName = 'me.evrooij.BlogService'
 sourceCompatibility = 1.8
 
 repositories {
