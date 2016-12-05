@@ -1,4 +1,4 @@
-package me.evrooij; /**
+package me.evrooij.one; /**
  * @author eddy on 30-11-16.
  */
 

@@ -1,4 +1,4 @@
-package me.evrooij;
+package me.evrooij.one;
 
 import java.util.LinkedList;
 import java.util.List;
