@@ -3,6 +3,8 @@ package me.evrooij;
 import spark.Request;
 import spark.Response;
 
+import java.util.IllegalFormatCodePointException;
+
 import static me.evrooij.JsonUtil.json;
 import static spark.Spark.*;
 
@@ -68,7 +70,11 @@ public class UserController {
      * @param response  the response to send back
      */
     private void handleException(Exception exception, Request request, Response response) {
-        response.status(400);
-        response.body(JsonUtil.toJson(new ResponseError(exception)));
+        if (exception instanceof IllegalArgumentException) {
+            response.status(400);
+            response.body(JsonUtil.toJson(new ResponseError(exception)));
+        } else {
+            response.body(JsonUtil.toJson(new ResponseError(exception)));
+        }
     }
 }
