@@ -1,4 +1,4 @@
-package me.evrooij.two;
+package me.evrooij;
 
 public class Main {
     public static void main(String[] args) {

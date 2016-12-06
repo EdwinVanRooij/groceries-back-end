@@ -1,9 +1,9 @@
-package me.evrooij.two;
+package me.evrooij;
 
 import spark.Request;
 import spark.Response;
 
-import static me.evrooij.two.JsonUtil.json;
+import static me.evrooij.JsonUtil.json;
 import static spark.Spark.*;
 
 public class UserController {

@@ -1,4 +1,4 @@
-package me.evrooij.two;
+package me.evrooij;
 
 public class ResponseError {
 
