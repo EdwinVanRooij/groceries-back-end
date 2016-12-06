@@ -21,7 +21,7 @@ public class UserController {
                 return user;
             }
             res.status(400);
-            return String.format("No user with id %s found", id);
+            return new ResponseError("No user with id %s found.", id);
         }, json());
 
         post("/users", (req, res) -> userService.createUser(
@@ -69,6 +69,6 @@ public class UserController {
      */
     private void handleException(Exception exception, Request request, Response response) {
         response.status(400);
-        response.body(JsonUtil.toJson(exception.getMessage()));
+        response.body(JsonUtil.toJson(new ResponseError(exception)));
     }
 }
