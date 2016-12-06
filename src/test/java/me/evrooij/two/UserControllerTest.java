@@ -22,7 +22,7 @@ public class UserControllerTest {
 
     @BeforeClass
     public static void beforeClass() {
-        Main.main(null);
+//        Main.main(null);
     }
 
     @AfterClass
