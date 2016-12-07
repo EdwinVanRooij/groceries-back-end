@@ -1,12 +1,14 @@
-package me.evrooij;
+package me.evrooij.managers;
+
+import me.evrooij.domain.User;
 
 import java.util.*;
 
-public class UserService {
+public class UserManager {
 
     private Map<String, User> users = new HashMap<>();
 
-    public UserService() {
+    public UserManager() {
         for (int i = 0; i < 3; i++) {
             createUser(String.format("Name %s", i), String.format("Mail %s", i));
         }

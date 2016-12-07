@@ -1,4 +1,4 @@
-package me.evrooij.two;
+package me.evrooij;
 
 import com.google.gson.Gson;
 import org.junit.AfterClass;
@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 /**
  * @author eddy on 5-12-16.
  */
-public class UserControllerTest {
+public class UserServiceTest {
 
     @BeforeClass
     public static void beforeClass() {

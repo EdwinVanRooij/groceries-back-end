@@ -1,4 +1,4 @@
-package me.evrooij;
+package me.evrooij.util;
 
 import com.google.gson.Gson;
 import spark.ResponseTransformer;

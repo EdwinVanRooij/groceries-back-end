@@ -1,4 +1,4 @@
-package me.evrooij;
+package me.evrooij.errors;
 
 /**
  * @author eddy on 6-12-16.

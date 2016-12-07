@@ -1,24 +1,28 @@
-package me.evrooij;
+package me.evrooij.services;
 
+import me.evrooij.errors.ResponseError;
+import me.evrooij.domain.User;
+import me.evrooij.managers.UserManager;
+import me.evrooij.util.JsonUtil;
 import spark.Request;
 import spark.Response;
 
-import java.util.IllegalFormatCodePointException;
-
-import static me.evrooij.JsonUtil.json;
+import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
 
-public class UserController {
+public class UserService {
+    private UserManager userManager;
 
-    public UserController(final UserService userService) {
+    public UserService() {
+        userManager = new UserManager();
 
-        get("/users", (request, response) -> userService.getAllUsers(), json());
+        get("/users", (request, response) -> userManager.getAllUsers(), json());
 
-        get("/users", (req, res) -> userService.getAllUsers(), json());
+        get("/users", (req, res) -> userManager.getAllUsers(), json());
 
         get("/users/:id", (req, res) -> {
             String id = req.params(":id");
-            User user = userService.getUser(id);
+            User user = userManager.getUser(id);
             if (user != null) {
                 return user;
             }
@@ -26,12 +30,12 @@ public class UserController {
             return new ResponseError("No user with id %s found.", id);
         }, json());
 
-        post("/users", (req, res) -> userService.createUser(
+        post("/users", (req, res) -> userManager.createUser(
                 req.queryParams("name"),
                 req.queryParams("email")
         ), json());
 
-        put("/users/:id", (req, res) -> userService.updateUser(
+        put("/users/:id", (req, res) -> userManager.updateUser(
                 req.params(":id"),
                 req.queryParams("name"),
                 req.queryParams("email")

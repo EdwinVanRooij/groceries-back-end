@@ -1,4 +1,4 @@
-package me.evrooij;
+package me.evrooij.domain;
 
 import java.util.UUID;
 
