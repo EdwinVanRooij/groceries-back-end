@@ -1,15 +1,17 @@
 package me.evrooij.managers;
 
 import me.evrooij.domain.Account;
-import me.evrooij.domain.User;
 import me.evrooij.errors.InvalidAccountException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AccountManager {
+
+    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("NewPersistenceUnit");
 
     // temporary, will get from database later on
     private List<Account> accounts;
@@ -39,6 +41,19 @@ public class AccountManager {
 
         accounts.add(account);
         return account;
+    }
+
+    /**
+     * Example of save to database, should actually work already lmao, clean up tho
+     *
+     * @param account
+     */
+    public void saveToDatabase(Account account) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(account);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     private void failIfInvalid(String name, String email) throws IllegalArgumentException {
