@@ -1,10 +1,22 @@
 package me.evrooij.domain;
 
+
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+
 /**
  * Created by eddy on 27-11-16.
  */
 
+@Entity
 public class Account {
+    @Id
+    @GeneratedValue
+    private int id;
     private String username;
     private String email;
     private String password;
@@ -28,6 +40,10 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUsername() {
