@@ -1,12 +1,6 @@
 package me.evrooij.domain;
 
-
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
+import javax.persistence.*;
 
 /**
  * Created by eddy on 27-11-16.
