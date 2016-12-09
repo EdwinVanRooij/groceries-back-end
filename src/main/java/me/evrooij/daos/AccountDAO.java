@@ -17,7 +17,9 @@ import java.util.List;
 /**
  * @author eddy on 8-12-16.
  */
+
 @NamedQueries({
+// Query to select an account on valid username/password combination.
         @NamedQuery(
                 name = "Account.findByUsernameAndPassword",
                 query = "SELECT a FROM Account a WHERE a.username = :username AND a.password = :password"),
