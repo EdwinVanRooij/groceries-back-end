@@ -1,18 +1,10 @@
 package me.evrooij.daos;
 
 import me.evrooij.domain.Account;
-
-import java.util.List;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.util.List;
 
 /**
  * @author eddy on 8-12-16.
@@ -25,14 +17,21 @@ import java.util.List;
                 query = "SELECT a FROM Account a WHERE a.username = :username AND a.password = :password"),
 })
 public class AccountDAO {
-    private final EntityManagerFactory entityManagerFactory;
-    private final EntityManager entityManager;
+    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("GroceriesPersistenceUnit");
+    private final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     public AccountDAO() {
-        entityManagerFactory = Persistence.createEntityManagerFactory("NewPersistenceUnit");
-        entityManager = entityManagerFactory.createEntityManager();
     }
 
+    /**
+     * Registers a new account
+     *
+     * @param username
+     * @param email
+     * @param password
+     * @return newly created account
+     */
+    @SuppressWarnings("JavaDoc")
     public Account register(String username, String email, String password) {
         Account account = new Account(username, email, password);
         entityManager.getTransaction().begin();
@@ -42,6 +41,13 @@ public class AccountDAO {
         return account;
     }
 
+    /**
+     * Retrieves an account from the database if username/password combination is correct
+     *
+     * @param username username of the account
+     * @param password password of the account
+     * @return Account object
+     */
     public Account getAccount(String username, String password) {
         Session session = entityManager.unwrap(Session.class);
         entityManager.getTransaction().begin();
@@ -49,5 +55,15 @@ public class AccountDAO {
         query.setString("username", username);
         query.setString("password", password);
         return (Account) query.uniqueResult();
+    }
+
+    /**
+     * Gets the amount of accounts in the database
+     *
+     * @return integer value
+     */
+    public int getAmountOfAccounts() {
+        // todo: implement
+        return 0;
     }
 }
