@@ -51,4 +51,17 @@ public class Account {
     public String getPassword() {
         return password;
     }
+
+    /**
+     * Consider equal when ID's are equal
+     *
+     * @param obj
+     * @return
+     */
+    @SuppressWarnings("JavaDoc")
+    @Override
+    public boolean equals(Object obj) {
+        Account other = (Account) obj;
+        return getId() == other.getId() || super.equals(obj);
+    }
 }
