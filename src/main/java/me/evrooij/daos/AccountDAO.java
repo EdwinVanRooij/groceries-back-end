@@ -63,4 +63,19 @@ public class AccountDAO {
     private Session getSession() {
         return entityManager.unwrap(Session.class);
     }
+
+    /**
+     * Removes an account from the database
+     *
+     * @param username
+     * @param password
+     */
+    @SuppressWarnings("JavaDoc")
+    public void deleteAccount(String username, String password) {
+        entityManager.getTransaction().begin();
+        Query query = getSession().createQuery("DELETE FROM Account a WHERE a.username = :username AND a.password = :password");
+        query.setString("username", username);
+        query.setString("password", password);
+        entityManager.getTransaction().commit();
+    }
 }
