@@ -10,12 +10,6 @@ import javax.persistence.*;
  * @author eddy on 8-12-16.
  */
 
-@NamedQueries({
-// Query to select an account on valid username/password combination.
-        @NamedQuery(
-                name = "Account.findByUsernameAndPassword",
-                query = "SELECT a FROM Account a WHERE a.username = :username AND a.password = :password"),
-})
 public class AccountDAO {
     private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("GroceriesPersistenceUnit");
     private final EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -37,7 +31,6 @@ public class AccountDAO {
         entityManager.getTransaction().begin();
         entityManager.persist(account);
         entityManager.getTransaction().commit();
-        entityManager.close();
         return account;
     }
 
@@ -49,12 +42,13 @@ public class AccountDAO {
      * @return Account object
      */
     public Account getAccount(String username, String password) {
-        Session session = entityManager.unwrap(Session.class);
         entityManager.getTransaction().begin();
-        Query query = session.getNamedQuery("Account.findByUsernameAndPassword");
+        Query query = getSession().createQuery("SELECT a FROM Account a WHERE a.username = :username AND a.password = :password");
         query.setString("username", username);
         query.setString("password", password);
-        return (Account) query.uniqueResult();
+        Account account = (Account) query.uniqueResult();
+        entityManager.getTransaction().commit();
+        return account;
     }
 
     /**
@@ -63,7 +57,10 @@ public class AccountDAO {
      * @return integer value
      */
     public int getAmountOfAccounts() {
-        // todo: implement
-        return 0;
+        return ((Long) getSession().createQuery("select count(*) from Account").uniqueResult()).intValue();
+    }
+
+    private Session getSession() {
+        return entityManager.unwrap(Session.class);
     }
 }

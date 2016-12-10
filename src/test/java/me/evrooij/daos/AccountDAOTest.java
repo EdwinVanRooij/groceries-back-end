@@ -1,7 +1,10 @@
 package me.evrooij.daos;
 
 import me.evrooij.domain.Account;
+import me.evrooij.util.DatabaseUtil;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -28,9 +31,19 @@ public class AccountDAOTest {
 
     private AccountDAO accountDAO;
 
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+        new DatabaseUtil().clean();
+    }
+
     @Before
     public void setUp() throws Exception {
         accountDAO = new AccountDAO();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        new DatabaseUtil().clean();
     }
 
     @Test
