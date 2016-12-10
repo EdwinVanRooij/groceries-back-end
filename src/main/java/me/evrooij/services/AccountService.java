@@ -27,6 +27,9 @@ public class AccountService {
             String username = request.queryParams("username");
             String email = request.queryParams("email");
             String password = request.queryParams("password");
+
+
+            System.out.println(String.format("Body: %s", request.body()));
             return accountManager.registerAccount(username, email, password);
         }, json());
 
