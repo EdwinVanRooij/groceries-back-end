@@ -1,9 +1,8 @@
 package me.evrooij.services;
 
-import me.evrooij.domain.User;
+import me.evrooij.domain.Account;
 import me.evrooij.errors.ResponseError;
 import me.evrooij.managers.AccountManager;
-import me.evrooij.managers.UserManager;
 import me.evrooij.util.JsonUtil;
 import spark.Request;
 import spark.Response;
@@ -24,13 +23,17 @@ public class AccountService {
         }, json());
 
         post("/users/register", (request, response) -> {
-            String username = request.queryParams("username");
-            String email = request.queryParams("email");
-            String password = request.queryParams("password");
+//            String username = request.queryParams("username");
+//            String email = request.queryParams("email");
+//            String password = request.queryParams("password");
+            String json = request.body();
 
+            Account account = JsonUtil.accountFromJson(json);
 
-            System.out.println(String.format("Body: %s", request.body()));
-            return accountManager.registerAccount(username, email, password);
+            System.out.println(String.format("Body in string: %s", json));
+            System.out.println(String.format("Account from json using gson: %s", account.toString()));
+
+            return accountManager.registerAccount(account.getUsername(), account.getEmail(), account.getPassword());
         }, json());
 
         before(this::beforeRouteHandle);
