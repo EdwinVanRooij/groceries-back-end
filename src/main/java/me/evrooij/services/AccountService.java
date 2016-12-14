@@ -1,7 +1,7 @@
 package me.evrooij.services;
 
 import me.evrooij.domain.Account;
-import me.evrooij.errors.ResponseError;
+import me.evrooij.responses.ResponseMessage;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.util.JsonUtil;
 import spark.Request;
@@ -33,7 +33,9 @@ public class AccountService {
             System.out.println(String.format("Body in string: %s", json));
             System.out.println(String.format("Account from json using gson: %s", account.toString()));
 
-            return accountManager.registerAccount(account.getUsername(), account.getEmail(), account.getPassword());
+            Account returning = accountManager.registerAccount(account.getUsername(), account.getEmail(), account.getPassword());
+            System.out.println(String.format("Returning: %s", returning));
+            return returning;
         }, json());
 
         before(this::beforeRouteHandle);
@@ -71,6 +73,6 @@ public class AccountService {
     private void handleException(Exception exception, Request request, Response response) {
         response.status(400);
         response.type("application/json");
-        response.body(JsonUtil.toJson(new ResponseError(exception)));
+        response.body(JsonUtil.toJson(new ResponseMessage(exception)));
     }
 }

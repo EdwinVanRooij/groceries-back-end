@@ -40,6 +40,11 @@ public class Account {
         return password;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s (%s), %s, %s", getUsername(), getId(), getEmail(), getPassword());
+    }
+
     /**
      * Consider equal when ID's are equal
      *

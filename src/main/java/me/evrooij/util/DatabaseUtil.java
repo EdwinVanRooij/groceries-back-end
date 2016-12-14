@@ -36,4 +36,13 @@ public class DatabaseUtil {
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+
+    public static void main(String[] args) {
+        try {
+            new DatabaseUtil().clean();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

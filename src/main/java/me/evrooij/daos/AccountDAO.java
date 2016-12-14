@@ -52,6 +52,21 @@ public class AccountDAO {
     }
 
     /**
+     * Retrieves an account from the database if username/password combination is correct
+     *
+     * @param id id of the account
+     * @return Account object
+     */
+    public Account getAccount(int id) {
+        entityManager.getTransaction().begin();
+        Query query = getSession().createQuery("SELECT a FROM Account a WHERE a.id = :id");
+        query.setInteger("id", id);
+        Account account = (Account) query.uniqueResult();
+        entityManager.getTransaction().commit();
+        return account;
+    }
+
+    /**
      * Gets the amount of accounts in the database
      *
      * @return integer value
