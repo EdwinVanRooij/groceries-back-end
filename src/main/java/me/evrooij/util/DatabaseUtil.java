@@ -1,6 +1,8 @@
 package me.evrooij.util;
 
 import me.evrooij.domain.Account;
+import me.evrooij.domain.GroceryList;
+import me.evrooij.domain.Product;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,7 +21,9 @@ public class DatabaseUtil {
      * Includes all of the persisted classes which will be emptied
      */
     private final Class<?>[] ENTITY_TYPES = {
-            Account.class
+            GroceryList.class,
+            Account.class,
+            Product.class,
     };
 
     /**
@@ -30,6 +34,8 @@ public class DatabaseUtil {
     public void clean() throws SQLException {
         entityManager.getTransaction().begin();
 
+        entityManager.createNativeQuery("delete from GroceryList_Account");
+        entityManager.createNativeQuery("delete from GroceryList_Product");
         for (Class<?> entityType : ENTITY_TYPES) {
             entityManager.createQuery("delete from " + entityManager.getMetamodel().entity(entityType).getName()).executeUpdate();
         }

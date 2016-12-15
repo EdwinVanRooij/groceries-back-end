@@ -6,6 +6,8 @@
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
         <class>me.evrooij.domain.Account</class>
+        <class>me.evrooij.domain.GroceryList</class>
+        <class>me.evrooij.domain.Product</class>
 
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost/groceries_db"/>
