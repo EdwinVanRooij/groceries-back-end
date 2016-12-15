@@ -13,20 +13,30 @@ import static org.junit.Assert.*;
  * @author eddy on 10-12-16.
  */
 public class AccountManagerTest {
-    private static final String USERNAME_1 = "ThisIsAUsername34";
-    private static final String USERNAME_2 = "AnotherUsername";
-    private static final String USERNAME_3 = "ThisIsMyUsername!!";
-    private static final String USERNAME_UNUSED_1 = "unused_username1";
-    private static final String USERNAME_UNUSED_2 = "unused_username2";
-    private static final String USERNAME_UNUSED_3 = "unused_username3";
-
-    private static final String EMAIL_1 = "email@mail.com";
-    private static final String EMAIL_2 = "mymail@gmail.com";
-    private static final String EMAIL_3 = "email2@mail.com";
-
-    private static final String PASSWORD_1 = "thisis!dapassword";
-    private static final String PASSWORD_2 = "thisi4sapassword";
-    private static final String PASSWORD_3 = "this2isapassword";
+    /*
+     * at least 6 characters, at max 30
+     */
+    private static final String CORRECT_USERNAME_1 = "111111";
+    private static final String CORRECT_USERNAME_2 = "111111111111111111111111111111";
+    private static final String CORRECT_USERNAME_3 = "Hankinson";
+    private static final String INCORRECT_USERNAME_1 = "11111";
+    private static final String INCORRECT_USERNAME_2 = "1111111111111111111111111111111";
+    private static final String INCORRECT_USERNAME_3 = "hank@hankinson.com";
+    private static final String CORRECT_EMAIL_1 = "mail@gmail.com";
+    private static final String CORRECT_EMAIL_2 = "somestring@student.fontys.me";
+    private static final String CORRECT_EMAIL_3 = "info@evrooij.me";
+    private static final String INCORRECT_EMAIL_1 = "@mail.com";
+    private static final String INCORRECT_EMAIL_2 = "info@.com";
+    private static final String INCORRECT_EMAIL_3 = "info@me.";
+    /*
+     * at least 8 characters, at max 100
+     */
+    private static final String CORRECT_PASS_1 = "11111111";
+    private static final String CORRECT_PASS_2 = "mypass1332";
+    private static final String CORRECT_PASS_3 = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+    private static final String INCORRECT_PASS_1 = "1111111";
+    private static final String INCORRECT_PASS_2 = "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+    private static final String INCORRECT_PASS_3 = "r11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
 
     private AccountManager accountManager;
 
@@ -48,64 +58,67 @@ public class AccountManagerTest {
     @Test
     public void getAccount() throws Exception {
         /*
-         * Register some accounts and verify that we can retrieve them
+         * Happy flow: correct getAccount
          */
-
-        // Register
-        accountManager.registerAccount(USERNAME_1, EMAIL_1, PASSWORD_1);
-
-        // Get the actual account
-        Account actual_1 = accountManager.getAccount(USERNAME_1, PASSWORD_1);
-        assertNotNull(actual_1);
-
-        // Make sure we can't get an uncreated account
-        Account actual_2 = accountManager.getAccount(USERNAME_2, PASSWORD_2);
-        assertNull(actual_2);
-
-        Account actual_3 = accountManager.getAccount(USERNAME_3, PASSWORD_3);
-        assertNull(actual_3);
+        // Test one
+        accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
+        Account account = accountManager.getAccount(CORRECT_USERNAME_1, CORRECT_PASS_1);
+        assertNotNull(account);
+        // Test two
+        accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_2);
+        Account account2 = accountManager.getAccount(CORRECT_USERNAME_2, CORRECT_PASS_2);
+        assertNotNull(account2);
+        /*
+         * Test if it doesn't return anything when we have a correct getAccount, but account was not registerAccounted
+         */
+        // Note how we don't registerAccount the account first
+        Account accountFail = accountManager.getAccount(CORRECT_USERNAME_3, CORRECT_PASS_3);
+        assertNull(accountFail);
     }
 
     @Test
     public void registerAccount() throws Exception {
+        Account account = accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
+        assertNotNull(account);
+        Account account2 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_2);
+        assertNotNull(account2);
+        Account account3 = accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_3);
+        assertNotNull(account3);
+
         /*
-         * Create accounts and verify their equality
-         * Can't use assertEquals here because we don't know the generated ID for each individual account
+         * Check whether the registration fails at any incorrect parameter
          */
 
-        // Register
-        accountManager.registerAccount(USERNAME_1, EMAIL_1, PASSWORD_1);
+        // Check incorrect username
+        Account incorrectAccountUsername1 = accountManager.registerAccount(INCORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
+        assertNull(incorrectAccountUsername1);
+        Account incorrectAccountUsername2 = accountManager.registerAccount(INCORRECT_USERNAME_2, CORRECT_EMAIL_1, CORRECT_PASS_1);
+        assertNull(incorrectAccountUsername2);
+        Account incorrectAccountUsername3 = accountManager.registerAccount(INCORRECT_USERNAME_3, CORRECT_EMAIL_1, CORRECT_PASS_1);
+        assertNull(incorrectAccountUsername3);
 
-        // Get the actual account
-        Account actual_1 = accountManager.getAccount(USERNAME_1, PASSWORD_1);
+        // Check incorrect email
+        Account incorrectAccountEmail1 = accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_1, CORRECT_PASS_1);
+        assertNull(incorrectAccountEmail1);
+        Account incorrectAccountEmail2 = accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_2, CORRECT_PASS_1);
+        assertNull(incorrectAccountEmail2);
+        Account incorrectAccountEmail3 = accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_3, CORRECT_PASS_1);
+        assertNull(incorrectAccountEmail3);
 
-        // Verify it's existence
-        assertNotNull(actual_1);
+        // Check incorrect pass
+        Account incorrectAccountPass = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_3, INCORRECT_PASS_1);
+        assertNull(incorrectAccountPass);
+        Account incorrectAccountPass2 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_3, INCORRECT_PASS_2);
+        assertNull(incorrectAccountPass2);
+        Account incorrectAccountPass3 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_3, INCORRECT_PASS_3);
+        assertNull(incorrectAccountPass3);
 
-        // Now some robustness checks, verify creation of 2 more accounts
-        accountManager.registerAccount(USERNAME_2, EMAIL_2, PASSWORD_2);
-        Account actual_2 = accountManager.getAccount(USERNAME_1, PASSWORD_1);
-        assertNotNull(actual_2);
-
-        accountManager.registerAccount(USERNAME_3, EMAIL_3, PASSWORD_3);
-        Account actual_3 = accountManager.getAccount(USERNAME_1, PASSWORD_1);
-        assertNotNull(actual_3);
-    }
-
-    @Test
-    public void removeAccount() throws Exception {
-        /*
-         * Remove some existing accounts from the database
-         */
-
-        // Register
-        accountManager.registerAccount(USERNAME_1, EMAIL_1, PASSWORD_1);
-        boolean actual_1 = accountManager.removeAccount(USERNAME_1, PASSWORD_1);
-        // Verify that this removal was successful
-        assertTrue(actual_1);
-
-        // Try to remove a non-existent account
-        boolean actual_2 = accountManager.removeAccount(USERNAME_2, PASSWORD_2);
-        assertFalse(actual_2);
+        // Now let's get batshit crazy
+        Account incorrectAccountEverything = accountManager.registerAccount(INCORRECT_USERNAME_1, INCORRECT_EMAIL_1, INCORRECT_PASS_1);
+        assertNull(incorrectAccountEverything);
+        Account incorrectAccountEverything2 = accountManager.registerAccount(INCORRECT_USERNAME_2, INCORRECT_EMAIL_2, INCORRECT_PASS_2);
+        assertNull(incorrectAccountEverything2);
+        Account incorrectAccountEverything3 = accountManager.registerAccount(INCORRECT_USERNAME_3, INCORRECT_EMAIL_3, INCORRECT_PASS_3);
+        assertNull(incorrectAccountEverything3);
     }
 }
