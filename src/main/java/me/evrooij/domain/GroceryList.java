@@ -72,6 +72,24 @@ public class GroceryList {
     }
 
     /**
+     * Adds someone else to this list
+     *
+     * @param account new account to add as participant
+     *                must not already be in the list of participants
+     * @return boolean value indicating the exit status
+     */
+    public boolean addParticipant(Account account) {
+        for (Account participant : participants) {
+            if (participant.equals(account)) {
+                // Account is already a participant, do not allow to re-add
+                return false;
+            }
+        }
+        participants.add(account);
+        return true;
+    }
+
+    /**
      * Adds a new item to the list
      *
      * @param id      unique identifier of the product
@@ -142,5 +160,17 @@ public class GroceryList {
         return null;
     }
 
+    /**
+     * Declare equality on same id
+     *
+     * @param obj other list
+     * @return
+     */
+    @SuppressWarnings("JavaDoc")
+    @Override
+    public boolean equals(Object obj) {
+        GroceryList other = (GroceryList) obj;
+        return other.getId() == getId() || super.equals(obj);
+    }
 }
 

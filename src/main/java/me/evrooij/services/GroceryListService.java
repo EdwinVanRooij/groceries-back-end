@@ -11,7 +11,7 @@ public class GroceryListService extends DefaultService {
     public GroceryListService() {
         listManager = new GroceryListManager();
 
-        get("/users/:id/login", (request, response) -> {
+        get("/user/:id/lists", (request, response) -> {
             String idString = request.params(":id");
             int id = Integer.valueOf(idString);
 

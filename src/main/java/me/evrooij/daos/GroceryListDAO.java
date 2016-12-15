@@ -2,12 +2,12 @@ package me.evrooij.daos;
 
 import me.evrooij.domain.Account;
 import me.evrooij.domain.GroceryList;
-import org.hibernate.Query;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -40,14 +40,16 @@ public class GroceryListDAO {
     /**
      * Returns all GroceryLists an account is in
      *
-     * @param id unique identifier for the account
+     * @param accountId unique identifier for the account
      * @return
      */
     @SuppressWarnings("JavaDoc")
-    public List<GroceryList> getLists(int id) {
+    public List<GroceryList> getLists(int accountId) {
         entityManager.getTransaction().begin();
 
-        List<GroceryList> lists = entityManager.createQuery("SELECT l FROM GroceryList l").getResultList();
+        Query query = entityManager.createQuery("SELECT l FROM GroceryList l WHERE owner.id = :id");
+        query.setParameter("id", accountId);
+        List<GroceryList> lists = query.getResultList();
 
         entityManager.getTransaction().commit();
         return lists;
@@ -55,5 +57,15 @@ public class GroceryListDAO {
 
     private Session getSession() {
         return entityManager.unwrap(Session.class);
+    }
+
+    /**
+     * Return the amount of lists the user is in
+     *
+     * @param id account id of the user to search for
+     * @return integer value
+     */
+    public int getAmountOfListsForUser(int id) {
+        return getLists(id).size();
     }
 }
