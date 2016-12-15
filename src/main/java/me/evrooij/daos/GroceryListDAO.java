@@ -2,6 +2,7 @@ package me.evrooij.daos;
 
 import me.evrooij.domain.Account;
 import me.evrooij.domain.GroceryList;
+import me.evrooij.domain.Product;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
@@ -68,4 +69,5 @@ public class GroceryListDAO {
     public int getAmountOfListsForUser(int id) {
         return getLists(id).size();
     }
+
 }

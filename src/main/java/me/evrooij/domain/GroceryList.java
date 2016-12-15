@@ -25,7 +25,7 @@ public class GroceryList {
     private List<Account> participants;
 
     // A list can have multiple products, a product belongs to one list
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Product> productList;
 
     /**
@@ -92,14 +92,13 @@ public class GroceryList {
     /**
      * Adds a new item to the list
      *
-     * @param id      unique identifier of the product
      * @param name    name of the product
      * @param amount  amount of times you want the product
      * @param comment comment about the product
      * @param owner   username of the user who added this product
      */
-    public void addItem(int id, String name, int amount, String comment, String owner) {
-        productList.add(new Product(id, name, amount, comment, owner));
+    public void addItem(String name, int amount, String comment, String owner) {
+        productList.add(new Product(name, amount, comment, owner));
     }
 
     /**

@@ -39,8 +39,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, String name, int amount, String comment, String owner) {
-        this.id = id;
+    public Product(String name, int amount, String comment, String owner) {
         this.name = name;
         this.amount = amount;
         this.owner = owner;
