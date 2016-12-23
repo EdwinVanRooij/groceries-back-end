@@ -34,8 +34,6 @@ public class GroceryListDAOTest {
 
     @Before
     public void setUp() throws Exception {
-        new DatabaseUtil().clean();
-
         // Create an account to work with
         String username = "ThisIsAUsername34";
         String email = "email@mail.com";
@@ -48,7 +46,7 @@ public class GroceryListDAOTest {
 
     @After
     public void tearDown() throws Exception {
-//        new DatabaseUtil().clean();
+        new DatabaseUtil().clean();
     }
 
     @Test
