@@ -16,16 +16,13 @@ public class GroceryList {
     private int id;
     private String name;
 
-    // A list can have one owner, an account can have multiple list
-    @ManyToOne
+    @ManyToOne// A list can have one owner, an account can have multiple list
     private Account owner;
 
-    // A list can have multiple participants, a user can be in multiple lists
-    @ManyToMany
+    @ManyToMany// A list can have multiple participants, a user can be in multiple lists
     private List<Account> participants;
 
-    // A list can have multiple products, a product belongs to one list
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)// A list can have multiple products, a product belongs to one list
     private List<Product> productList;
 
     /**

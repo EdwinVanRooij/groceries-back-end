@@ -70,4 +70,18 @@ public class GroceryListDAO {
         return getLists(id).size();
     }
 
+    /**
+     * Returns a list by id
+     *
+     * @param listId
+     * @return
+     */
+    @SuppressWarnings("JavaDoc")
+    public GroceryList getList(int listId) {
+        entityManager.getTransaction().begin();
+        GroceryList list = entityManager.find(GroceryList.class, listId);
+        entityManager.getTransaction().commit();
+
+        return list;
+    }
 }

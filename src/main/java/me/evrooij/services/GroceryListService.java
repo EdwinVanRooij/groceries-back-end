@@ -15,7 +15,7 @@ public class GroceryListService extends DefaultService {
             String idString = request.params(":id");
             int id = Integer.valueOf(idString);
 
-            return listManager.getLists(id);
+            return listManager.getListsByAccountId(id);
         }, json());
 
         before(this::beforeRouteHandle);

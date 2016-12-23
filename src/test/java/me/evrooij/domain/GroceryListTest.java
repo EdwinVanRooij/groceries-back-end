@@ -14,6 +14,7 @@ public class GroceryListTest {
     private static final String USERNAME = "Hankinson";
     private static final String EMAIL = "Hankinson";
     private static final String PASSWORD = "Hankinson";
+
     private Account currentAccount;
 
     public static final String LIST_NAME = "MyList";

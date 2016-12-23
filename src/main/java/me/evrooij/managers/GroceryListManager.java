@@ -30,11 +30,23 @@ public class GroceryListManager {
     /**
      * Returns all grocery lists of a given account id
      *
-     * @param id
+     * @param accountId
      * @return
      */
     @SuppressWarnings("JavaDoc")
-    public List<GroceryList> getLists(int id) {
-        return groceryListDAO.getLists(id);
+    public List<GroceryList> getListsByAccountId(int accountId) {
+        return groceryListDAO.getLists(accountId);
     }
+
+    /**
+     * Returns one list by id
+     *
+     * @param listId
+     * @return
+     */
+    @SuppressWarnings("JavaDoc")
+    public GroceryList getList(int listId) {
+        return groceryListDAO.getList(listId);
+    }
+
 }
