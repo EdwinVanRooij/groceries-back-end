@@ -156,6 +156,11 @@ public class GroceryList {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s, %s participants, owner %s, %s products", getName(), participants.size(), getOwner().getUsername(), getAmountOfProducts());
+    }
+
     /**
      * Declare equality on same id
      *
