@@ -1,4 +1,4 @@
-package me.evrooij;
+package me.evrooij.services;
 
 import com.google.gson.Gson;
 import org.junit.AfterClass;

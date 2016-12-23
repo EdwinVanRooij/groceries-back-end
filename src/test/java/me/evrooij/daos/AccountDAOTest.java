@@ -105,4 +105,44 @@ public class AccountDAOTest {
         assertNull(actual_6);
     }
 
+    @Test
+    public void getAmountOfAccounts() throws Exception {
+        /**
+         * Gets the amount of accounts in the database
+         *
+         * @return integer value
+         */
+        // Verify it's on 0 before we start
+        int expected_1 = 0;
+        int actual_1 = accountDAO.getAmountOfAccounts();
+        assertEquals(expected_1, actual_1);
+        // Create an account, verify we have 1 account now
+        accountDAO.register(USERNAME_1, EMAIL_1, PASSWORD_1);
+        int expected_2 = 1;
+        int actual_2 = accountDAO.getAmountOfAccounts();
+        assertEquals(expected_2, actual_2);
+        // Robustness checks
+        accountDAO.register(USERNAME_2, EMAIL_2, PASSWORD_2);
+        accountDAO.register(USERNAME_3, EMAIL_3, PASSWORD_3);
+        int expected_3 = 3;
+        int actual_3 = accountDAO.getAmountOfAccounts();
+        assertEquals(expected_3, actual_3);
+    }
+
+    @Test
+    public void deleteAccount() throws Exception {
+        /**
+         * Removes an account from the database
+         *
+         * @param username
+         * @param password
+         */
+        // Create an account
+        accountDAO.register(USERNAME_1, EMAIL_1, PASSWORD_1);
+        // Remove it
+        accountDAO.deleteAccount(USERNAME_1, PASSWORD_1);
+        // Check if we can still get it, shouldn't work
+        Account account = accountDAO.getAccount(USERNAME_1, PASSWORD_1);
+        assertNull(account);
+    }
 }

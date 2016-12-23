@@ -121,4 +121,61 @@ public class AccountManagerTest {
         Account incorrectAccountEverything3 = accountManager.registerAccount(INCORRECT_USERNAME_3, INCORRECT_EMAIL_3, INCORRECT_PASS_3);
         assertNull(incorrectAccountEverything3);
     }
+
+    @Test
+    public void removeAccount() throws Exception {
+        /**
+         * Removes an account from the database if:
+         * - the username/password combination is correct
+         * - the account exists
+         *
+         * @param username
+         * @param password
+         * @return boolean value indicating the exit status of removal
+         */
+        /*
+         * Happy flow
+         */
+        // Create valid account
+        accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
+        // Remove account correctly
+        boolean result_1 = accountManager.removeAccount(CORRECT_USERNAME_1, CORRECT_PASS_1);
+        assertTrue(result_1);
+
+        /*
+         * Check if removing non-existent accounts returns false
+         */
+        // Try to remove previous account again, which should be deleted now
+        boolean result_2 = accountManager.removeAccount(CORRECT_USERNAME_1, CORRECT_PASS_1);
+        assertFalse(result_2);
+        // Robustness checks
+        boolean result_3 = accountManager.removeAccount(CORRECT_USERNAME_3, CORRECT_PASS_3);
+        assertFalse(result_3);
+        boolean result_4 = accountManager.removeAccount(INCORRECT_USERNAME_2, INCORRECT_PASS_2);
+        assertFalse(result_4);
+
+        /*
+         * Check if removing account with incorrect credentials returns false
+         */
+        // Create valid account
+        accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
+        // Attempt to remove with incorrect credentials
+        boolean result_5 = accountManager.removeAccount(CORRECT_USERNAME_2, INCORRECT_PASS_2);
+        assertFalse(result_5);
+        // Robustness checks
+        accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_2);
+        boolean result_6 = accountManager.removeAccount(CORRECT_USERNAME_2, INCORRECT_PASS_2);
+        assertFalse(result_6);
+        accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_3);
+        boolean result_7 = accountManager.removeAccount(INCORRECT_USERNAME_1, CORRECT_PASS_2);
+        assertFalse(result_7);
+    }
 }
+
+
+
+
+
+
+
+

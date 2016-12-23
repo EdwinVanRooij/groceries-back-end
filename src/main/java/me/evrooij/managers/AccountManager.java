@@ -46,7 +46,9 @@ public class AccountManager {
     }
 
     /**
-     * Removes an account from the database if the username/password combination is correct
+     * Removes an account from the database if:
+     * - the username/password combination is correct
+     * - the account exists
      *
      * @param username
      * @param password
@@ -60,5 +62,4 @@ public class AccountManager {
         }
         return false;
     }
-
 }

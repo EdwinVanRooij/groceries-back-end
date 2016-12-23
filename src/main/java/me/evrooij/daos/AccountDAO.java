@@ -91,6 +91,7 @@ public class AccountDAO {
         Query query = getSession().createQuery("DELETE FROM Account a WHERE a.username = :username AND a.password = :password");
         query.setString("username", username);
         query.setString("password", password);
+        query.executeUpdate();
         entityManager.getTransaction().commit();
     }
 }
