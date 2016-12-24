@@ -17,7 +17,6 @@ import static org.junit.Assert.*;
  */
 public class GroceryListDAOTest {
 
-
     private static final String NAME_1 = "My List";
     private static final String NAME_2 = "This is another list";
     private static final String NAME_3 = "List";
@@ -175,6 +174,7 @@ public class GroceryListDAOTest {
         assertEquals(list_7, list_8);
     }
 
+    @SuppressWarnings("Duplicates")
     @Test
     public void addProduct() throws Exception {
         /*
@@ -209,6 +209,58 @@ public class GroceryListDAOTest {
         Product product_3 = new Product(name_3, amount_3, comment_3, owner_3);
         Product productFromList_3 = groceryListDAO.addProduct(list.getId(), product_3);
         assertEquals(product_3, productFromList_3);
+    }
+
+    @SuppressWarnings("Duplicates")
+    @Test
+    public void deleteProduct() throws Exception {
+        /**
+         * Deletes a product from a list
+         *
+         * @param listId    list to delete product from
+         * @param productId product to delete
+         */
+        /*
+         * Verify the created product was deleted
+         */
+        // Create a list
+        GroceryList list = groceryListDAO.create(NAME_1, account);
+        // Declare some product info
+        String name_1 = "Apples1";
+        String name_2 = "Apples2";
+        String name_3 = "Apples3";
+        int amount_1 = 10;
+        int amount_2 = 12;
+        int amount_3 = 13;
+        String comment_1 = "Ther red ones1";
+        String comment_2 = "Ther red ones2";
+        String comment_3 = "Ther red ones3";
+        String owner_1 = "Foo1";
+        String owner_2 = "Foo2";
+        String owner_3 = "Foo3";
+
+        // Verify deletion
+        Product product_1 = new Product(name_1, amount_1, comment_1, owner_1);
+        Product productFromList_1 = groceryListDAO.addProduct(list.getId(), product_1);
+        groceryListDAO.deleteProduct(list.getId(), productFromList_1.getId());
+        GroceryList list_2 = groceryListDAO.getList(list.getId());
+        Product deletedProduct = list_2.getProduct(productFromList_1.getId());
+        assertNull(deletedProduct);
+
+        // Robustness checks
+        Product product_2 = new Product(name_2, amount_2, comment_2, owner_2);
+        Product product_3 = new Product(name_3, amount_3, comment_3, owner_3);
+        Product productFromList_2 = groceryListDAO.addProduct(list.getId(), product_2);
+        Product productFromList_3 = groceryListDAO.addProduct(list.getId(), product_3);
+        groceryListDAO.deleteProduct(list.getId(), productFromList_2.getId());
+        groceryListDAO.deleteProduct(list.getId(), productFromList_3.getId());
+
+        GroceryList list_3 = groceryListDAO.getList(list.getId());
+
+        Product deletedProduct_2 = list_3.getProduct(productFromList_2.getId());
+        Product deletedProduct_3 = list_3.getProduct(productFromList_3.getId());
+        assertNull(deletedProduct_2);
+        assertNull(deletedProduct_3);
     }
 }
 

@@ -66,7 +66,7 @@ public class GroceryListTest {
         /*
          * Add it to the list, so we can retrieve it later on
          */
-        currentList.addItem(productName, amount, comment, owner);
+        currentList.addProduct(productName, amount, comment, owner);
         /*
          * Verify that we have one more product now
          */
@@ -89,7 +89,7 @@ public class GroceryListTest {
          * Create the product to edit later on, add to the list as well
          */
         Product product = new Product(productName, amount, comment, owner);
-        currentList.addItem(product.getName(), product.getAmount(), product.getComment(), product.getOwner());
+        currentList.addProduct(product.getName(), product.getAmount(), product.getComment(), product.getOwner());
 
         /*
          * Declare new values
@@ -119,7 +119,7 @@ public class GroceryListTest {
         int id = 10;
 
         // Add a product to the list
-        currentList.addItem("Name", 10, "Comment", currentAccount.getUsername());
+        currentList.addProduct("Name", 10, "Comment", currentAccount.getUsername());
 
         // Remove the product
         currentList.removeItem(id);
@@ -139,13 +139,13 @@ public class GroceryListTest {
 
         // Add a product, expect 1
         int expectedPostInsert = 1;
-        currentList.addItem("Name", 10, "Comment", currentAccount.getUsername());
+        currentList.addProduct("Name", 10, "Comment", currentAccount.getUsername());
         int actualPostInsert = currentList.getAmountOfProducts();
         assertEquals(expectedPostInsert, actualPostInsert);
 
         // Add 15 items, expect 16 now because we added one above
         for (int i = 0; i < 15; i++) {
-            currentList.addItem("Name", 10, "Comment", currentAccount.getUsername());
+            currentList.addProduct("Name", 10, "Comment", currentAccount.getUsername());
         }
         int expectedPostLots = 16;
         int actualPostLots = currentList.getAmountOfProducts();

@@ -97,8 +97,24 @@ public class GroceryListDAO {
         GroceryList list = getList(listId);
 
         entityManager.getTransaction().begin();
-        list.addItem(product.getName(), product.getAmount(), product.getComment(), product.getOwner());
+        list.addProduct(product.getName(), product.getAmount(), product.getComment(), product.getOwner());
+        entityManager.persist(list);
         entityManager.getTransaction().commit();
         return list.getProduct(product.getName(), product.getOwner(), product.getComment());
+    }
+
+    /**
+     * Deletes a product from a list
+     *
+     * @param listId    list to delete product from
+     * @param productId product to delete
+     */
+    public void deleteProduct(int listId, int productId) {
+        GroceryList list = getList(listId);
+
+        entityManager.getTransaction().begin();
+        list.removeItem(productId);
+        entityManager.persist(list);
+        entityManager.getTransaction().commit();
     }
 }

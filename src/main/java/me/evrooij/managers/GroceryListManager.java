@@ -59,8 +59,31 @@ public class GroceryListManager {
      */
     public Product addProduct(int listId, Product product) throws Exception {
         if (groceryListDAO.getList(listId) == null) {
-            throw new Exception(String.format("List with id %s does not exist!", listId));
+//            throw new Exception(String.format("List with id %s does not exist!", listId));
+            return null;
         }
         return groceryListDAO.addProduct(listId, product);
+    }
+
+    /**
+     * Deletes a product by id from the list by list id
+     *
+     * @param listId    id of the list to delete product from
+     * @param productId id of product to delete
+     * @return true if operation succeeded, false if it didn't
+     */
+    public boolean deleteProduct(int listId, int productId) {
+        GroceryList list = groceryListDAO.getList(listId);
+        if (list == null) {
+//            throw new Exception(String.format("List with id %s does not exist!", listId));
+            return false;
+        }
+        Product product = list.getProduct(productId);
+        if (product == null) {
+//            throw new Exception(String.format("Product with id %s does not exist!", productId));
+            return false;
+        }
+        groceryListDAO.deleteProduct(listId, productId);
+        return true;
     }
 }

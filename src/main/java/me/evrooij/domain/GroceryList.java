@@ -87,14 +87,14 @@ public class GroceryList {
     }
 
     /**
-     * Adds a new item to the list
+     * Adds a new product to the list
      *
      * @param name    name of the product
      * @param amount  amount of times you want the product
      * @param comment comment about the product
      * @param owner   username of the user who added this product
      */
-    public void addItem(String name, int amount, String comment, String owner) {
+    public void addProduct(String name, int amount, String comment, String owner) {
         productList.add(new Product(name, amount, comment, owner));
     }
 

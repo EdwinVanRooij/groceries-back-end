@@ -2,6 +2,7 @@ package me.evrooij.managers;
 
 import me.evrooij.domain.Account;
 import me.evrooij.domain.GroceryList;
+import me.evrooij.domain.Product;
 import me.evrooij.util.DatabaseUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -90,5 +91,59 @@ public class GroceryListManagerTest {
         GroceryList expected = groceryListManager.createGroceryList(NAME_1, account);
         GroceryList actual = groceryListManager.getList(expected.getId());
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void addProduct() throws Exception {
+        /*
+         * Verify a product is added to the list if the list exists
+         */
+        GroceryList list = groceryListManager.createGroceryList(NAME_1, account);
+        String name = "Apples";
+        int amount = 3;
+        String comment = "The red ones";
+        String owner = "Foo";
+        Product product = new Product(name, amount, comment, owner);
+        Product productFromList = groceryListManager.addProduct(list.getId(), product);
+        assertNotNull(productFromList);
+
+        /*
+         * Verify a product is not added to the list if the list doesn't exist
+         */
+        // Make sure we get use a list id that doesn't exist
+        GroceryList nonExistentList;
+        int index = 1000;
+        do {
+            index++;
+            nonExistentList = groceryListManager.getList(index);
+        } while (nonExistentList != null);
+        // List is null when it exits this loop, get the id (index) used to keep the list null
+
+        Product productFromList_2 = groceryListManager.addProduct(index, product);
+        assertNull(productFromList_2);
+    }
+
+    @Test
+    public void deleteProduct() throws Exception {
+        /**
+         * Deletes a product by id from the list by list id
+         *
+         * @param listId    id of the list to delete product from
+         * @param productId id of product to delete
+         * @return true if operation succeeded, false if it didn't
+         */
+        /*
+         * Verify an existent product is deleted after deleteProduct
+         */
+        GroceryList list = groceryListManager.createGroceryList(NAME_1, account);
+        Product product = new Product("Apples", 3, "The red ones", "Foo");
+        Product productFromList = groceryListManager.addProduct(list.getId(), product);
+        boolean result = groceryListManager.deleteProduct(list.getId(), productFromList.getId());
+        assertTrue(result);
+        /*
+         * Verify the result is false if the product to delete doesn't exist
+         */
+        boolean result_2 = groceryListManager.deleteProduct(list.getId(), productFromList.getId());
+        assertFalse(result_2);
     }
 }
