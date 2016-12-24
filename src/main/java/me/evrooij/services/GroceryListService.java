@@ -22,6 +22,12 @@ public class GroceryListService extends DefaultService {
             return listManager.getListsByAccountId(id);
         }, json());
 
+        get("lists/:id", (request, response) -> {
+            int listId = Integer.valueOf(request.params(":id"));
+
+            return listManager.getList(listId);
+        }, json());
+
         post("/lists/new", (request, response) -> {
             String json = request.body();
             System.out.println(String.format("Received json from /lists/new in req body: %s", json));
