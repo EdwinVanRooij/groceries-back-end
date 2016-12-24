@@ -4,6 +4,7 @@ import me.evrooij.daos.AccountDAO;
 import me.evrooij.daos.GroceryListDAO;
 import me.evrooij.domain.Account;
 import me.evrooij.domain.GroceryList;
+import me.evrooij.domain.Product;
 
 import java.util.List;
 
@@ -49,4 +50,17 @@ public class GroceryListManager {
         return groceryListDAO.getList(listId);
     }
 
+    /**
+     * Adds a product to a list if the list exists
+     *
+     * @param listId  id of the list to add the product to
+     * @param product product to add
+     * @return the product if operation was successful, null if it wasn't
+     */
+    public Product addProduct(int listId, Product product) throws Exception {
+        if (groceryListDAO.getList(listId) == null) {
+            throw new Exception(String.format("List with id %s does not exist!", listId));
+        }
+        return groceryListDAO.addProduct(listId, product);
+    }
 }

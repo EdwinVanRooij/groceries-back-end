@@ -68,11 +68,16 @@ public class Product {
     public boolean equals(Object obj) {
         Product other = (Product) obj;
         // If all fields are the same, return true
-        return other.getId() == getId() // If all fields are the same, return true
-                && other.getName().equals(getName())
+//        return other.getId() == getId() // If all fields are the same, return true
+        return other.getName().equals(getName())
                 && other.getAmount() == getAmount()
                 && other.getOwner().equals(getOwner())
                 && other.getComment().equals(getComment())
                 || super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s, id %s - %s times of %s, %s", getName(), getId(), getAmount(), getOwner(), getComment());
     }
 }

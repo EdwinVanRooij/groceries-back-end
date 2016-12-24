@@ -9,9 +9,6 @@ public class JsonUtil {
     public static String toJson(Object object) {
         return new Gson().toJson(object);
     }
-    public static Account accountFromJson(String json) {
-        return new Gson().fromJson(json, Account.class);
-    }
 
     public static ResponseTransformer json() {
         return new ResponseTransformer() {

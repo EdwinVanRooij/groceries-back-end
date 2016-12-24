@@ -84,4 +84,21 @@ public class GroceryListDAO {
 
         return list;
     }
+
+    /**
+     * Adds a product to list
+     *
+     * @param listId
+     * @param product
+     * @return the created product
+     */
+    @SuppressWarnings("JavaDoc")
+    public Product addProduct(int listId, Product product) {
+        GroceryList list = getList(listId);
+
+        entityManager.getTransaction().begin();
+        list.addItem(product.getName(), product.getAmount(), product.getComment(), product.getOwner());
+        entityManager.getTransaction().commit();
+        return list.getProduct(product.getName(), product.getOwner(), product.getComment());
+    }
 }

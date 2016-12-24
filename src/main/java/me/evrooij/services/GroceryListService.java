@@ -2,6 +2,7 @@ package me.evrooij.services;
 
 import com.google.gson.Gson;
 import me.evrooij.domain.GroceryList;
+import me.evrooij.domain.Product;
 import me.evrooij.managers.GroceryListManager;
 
 import static me.evrooij.util.JsonUtil.json;
@@ -31,6 +32,22 @@ public class GroceryListService extends DefaultService {
             System.out.println(String.format("Returning list: %s", listFromDb.toString()));
 
             return listFromDb;
+        }, json());
+
+        post("/list/:id/products/new", (request, response) -> {
+            String idString = request.params(":id");
+            int id = Integer.valueOf(idString);
+
+            String json = request.body();
+            System.out.println(String.format("Received json from /list/%s/products/new in req body: %s", String.valueOf(id), json));
+
+            Product product = new Gson().fromJson(json, Product.class);
+            System.out.println(String.format("Retrieved product: %s", product.toString()));
+
+            Product productFromDb = listManager.addProduct(id, product);
+            System.out.println(String.format("Returning product %s", productFromDb.toString()));
+
+            return productFromDb;
         }, json());
 
         before(this::beforeRouteHandle);

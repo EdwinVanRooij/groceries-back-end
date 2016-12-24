@@ -2,6 +2,7 @@ package me.evrooij.daos;
 
 import me.evrooij.domain.Account;
 import me.evrooij.domain.GroceryList;
+import me.evrooij.domain.Product;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.util.DatabaseUtil;
 import org.junit.After;
@@ -15,6 +16,7 @@ import static org.junit.Assert.*;
  * @author eddy on 15-12-16.
  */
 public class GroceryListDAOTest {
+
 
     private static final String NAME_1 = "My List";
     private static final String NAME_2 = "This is another list";
@@ -147,4 +149,68 @@ public class GroceryListDAOTest {
          */
         assertTrue(foundList_3);
     }
+
+    @Test
+    public void getList() throws Exception {
+        /*
+         * Verify if the lists are equal when we retrieve the created one
+         * from the database again.
+         */
+        GroceryList list_1 = groceryListDAO.create(NAME_1, account);
+        GroceryList list_2 = groceryListDAO.getList(list_1.getId());
+        assertEquals(list_1, list_2);
+        /*
+         * Robustness checks
+         */
+        GroceryList list_3 = groceryListDAO.create(NAME_2, account);
+        GroceryList list_4 = groceryListDAO.getList(list_3.getId());
+        assertEquals(list_3, list_4);
+
+        GroceryList list_5 = groceryListDAO.create(NAME_3, account);
+        GroceryList list_6 = groceryListDAO.getList(list_5.getId());
+        assertEquals(list_5, list_6);
+
+        GroceryList list_7 = groceryListDAO.create(NAME_4, account);
+        GroceryList list_8 = groceryListDAO.getList(list_7.getId());
+        assertEquals(list_7, list_8);
+    }
+
+    @Test
+    public void addProduct() throws Exception {
+        /*
+         * Verify the created product equals the added product
+         */
+        // Create a list
+        GroceryList list = groceryListDAO.create(NAME_1, account);
+        // Declare some product info
+        String name_1 = "Apples1";
+        String name_2 = "Apples2";
+        String name_3 = "Apples3";
+        int amount_1 = 10;
+        int amount_2 = 12;
+        int amount_3 = 13;
+        String comment_1 = "Ther red ones1";
+        String comment_2 = "Ther red ones2";
+        String comment_3 = "Ther red ones3";
+        String owner_1 = "Foo1";
+        String owner_2 = "Foo2";
+        String owner_3 = "Foo3";
+        // Some final products
+        Product product_1 = new Product(name_1, amount_1, comment_1, owner_1);
+        Product productFromList_1 = groceryListDAO.addProduct(list.getId(), product_1);
+        // Verify equality
+        assertEquals(product_1, productFromList_1);
+
+        // Robustness checks
+        Product product_2 = new Product(name_2, amount_2, comment_2, owner_2);
+        Product productFromList_2 = groceryListDAO.addProduct(list.getId(), product_2);
+        assertEquals(product_2, productFromList_2);
+
+        Product product_3 = new Product(name_3, amount_3, comment_3, owner_3);
+        Product productFromList_3 = groceryListDAO.addProduct(list.getId(), product_3);
+        assertEquals(product_3, productFromList_3);
+    }
 }
+
+
+

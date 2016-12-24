@@ -156,6 +156,26 @@ public class GroceryList {
         return null;
     }
 
+    /**
+     * Returns a product
+     *
+     * @param name
+     * @param owner
+     * @param comment
+     * @return
+     */
+    @SuppressWarnings("JavaDoc")
+    public Product getProduct(String name, String owner, String comment) {
+        for (Product p : productList) {
+            if (p.getName().equals(name) && p.getOwner().equals(owner) && p.getComment().equals(comment)) {
+                // Product found
+                return p;
+            }
+        }
+        // No product found
+        return null;
+    }
+
     @Override
     public String toString() {
         return String.format("%s, %s participants, owner %s, %s products", getName(), participants.size(), getOwner().getUsername(), getAmountOfProducts());
