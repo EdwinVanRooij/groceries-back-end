@@ -3,6 +3,8 @@ package me.evrooij.managers;
 import me.evrooij.daos.AccountDAO;
 import me.evrooij.domain.Account;
 
+import java.util.List;
+
 public class AccountManager {
 
     private AccountDAO accountDAO;
@@ -61,5 +63,17 @@ public class AccountManager {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Searches for an account that somewhat matches the search query word
+     *
+     * @param searchQuery one word in a string to search accounts for
+     * @return an account if it somewhat matches the search query, null if not
+     */
+    public Account searchAccount(String searchQuery) {
+        List<Account> accountList = accountDAO.getAccounts();
+        // todo: finish searching
+        return null;
     }
 }

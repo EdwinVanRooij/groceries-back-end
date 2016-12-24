@@ -40,6 +40,14 @@ public class AccountService extends DefaultService {
             return returning;
         }, json());
 
+        get("/accounts/:accountId/friends/find", (request, response) -> {
+            int accountId = Integer.valueOf(request.params(":accountId"));
+
+            String searchQuery = request.queryParams("query");
+
+            return accountManager.searchAccount(searchQuery);
+        }, json());
+
         before(this::beforeRouteHandle);
         after(this::afterRouteHandle);
         exception(Exception.class, this::handleException);

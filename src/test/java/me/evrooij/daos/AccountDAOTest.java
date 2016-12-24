@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -144,5 +146,51 @@ public class AccountDAOTest {
         // Check if we can still get it, shouldn't work
         Account account = accountDAO.getAccount(USERNAME_1, PASSWORD_1);
         assertNull(account);
+    }
+
+    @Test
+    public void getAccounts() throws Exception {
+        /*
+         * Create some accounts and verify if the amount of accounts
+         * has raised in the database
+         */
+        int expected_1 = 0;
+        int actual_1 = accountDAO.getAmountOfAccounts();
+        assertEquals(expected_1, actual_1);
+
+        Account account_1 = accountDAO.register(USERNAME_1, EMAIL_1, PASSWORD_1);
+
+        int expected_2 = 1;
+        int actual_2 = accountDAO.getAmountOfAccounts();
+        assertEquals(expected_2, actual_2);
+
+        Account account_2 = accountDAO.register(USERNAME_2, EMAIL_2, PASSWORD_2);
+        Account account_3 = accountDAO.register(USERNAME_3, EMAIL_3, PASSWORD_3);
+
+        int expected_3 = 3;
+        int actual_3 = accountDAO.getAmountOfAccounts();
+        assertEquals(expected_3, actual_3);
+
+        /*
+         * Create some accounts and verify if those are
+         * actually the ones we just created
+         */
+        boolean passed_acc_1 = false;
+        boolean passed_acc_2 = false;
+        boolean passed_acc_3 = false;
+
+        List<Account> accountList = accountDAO.getAccounts();
+        for (Account a : accountList) {
+            if (a.equals(account_1)) {
+                passed_acc_1 = true;
+            } else if (a.equals(account_2)) {
+                passed_acc_2 = true;
+            } else if (a.equals(account_3)) {
+                passed_acc_3 = true;
+            }
+        }
+        assertTrue(passed_acc_1);
+        assertTrue(passed_acc_2);
+        assertTrue(passed_acc_3);
     }
 }

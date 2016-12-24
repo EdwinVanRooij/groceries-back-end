@@ -5,6 +5,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author eddy on 8-12-16.
@@ -93,5 +94,14 @@ public class AccountDAO {
         query.setString("password", password);
         query.executeUpdate();
         entityManager.getTransaction().commit();
+    }
+
+    /**
+     * Returns all accounts from database
+     *
+     * @return a list of all accounts
+     */
+    public List<Account> getAccounts() {
+        return getSession().createCriteria(Account.class).list();
     }
 }
