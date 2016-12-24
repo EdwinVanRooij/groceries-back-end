@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import me.evrooij.domain.GroceryList;
 import me.evrooij.domain.Product;
 import me.evrooij.managers.GroceryListManager;
+import me.evrooij.responses.ResponseMessage;
 
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
@@ -48,6 +49,19 @@ public class GroceryListService extends DefaultService {
             System.out.println(String.format("Returning product %s", productFromDb.toString()));
 
             return productFromDb;
+        }, json());
+
+//       `/lists/<list_id>/products/<product_id>`
+        delete("/lists/:listId/products/:productId", (request, response) -> {
+            int listId = Integer.valueOf(request.params(":listId"));
+            int productId = Integer.valueOf(request.params(":productId"));
+
+            boolean result = listManager.deleteProduct(listId, productId);
+            if (result) {
+                return new ResponseMessage("Product deleted successfully.");
+            } else {
+                return new ResponseMessage("Error: product was not deleted.");
+            }
         }, json());
 
         before(this::beforeRouteHandle);
