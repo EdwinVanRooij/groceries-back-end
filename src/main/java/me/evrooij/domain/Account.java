@@ -3,6 +3,8 @@ package me.evrooij.domain;
 import sun.plugin2.message.GetAppletMessage;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by eddy on 27-11-16.
@@ -17,10 +19,14 @@ public class Account {
     private String email;
     private String password;
 
+    @ManyToMany
+    private List<Account> friends;
+
     public Account(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+        friends = new ArrayList<>();
     }
 
     public Account() {
@@ -40,6 +46,33 @@ public class Account {
 
     public String getPassword() {
         return password;
+    }
+
+    /**
+     * Checks if account is friends with
+     *
+     * @param friendId id of the account to check friends with for
+     * @return true if friendId account is a friend, false if he/she's not
+     */
+    public boolean isFriendsWith(int friendId) {
+        for (Account friend : friends) {
+            if (friend.getId() == friendId) {
+                // Friend is already in this friend's list, return positive
+                return true;
+            }
+        }
+        // No friend found for this id, return negative
+        return false;
+    }
+
+    /**
+     * Adds a friend to this account
+     *
+     * @param friend
+     */
+    @SuppressWarnings("JavaDoc")
+    public void addFriend(Account friend) {
+        friends.add(friend);
     }
 
     /**
@@ -99,4 +132,5 @@ public class Account {
         Account other = (Account) obj;
         return getId() == other.getId() || super.equals(obj);
     }
+
 }

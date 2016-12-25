@@ -193,4 +193,16 @@ public class AccountDAOTest {
         assertTrue(passed_acc_2);
         assertTrue(passed_acc_3);
     }
+
+    @Test
+    public void addFriend() throws Exception {
+        /**
+         * Adds a friend to the account with account id
+         *
+         * @param accountId
+         * @param friend
+         */
+
+        // todo:
+    }
 }

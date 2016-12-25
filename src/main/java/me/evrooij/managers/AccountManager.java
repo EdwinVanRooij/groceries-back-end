@@ -87,4 +87,20 @@ public class AccountManager {
         }
         return matchList;
     }
+
+    /**
+     * Adds friend to account of accountId, if friend is not already a friend of account
+     *
+     * @param accountId account to add friend to
+     * @param friend    account to add as new friend
+     * @return value indicating success or failure
+     */
+    public boolean addFriend(int accountId, Account friend) {
+        Account account = accountDAO.getAccount(accountId);
+        if (account.isFriendsWith(friend.getId())) {
+            return false;
+        }
+        accountDAO.addFriend(accountId, friend);
+        return true;
+    }
 }

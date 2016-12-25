@@ -104,4 +104,21 @@ public class AccountDAO {
     public List<Account> getAccounts() {
         return getSession().createCriteria(Account.class).list();
     }
+
+    /**
+     * Adds a friend to the account with account id
+     *
+     * @param accountId
+     * @param friend
+     */
+    @SuppressWarnings("JavaDoc")
+    public void addFriend(int accountId, Account friend) {
+        Account accountToAddTo = getAccount(accountId);
+        entityManager.getTransaction().begin();
+
+        accountToAddTo.addFriend(friend);
+        entityManager.persist(accountToAddTo);
+
+        entityManager.getTransaction().commit();
+    }
 }

@@ -240,6 +240,19 @@ public class AccountManagerTest {
         assertEquals(expectedSize_4, accountList_7.size());
         assertEquals(expectedSize_4, accountList_8.size());
     }
+
+    @Test
+    public void addFriend() throws Exception {
+        /**
+         * Adds friend to account of accountId, if friend is not already a friend of account
+         *
+         * @param accountId account to add friend to
+         * @param friend    account to add as new friend
+         * @return value indicating success or failure
+         */
+        // todo:
+
+    }
 }
 
 
