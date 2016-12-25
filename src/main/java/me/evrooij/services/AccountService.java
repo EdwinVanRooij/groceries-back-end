@@ -36,10 +36,12 @@ public class AccountService extends DefaultService {
             return returning;
         }, json());
 
-        get("/accounts/find", (request, response) -> {
+        get("/accounts/:accountId/friends/find", (request, response) -> {
+            int accountId = Integer.valueOf(request.params(":accountId"));
+
             String searchQuery = request.queryParams("query");
 
-            return accountManager.searchFriends(searchQuery);
+            return accountManager.searchFriends(accountId, searchQuery);
         }, json());
 
         post("/accounts/<account_id>/friends/add", (request, response) -> {

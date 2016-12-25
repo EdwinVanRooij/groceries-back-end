@@ -69,6 +69,7 @@ public class AccountManager {
     /**
      * Searches for an account that somewhat matches the search query word
      *
+     * @param searcherId  account id of the searcher, exclude this one
      * @param searchQuery the user entered search query, matches on:
      *                    (all of these are case insensitive)
      *                    - query equals username
@@ -77,10 +78,10 @@ public class AccountManager {
      *                    - query partially equals email
      * @return a list with accounts that match the search query
      */
-    public List<Account> searchFriends(String searchQuery) {
+    public List<Account> searchFriends(int searcherId, String searchQuery) {
         List<Account> matchList = new ArrayList<>();
         for (Account a : accountDAO.getAccounts()) {
-            if (a.matchesFriendSearch(searchQuery)) {
+            if (a.matchesFriendSearch(searcherId, searchQuery)) {
                 matchList.add(a);
             }
         }

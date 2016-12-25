@@ -1,5 +1,7 @@
 package me.evrooij.domain;
 
+import sun.plugin2.message.GetAppletMessage;
+
 import javax.persistence.*;
 
 /**
@@ -43,6 +45,7 @@ public class Account {
     /**
      * Algorithm to match a search query with this account
      *
+     * @param searcherId  the searcher must not be included
      * @param searchQuery the user entered search query, matches on:
      *                    (all of these are case insensitive)
      *                    - query equals username
@@ -51,7 +54,12 @@ public class Account {
      *                    - query partially equals email
      * @return true on match, false on no match
      */
-    public boolean matchesFriendSearch(String searchQuery) {
+    public boolean matchesFriendSearch(int searcherId, String searchQuery) {
+        // If this account is the account who's searching, don't match
+        if (getId() == searcherId) {
+            return false;
+        }
+
         // Match on query equals username
         if (searchQuery.toLowerCase().matches(getUsername().toLowerCase())) {
             return true;
