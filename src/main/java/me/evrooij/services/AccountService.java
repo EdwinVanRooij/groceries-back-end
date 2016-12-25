@@ -1,13 +1,9 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import me.evrooij.domain.Account;
 import me.evrooij.managers.AccountManager;
-import me.evrooij.util.JsonUtil;
 
-import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
 
 import static me.evrooij.util.JsonUtil.json;
@@ -45,7 +41,7 @@ public class AccountService extends DefaultService {
 
             String searchQuery = request.queryParams("query");
 
-            return accountManager.searchAccount(searchQuery);
+            return accountManager.searchFriends(searchQuery);
         }, json());
 
         before(this::beforeRouteHandle);

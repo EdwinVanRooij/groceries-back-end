@@ -3,6 +3,7 @@ package me.evrooij.managers;
 import me.evrooij.daos.AccountDAO;
 import me.evrooij.domain.Account;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountManager {
@@ -68,12 +69,21 @@ public class AccountManager {
     /**
      * Searches for an account that somewhat matches the search query word
      *
-     * @param searchQuery one word in a string to search accounts for
-     * @return an account if it somewhat matches the search query, null if not
+     * @param searchQuery the user entered search query, matches on:
+     *                    (all of these are case insensitive)
+     *                    - query equals username
+     *                    - query equals email
+     *                    - query partially equals username
+     *                    - query partially equals email
+     * @return a list with accounts that match the search query
      */
-    public Account searchAccount(String searchQuery) {
-        List<Account> accountList = accountDAO.getAccounts();
-        // todo: finish searching
-        return null;
+    public List<Account> searchFriends(String searchQuery) {
+        List<Account> matchList = new ArrayList<>();
+        for (Account a : accountDAO.getAccounts()) {
+            if (a.matchesFriendSearch(searchQuery)) {
+                matchList.add(a);
+            }
+        }
+        return matchList;
     }
 }

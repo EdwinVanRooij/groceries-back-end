@@ -7,12 +7,15 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
  * @author eddy on 10-12-16.
  */
 public class AccountManagerTest {
+
     /*
      * at least 6 characters, at max 30
      */
@@ -169,6 +172,73 @@ public class AccountManagerTest {
         accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_3);
         boolean result_7 = accountManager.removeAccount(INCORRECT_USERNAME_1, CORRECT_PASS_2);
         assertFalse(result_7);
+    }
+
+    @Test
+    public void searchFriends() throws Exception {
+        /**
+         * Searches for an account that somewhat matches the search query word
+         *
+         * @param searchQuery the user entered search query, matches on:
+         *                    (all of these are case insensitive)
+         *                    - query equals username
+         *                    - query equals email
+         *                    - query partially equals username
+         *                    - query partially equals email
+         * @return an list with accounts that match the search query
+         */
+        // Create some variables first
+        String username_1 = "UsernameOne";
+        String username_2 = "UsernameTwo";
+        String username_3 = "UsernameThree";
+        String username_4 = "OneTwoThree";
+        String email_1 = "mailOne@mail.com";
+        String email_2 = "mailTwo@mail.com";
+        String email_3 = "mailThree@mail.com";
+        String email_4 = "OneTwoThree@mail.com";
+        String password = "passwordOne";
+        // Create three accounts
+        Account account_1 = accountManager.registerAccount(username_1, email_1, password);
+        Account account_2 = accountManager.registerAccount(username_2, email_2, password);
+        // Below accounts are named for reference purposes
+        Account account_3 = accountManager.registerAccount(username_3, email_3, password);
+        Account account_4 = accountManager.registerAccount(username_4, email_4, password);
+        /*
+         * Check if equal usernames are found, case insensitively
+         */
+        // This should match one account, account_1, check if they're equal
+        List<Account> accountList_1 = accountManager.searchFriends("USERnameone");
+        assertEquals(account_1, accountList_1.get(0));
+        /*
+         * Check if equal emails are found, case insensitively
+         */
+        // This should match one account, account_2, check if they're equal
+        List<Account> accountList_2 = accountManager.searchFriends("mailTWO@mail.com");
+        assertEquals(account_2, accountList_2.get(0));
+        /*
+         * Check if partial usernames are found, case insensitively
+         */
+        // This should match the equal and partial username, account_2 & account_4
+        List<Account> accountList_3 = accountManager.searchFriends("two");
+        int expectedSize_1 = 2;
+        int actualSize_1 = accountList_3.size();
+        assertEquals(expectedSize_1, actualSize_1);
+        /*
+         * Check if partial emails are found, case insensitively
+         */
+        // This should match the equal and partial email, account 3 & account 4
+        List<Account> accountList_4 = accountManager.searchFriends("three@mail");
+        int expectedSize_2 = 2;
+        int actualSize_2 = accountList_4.size();
+        assertEquals(expectedSize_2, actualSize_2);
+        /*
+         * Check if not matching accounts are not found, case insensitively
+         */
+        int expectedSize = 0;
+        List<Account> accountList_5 = accountManager.searchFriends("four");
+        List<Account> accountList_6 = accountManager.searchFriends("four@mail");
+        assertEquals(expectedSize, accountList_5.size());
+        assertEquals(expectedSize, accountList_6.size());
     }
 }
 

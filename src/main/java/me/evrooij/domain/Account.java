@@ -40,6 +40,40 @@ public class Account {
         return password;
     }
 
+    /**
+     * Algorithm to match a search query with this account
+     *
+     * @param searchQuery the user entered search query, matches on:
+     *                    (all of these are case insensitive)
+     *                    - query equals username
+     *                    - query equals email
+     *                    - query partially equals username
+     *                    - query partially equals email
+     * @return true on match, false on no match
+     */
+    public boolean matchesFriendSearch(String searchQuery) {
+        // Match on query equals username
+        if (searchQuery.toLowerCase().matches(getUsername().toLowerCase())) {
+            return true;
+        }
+        // Match on query equals email
+        if (searchQuery.toLowerCase().matches(getEmail().toLowerCase())) {
+            return true;
+        }
+
+        // Match on partially equals username
+        if (getUsername().toLowerCase().contains(searchQuery.toLowerCase())) {
+            return true;
+        }
+        // Match on partially equals email
+        if (getEmail().toLowerCase().contains(searchQuery.toLowerCase())) {
+            return true;
+        }
+
+        // Didn't match any of the above, so it doesn't match this account
+        return false;
+    }
+
     @Override
     public String toString() {
         return String.format("%s (%s), %s, %s", getUsername(), getId(), getEmail(), getPassword());
