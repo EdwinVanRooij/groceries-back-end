@@ -103,4 +103,18 @@ public class AccountManager {
         accountDAO.addFriend(accountId, friend);
         return true;
     }
+
+    /**
+     * Returns all the friends of an account if the accountId is associated with a valid account
+     *
+     * @param accountId account id of the account to search friends for
+     * @return list of account objects if accountId was valid, null if it wasn't
+     */
+    public List<Account> getFriends(int accountId) {
+        Account account = accountDAO.getAccount(accountId);
+        if (account != null) {
+            return account.getFriends();
+        }
+        return null;
+    }
 }

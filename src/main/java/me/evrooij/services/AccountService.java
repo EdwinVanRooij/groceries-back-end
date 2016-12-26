@@ -45,6 +45,12 @@ public class AccountService extends DefaultService {
             return accountManager.searchFriends(accountId, searchQuery);
         }, json());
 
+        get("/accounts/:accountId/friends", (request, response) -> {
+            int accountId = Integer.valueOf(request.params(":accountId"));
+
+            return accountManager.getFriends(accountId);
+        }, json());
+
         post("/accounts/:accountId/friends/add", (request, response) -> {
             int accountId = Integer.valueOf(request.params(":accountId"));
 

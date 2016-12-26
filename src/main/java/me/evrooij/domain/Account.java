@@ -48,6 +48,10 @@ public class Account {
         return password;
     }
 
+    public List<Account> getFriends() {
+        return friends;
+    }
+
     /**
      * Checks if account is friends with
      *

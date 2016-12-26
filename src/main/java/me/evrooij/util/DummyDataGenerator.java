@@ -46,13 +46,18 @@ public class DummyDataGenerator {
         System.out.println("Generating dummy data...");
 
         Account account_1 = accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
-        Account account_2 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_1);
-        Account account_3 = accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_1);
-        Account account_4 = accountManager.registerAccount(CORRECT_USERNAME_4, CORRECT_EMAIL_4, CORRECT_PASS_1);
         System.out.println(String.format("Created account: %s", account_1.toString()));
+        Account account_2 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_1);
         System.out.println(String.format("Created account: %s", account_2.toString()));
+        Account account_3 = accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_1);
         System.out.println(String.format("Created account: %s", account_3.toString()));
+        Account account_4 = accountManager.registerAccount(CORRECT_USERNAME_4, CORRECT_EMAIL_4, CORRECT_PASS_1);
         System.out.println(String.format("Created account: %s", account_4.toString()));
+
+        accountManager.addFriend(account_1.getId(), account_2);
+        accountManager.addFriend(account_1.getId(), account_3);
+        accountManager.addFriend(account_2.getId(), account_3);
+        System.out.println(String.format("Added %s as friend to %s", account_3, account_1));
 
         GroceryList list = listManager.createGroceryList(NAME_1, account_1);
         System.out.println(String.format("Created list: %s", list.toString()));

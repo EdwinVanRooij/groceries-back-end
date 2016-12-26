@@ -262,6 +262,33 @@ public class AccountManagerTest {
         boolean result_3 = accountManager.addFriend(account_1.getId(), account_2);
         assertFalse(result_3);
     }
+
+    @Test
+    public void getFriends() throws Exception {
+        /*
+         * Verify the friends are being returned on valid accountId
+         */
+        // Create some accounts
+        Account account_1 = accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
+        Account friend_1 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_2);
+        Account friend_2 = accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_3);
+        // Add a friend to first account
+        accountManager.addFriend(account_1.getId(), friend_1);
+        // Verify added friend is now in the friend list of account_1
+        assertEquals(friend_1, account_1.getFriends().get(0));
+
+        // Robustness check, verify if there are 2 friends in account_1's friend list after adding friend_2
+        accountManager.addFriend(account_1.getId(), friend_2);
+        int expectedSize_1 = 2;
+        int actualSize_1 = accountManager.getFriends(account_1.getId()).size();
+        assertEquals(expectedSize_1, actualSize_1);
+
+        /*
+         * Verify there's nothing returned on invalid accountId
+         */
+        int invalidAccountId = account_1.getId() - 1;
+        assertNull(accountManager.getFriends(invalidAccountId));
+    }
 }
 
 
