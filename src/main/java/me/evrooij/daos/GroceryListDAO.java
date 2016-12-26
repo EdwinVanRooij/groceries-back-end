@@ -117,4 +117,15 @@ public class GroceryListDAO {
         entityManager.persist(list);
         entityManager.getTransaction().commit();
     }
+
+    /**
+     * Updates the list to reflect current state
+     *
+     * @param list list to update in database
+     */
+    public void update(GroceryList list) {
+        entityManager.getTransaction().begin();
+        getSession().saveOrUpdate(list);
+        entityManager.getTransaction().commit();
+    }
 }

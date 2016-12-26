@@ -86,4 +86,33 @@ public class GroceryListManager {
         groceryListDAO.deleteProduct(listId, productId);
         return true;
     }
+
+    /**
+     * Adds a new participant to a list
+     * listId must point to an existent list
+     * new participant must not be the owner
+     * new participant must not already be in the list
+     *
+     * @param listId         id of the list to add participant to
+     * @param newParticipant new participant to join the list
+     * @return success if succeeded, false if not
+     */
+    public boolean addParticipant(int listId, Account newParticipant) {
+        GroceryList list = groceryListDAO.getList(listId);
+        if (list == null) {
+            // List doesn't exist, return false
+            return false;
+        }
+        if (list.getOwner().equals(newParticipant)) {
+            // New participant is the owner, return false
+            return false;
+        }
+        if (list.hasParticipant(newParticipant)) {
+            // Trying to add a user who's already in the list, return false
+            return false;
+        }
+        list.addParticipant(newParticipant);
+        groceryListDAO.update(list);
+        return true;
+    }
 }

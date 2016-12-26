@@ -99,6 +99,21 @@ public class GroceryList {
     }
 
     /**
+     * Checks if the given account is already a participant in this list
+     *
+     * @param account account to check for
+     * @return true if the account is already a participant here, false if it's not
+     */
+    public boolean hasParticipant(Account account) {
+        for (Account participant : participants) {
+            if (participant.equals(account)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Edits an existing item of this list
      *
      * @param id      unique identifier of the product
@@ -193,5 +208,6 @@ public class GroceryList {
         GroceryList other = (GroceryList) obj;
         return other.getId() == getId() || super.equals(obj);
     }
+
 }
 

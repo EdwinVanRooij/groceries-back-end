@@ -1,6 +1,7 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
+import me.evrooij.domain.Account;
 import me.evrooij.domain.GroceryList;
 import me.evrooij.domain.Product;
 import me.evrooij.managers.GroceryListManager;
@@ -41,20 +42,20 @@ public class GroceryListService extends DefaultService {
             return listFromDb;
         }, json());
 
-        post("/list/:id/products/new", (request, response) -> {
-            String idString = request.params(":id");
-            int id = Integer.valueOf(idString);
+        post("/lists/:listId/participants/new", (request, response) -> {
+            int listId = Integer.valueOf(request.params(":listId"));
 
             String json = request.body();
-            System.out.println(String.format("Received json from /list/%s/products/new in req body: %s", String.valueOf(id), json));
+            System.out.println(String.format("Received json from /lists/%s/participants/new in req body: %s", listId, json));
 
-            Product product = new Gson().fromJson(json, Product.class);
-            System.out.println(String.format("Retrieved product: %s", product.toString()));
+            Account newParticipant = new Gson().fromJson(json, Account.class);
+            System.out.println(String.format("Retrieved new participant: %s", newParticipant.toString()));
 
-            Product productFromDb = listManager.addProduct(id, product);
-            System.out.println(String.format("Returning product %s", productFromDb.toString()));
-
-            return productFromDb;
+            if (listManager.addParticipant(listId, newParticipant)) {
+                return new ResponseMessage("Product deleted successfully.");
+            } else {
+                return new ResponseMessage("Error: product was not deleted.");
+            }
         }, json());
 
 //       `/lists/<list_id>/products/<product_id>`
@@ -62,8 +63,7 @@ public class GroceryListService extends DefaultService {
             int listId = Integer.valueOf(request.params(":listId"));
             int productId = Integer.valueOf(request.params(":productId"));
 
-            boolean result = listManager.deleteProduct(listId, productId);
-            if (result) {
+            if (listManager.deleteProduct(listId, productId)) {
                 return new ResponseMessage("Product deleted successfully.");
             } else {
                 return new ResponseMessage("Error: product was not deleted.");

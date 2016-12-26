@@ -262,6 +262,16 @@ public class GroceryListDAOTest {
         assertNull(deletedProduct_2);
         assertNull(deletedProduct_3);
     }
+
+    @Test
+    public void update() throws Exception {
+        /**
+         * Updates the list to reflect current state
+         *
+         * @param list list to update in database
+         */
+        // todo:
+    }
 }
 
 

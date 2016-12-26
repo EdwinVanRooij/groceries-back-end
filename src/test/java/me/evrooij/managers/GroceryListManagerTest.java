@@ -146,4 +146,19 @@ public class GroceryListManagerTest {
         boolean result_2 = groceryListManager.deleteProduct(list.getId(), productFromList.getId());
         assertFalse(result_2);
     }
+
+    @Test
+    public void addParticipant() throws Exception {
+        /**
+         * Adds a new participant to a list
+         * listId must point to an existent list
+         * new participant must not be the owner
+         * new participant must not already be in the list
+         *
+         * @param listId         id of the list to add participant to
+         * @param newParticipant new participant to join the list
+         * @return success if succeeded, false if not
+         */
+        // todo:
+    }
 }
