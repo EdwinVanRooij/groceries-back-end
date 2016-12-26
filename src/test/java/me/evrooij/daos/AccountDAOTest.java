@@ -196,13 +196,27 @@ public class AccountDAOTest {
 
     @Test
     public void addFriend() throws Exception {
-        /**
-         * Adds a friend to the account with account id
-         *
-         * @param accountId
-         * @param friend
+        /*
+         * Make some accounts and verify they're friends with each other after
          */
+        Account account_1 = accountDAO.register(USERNAME_1, EMAIL_1, PASSWORD_1);
+        Account account_2 = accountDAO.register(USERNAME_2, EMAIL_2, PASSWORD_2);
+        Account account_3 = accountDAO.register(USERNAME_3, EMAIL_3, PASSWORD_3);
+        // Add account 2 as friend to account 1
+        accountDAO.addFriend(account_1.getId(), account_2);
+        // Verify they're now friends
+        boolean result_1 = account_1.isFriendsWith(account_2.getId());
+        assertTrue(result_1);
 
-        // todo:
+        // Robustness check
+        account_3.addFriend(account_2);
+        boolean result_2 = account_3.isFriendsWith(account_2.getId());
+        assertTrue(result_2);
     }
 }
+
+
+
+
+
+

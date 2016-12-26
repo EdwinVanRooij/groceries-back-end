@@ -243,15 +243,24 @@ public class AccountManagerTest {
 
     @Test
     public void addFriend() throws Exception {
-        /**
-         * Adds friend to account of accountId, if friend is not already a friend of account
-         *
-         * @param accountId account to add friend to
-         * @param friend    account to add as new friend
-         * @return value indicating success or failure
+        /*
+         * Verify that friend is added to account if they're not friends yet
          */
-        // todo:
+        Account account_1 = accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
+        Account account_2 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_2);
+        boolean result_1 = accountManager.addFriend(account_1.getId(), account_2);
+        assertTrue(result_1);
+        // Robustness check
+        Account account_3 = accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_3);
+        boolean result_2 = accountManager.addFriend(account_1.getId(), account_3);
+        assertTrue(result_2);
 
+        /*
+         * Verify that friend is not added to an account who they're friends with already
+         */
+        // Account_2 was added as friend to account_1, so check if we can't add account_2 to account_1 again
+        boolean result_3 = accountManager.addFriend(account_1.getId(), account_2);
+        assertFalse(result_3);
     }
 }
 
