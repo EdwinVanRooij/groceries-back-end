@@ -1,5 +1,6 @@
 package me.evrooij.managers;
 
+import com.sun.istack.internal.Nullable;
 import me.evrooij.daos.AccountDAO;
 import me.evrooij.daos.GroceryListDAO;
 import me.evrooij.domain.Account;
@@ -19,13 +20,19 @@ public class GroceryListManager {
     /**
      * Creates a GroceryList
      *
-     * @param name
-     * @param owner
-     * @return
+     * @param name         name of the list
+     * @param owner        initial creator of the list
+     * @param participants list of accounts participating in this list
+     *                     if left null or length 0, don't use it
+     * @return the grocery list with or without participants depending on value given to participants
      */
-    @SuppressWarnings("JavaDoc")
-    public GroceryList createGroceryList(String name, Account owner) {
-        return groceryListDAO.create(name, owner);
+    public GroceryList createGroceryList(String name, Account owner, @Nullable List<Account> participants) {
+        if (participants == null || participants.size() == 0) {
+            // If participants was not filled in correctly, ignore it
+            return groceryListDAO.create(name, owner);
+        }
+        // Use participants
+        return groceryListDAO.create(name, owner, participants);
     }
 
     /**

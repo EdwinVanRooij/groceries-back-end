@@ -36,7 +36,7 @@ public class GroceryListService extends DefaultService {
             GroceryList list = new Gson().fromJson(json, GroceryList.class);
             System.out.println(String.format("Retrieved list: %s", list.toString()));
 
-            GroceryList listFromDb = listManager.createGroceryList(list.getName(), list.getOwner());
+            GroceryList listFromDb = listManager.createGroceryList(list.getName(), list.getOwner(), list.getParticipants());
             System.out.println(String.format("Returning list: %s", listFromDb.toString()));
 
             return listFromDb;

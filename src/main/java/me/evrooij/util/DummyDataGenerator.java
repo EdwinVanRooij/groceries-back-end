@@ -59,7 +59,7 @@ public class DummyDataGenerator {
         accountManager.addFriend(account_2.getId(), account_3);
         System.out.println(String.format("Added %s as friend to %s", account_3, account_1));
 
-        GroceryList list = listManager.createGroceryList(NAME_1, account_1);
+        GroceryList list = listManager.createGroceryList(NAME_1, account_1, null);
         System.out.println(String.format("Created list: %s", list.toString()));
 
         listManager.addParticipant(list.getId(), account_2);
@@ -78,6 +78,7 @@ public class DummyDataGenerator {
     public static void main(String[] args) {
         try {
             new DummyDataGenerator().generate();
+            System.exit(0);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -74,6 +74,20 @@ public class GroceryList {
         participants = new ArrayList<>();
     }
 
+    /**
+     * A list of product objects
+     *
+     * @param name         name of the list
+     * @param owner        account of the user who created this list
+     * @param participants list of accounts who are participating in this list
+     */
+    public GroceryList(String name, Account owner, List<Account> participants) {
+        this.name = name;
+        this.owner = owner;
+        this.participants = participants;
+        productList = new ArrayList<>();
+    }
+
     public GroceryList() {
     }
 
@@ -160,6 +174,15 @@ public class GroceryList {
      */
     public int getAmountOfProducts() {
         return productList.size();
+    }
+
+    /**
+     * Returns the amount of participants in this list, excluding owner
+     *
+     * @return integer value
+     */
+    public int getAmountOfParticipants() {
+        return participants.size();
     }
 
     /**

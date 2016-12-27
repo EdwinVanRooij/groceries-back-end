@@ -39,6 +39,23 @@ public class GroceryListDAO {
     }
 
     /**
+     * Creates a new GroceryList
+     *
+     * @param name
+     * @param owner
+     * @param participants
+     * @return newly created list
+     */
+    @SuppressWarnings("JavaDoc")
+    public GroceryList create(String name, Account owner, List<Account> participants) {
+        GroceryList groceryList = new GroceryList(name, owner, participants);
+        entityManager.getTransaction().begin();
+        entityManager.persist(groceryList);
+        entityManager.getTransaction().commit();
+        return groceryList;
+    }
+
+    /**
      * Returns all GroceryLists an account is in, this includes where the account is owner and where it's a participant
      *
      * @param accountId unique identifier for the account

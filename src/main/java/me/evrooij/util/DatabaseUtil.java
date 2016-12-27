@@ -47,6 +47,7 @@ public class DatabaseUtil {
     public static void main(String[] args) {
         try {
             new DatabaseUtil().clean();
+            System.exit(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
