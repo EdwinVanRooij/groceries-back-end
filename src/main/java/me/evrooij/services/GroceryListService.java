@@ -42,6 +42,23 @@ public class GroceryListService extends DefaultService {
             return listFromDb;
         }, json());
 
+        post("/lists/:listId/products/:productId/edit", (request, response) -> {
+            int listId = Integer.valueOf(request.params(":listId"));
+            int productId = Integer.valueOf(request.params(":productId"));
+            String json = request.body();
+            System.out.println(String.format("Received json from /lists/%s/products/%s/edit in req body: %s", listId, productId, json));
+
+            Product product = new Gson().fromJson(json, Product.class);
+            System.out.println(String.format("Retrieved product: %s", product.toString()));
+
+            boolean result = listManager.updateProduct(listId, productId, product);
+            if (result) {
+                return new ResponseMessage("Product updated successfully.");
+            } else {
+                return new ResponseMessage("Could not update product.");
+            }
+        }, json());
+
         post("/lists/:listId/participants/new", (request, response) -> {
             int listId = Integer.valueOf(request.params(":listId"));
 

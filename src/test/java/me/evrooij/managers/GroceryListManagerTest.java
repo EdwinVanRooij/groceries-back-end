@@ -175,4 +175,57 @@ public class GroceryListManagerTest {
         boolean result_3 = groceryListManager.addParticipant(list.getId(), newParticipant);
         assertFalse(result_3);
     }
+
+    @Test
+    public void updateProduct() throws Exception {
+        // Create some valid objects
+        GroceryList list = groceryListManager.createGroceryList(NAME_1, account);
+        String name = "apples";
+        int amount = 10;
+        String comment = "red ones";
+        String owner = "foobar";
+        list.addProduct(name, amount, comment, owner);
+        Product product = list.getProduct(name, owner, comment);
+        /*
+         * Check if product isn't updated on invalid listId
+         */
+        assertFalse(groceryListManager.updateProduct(
+                list.getId() - 1,
+                product.getId(),
+                product));
+        /*
+         * Check if product isn't updated on invalid productId
+         */
+        assertFalse(groceryListManager.updateProduct(list.getId(), product.getId() - 1, product));
+        /*
+         * Check if product is updated on valid listId and productId
+         */
+        // Declare some new fields
+        String newName = "pears";
+        int newAmount = 11;
+        String newComment = "purple ones";
+
+        // Update and verify fields
+        product.setName(newName);
+        product.setAmount(newAmount);
+        product.setComment(newComment);
+
+        groceryListManager.updateProduct(list.getId(), product.getId(), product);
+        Product productFromManager = groceryListManager.getList(list.getId()).getProduct(product.getId());
+
+        String actualName = productFromManager.getName();
+        assertEquals(newName, actualName);
+
+        int actualAmount = productFromManager.getAmount();
+        assertEquals(newAmount, actualAmount);
+
+        String actualComment = productFromManager.getComment();
+        assertEquals(newComment, actualComment);
+    }
 }
+
+
+
+
+
+

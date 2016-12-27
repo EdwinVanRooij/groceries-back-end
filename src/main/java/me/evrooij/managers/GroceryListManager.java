@@ -115,4 +115,28 @@ public class GroceryListManager {
         groceryListDAO.update(list);
         return true;
     }
+
+    /**
+     * Updates product with id productId from list listId, if they're both valid
+     *
+     * @param listId    id of list to update product from
+     * @param productId id of product to update
+     * @param product   updated product object
+     * @return true if succeeded, false if not
+     */
+    public boolean updateProduct(int listId, int productId, Product product) {
+        GroceryList list = groceryListDAO.getList(listId);
+        if (list == null) {
+            // There is no such list, return false
+            return false;
+        }
+        if (list.getProduct(productId) == null) {
+            // There is no such product in this list, return false
+            return false;
+        }
+        // Update product, return true
+        list.updateProduct(productId, product.getName(), product.getAmount(), product.getComment(), product.getOwner());
+        groceryListDAO.update(list);
+        return true;
+    }
 }

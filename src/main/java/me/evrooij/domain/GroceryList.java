@@ -218,5 +218,24 @@ public class GroceryList {
         return other.getId() == getId() || super.equals(obj);
     }
 
+    /**
+     * Updates a product
+     *
+     * @param productId
+     * @param name
+     * @param amount
+     * @param comment
+     * @param owner
+     */
+    @SuppressWarnings("JavaDoc")
+    public void updateProduct(int productId, String name, int amount, String comment, String owner) {
+        for (Product p : productList) {
+            if (p.getId() == productId) {
+                p.setName(name);
+                p.setAmount(amount);
+                p.setComment(comment);
+            }
+        }
+    }
 }
 
