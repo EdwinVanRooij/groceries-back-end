@@ -265,12 +265,27 @@ public class GroceryListDAOTest {
 
     @Test
     public void update() throws Exception {
-        /**
-         * Updates the list to reflect current state
-         *
-         * @param list list to update in database
+        // Declare some variables
+        String productName = "name";
+        String productComment = "comment";
+        int productAmount = 10;
+        String productOwner = "owner";
+        /*
+         * Check if an added product is still added in db after update
          */
-        // todo:
+        // Add product to a list
+        GroceryList list_1 = groceryListDAO.create(NAME_1, account);
+        list_1.addProduct(productName, productAmount, productComment, productOwner);
+        groceryListDAO.update(list_1);
+        // Get the added product
+        Product addedProduct = list_1.getProduct(productName, productOwner, productComment);
+
+        // Get the same stuff from dao
+        GroceryList listFromDao = groceryListDAO.getList(list_1.getId());
+        Product addedProductFromDao = listFromDao.getProduct(productName, productOwner, productComment);
+
+        // Verify the products are there & equal
+        assertEquals(addedProduct, addedProductFromDao);
     }
 }
 

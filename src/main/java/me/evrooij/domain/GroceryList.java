@@ -53,6 +53,15 @@ public class GroceryList {
     }
 
     /**
+     * Get all participants of this list
+     *
+     * @return list of accounts
+     */
+    public List<Account> getParticipants() {
+        return participants;
+    }
+
+    /**
      * A list of product objects
      *
      * @param name  name of the list

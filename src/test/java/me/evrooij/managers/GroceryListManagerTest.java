@@ -20,8 +20,10 @@ public class GroceryListManagerTest {
     private static final String NAME_2 = "This is another list";
     private static final String NAME_3 = "List";
 
-    private static final String USERNAME = "111111";
-    private static final String EMAIL = "mail@gmail.com";
+    private static final String USERNAME_1 = "111111";
+    private static final String USERNAME_2 = "222222";
+    private static final String EMAIL_1 = "mail1@gmail.com";
+    private static final String EMAIL_2 = "mail2@gmail.com";
     private static final String PASSWORD = "thisi4sapassword";
 
     private Account account;
@@ -37,7 +39,7 @@ public class GroceryListManagerTest {
     public void setUp() throws Exception {
         groceryListManager = new GroceryListManager();
         accountManager = new AccountManager();
-        account = accountManager.registerAccount(USERNAME, EMAIL, PASSWORD);
+        account = accountManager.registerAccount(USERNAME_1, EMAIL_1, PASSWORD);
     }
 
     @After
@@ -149,16 +151,28 @@ public class GroceryListManagerTest {
 
     @Test
     public void addParticipant() throws Exception {
-        /**
-         * Adds a new participant to a list
-         * listId must point to an existent list
-         * new participant must not be the owner
-         * new participant must not already be in the list
-         *
-         * @param listId         id of the list to add participant to
-         * @param newParticipant new participant to join the list
-         * @return success if succeeded, false if not
+        /*
+         * Check if participant was added to list with good listId
          */
-        // todo:
+        GroceryList list = groceryListManager.createGroceryList(NAME_1, account);
+        Account newParticipant = accountManager.registerAccount(USERNAME_2, EMAIL_2, PASSWORD);
+        boolean result_1 = groceryListManager.addParticipant(list.getId(), newParticipant);
+        // Verify if this worked at all
+        assertTrue(result_1);
+        // Get list from manager just to be sure
+        GroceryList listFromManager = groceryListManager.getList(list.getId());
+        assertEquals(newParticipant, listFromManager.getParticipants().get(0));
+
+        /*
+         * Check if owner is not being added to the new list
+         */
+        boolean result_2 = groceryListManager.addParticipant(list.getId(), account);
+        assertFalse(result_2);
+
+        /*
+         * Check if we can't add newParticipant again
+         */
+        boolean result_3 = groceryListManager.addParticipant(list.getId(), newParticipant);
+        assertFalse(result_3);
     }
 }
