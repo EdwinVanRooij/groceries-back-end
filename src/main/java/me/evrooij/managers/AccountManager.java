@@ -15,11 +15,11 @@ public class AccountManager {
     }
 
     /**
-     * Returns an account
+     * Retrieves the user's Account on a correct username with password combination.
      *
-     * @param username
-     * @param password
-     * @return
+     * @param username globally unique username
+     * @param password password for the user account
+     * @return returns the account on correct login credentials, null on incorrect login credentials
      */
     @SuppressWarnings("JavaDoc")
     public Account getAccount(String username, String password) {
@@ -27,12 +27,23 @@ public class AccountManager {
     }
 
     /**
-     * Registers an account
+     * Creates a new Account entry in the database.
      *
-     * @param username
-     * @param email
-     * @param password
-     * @return
+     * @param username identification name, must be:
+     *                 unique relative to all of the other usernames
+     *                 at least 6 characters long
+     *                 at max 30 characters long
+     *                 only alphanumeric characters
+     * @param email    e-mail address of the user used for communication purposes, must:
+     *                 contain something before the @
+     *                 contain a @ character
+     *                 contain something after the @
+     *                 contain a dot after the @
+     *                 contain something after the dot
+     * @param password used to log into the user account for validation, must be:
+     *                 at least 8 characters long
+     *                 at max 100 characters long
+     * @return the user account if successful, null if unsuccessful
      */
     @SuppressWarnings("JavaDoc")
     public Account registerAccount(String username, String email, String password) {

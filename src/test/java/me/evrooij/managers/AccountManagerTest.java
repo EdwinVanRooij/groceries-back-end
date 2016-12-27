@@ -127,15 +127,6 @@ public class AccountManagerTest {
 
     @Test
     public void removeAccount() throws Exception {
-        /**
-         * Removes an account from the database if:
-         * - the username/password combination is correct
-         * - the account exists
-         *
-         * @param username
-         * @param password
-         * @return boolean value indicating the exit status of removal
-         */
         /*
          * Happy flow
          */
