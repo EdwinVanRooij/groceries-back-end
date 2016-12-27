@@ -52,13 +52,12 @@ public class GroceryListService extends DefaultService {
             System.out.println(String.format("Retrieved new participant: %s", newParticipant.toString()));
 
             if (listManager.addParticipant(listId, newParticipant)) {
-                return new ResponseMessage("Product deleted successfully.");
+                return new ResponseMessage("Participant added successfully.");
             } else {
-                return new ResponseMessage("Error: product was not deleted.");
+                return new ResponseMessage("Error: participant was not added.");
             }
         }, json());
 
-//       `/lists/<list_id>/products/<product_id>`
         delete("/lists/:listId/products/:productId", (request, response) -> {
             int listId = Integer.valueOf(request.params(":listId"));
             int productId = Integer.valueOf(request.params(":productId"));

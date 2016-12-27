@@ -96,11 +96,6 @@ public class GroceryListDAOTest {
         int actual_2 = groceryListDAO.getAmountOfListsForUser(account.getId());
         assertEquals(expected_2, actual_2);
         /*
-         * Now check if we als get more lists if we were added to a list by someone else
-         */
-//        groceryListDAO.create(NAME_2, anotherAccount);
-        // todo: check if we get more lists when added to another list by someone else
-        /*
          * Robustness checks
          */
         groceryListDAO.create(NAME_3, account);
@@ -147,6 +142,38 @@ public class GroceryListDAOTest {
          * Verify we found list 3
          */
         assertTrue(foundList_3);
+    }
+
+    @Test
+    public void getListsOwnerAndParticipant() throws Exception {
+//     Returns all GroceryLists an account is in, this includes where the account is owner and where it's a participant
+        /*
+         * Check if account is in 3 lists when it created one and was added to 2 other ones
+         */
+        // Account is in no lists now
+        assertEquals(0, groceryListDAO.getAmountOfListsForUser(account.getId()));
+        GroceryList list_1 = groceryListDAO.create(NAME_1, account);
+        // Account is in one list now after creating one
+        assertEquals(1, groceryListDAO.getAmountOfListsForUser(account.getId()));
+
+        // Create a list as anotherAccount, add account as participant
+        GroceryList list_2 = groceryListDAO.create(NAME_2, anotherAccount);
+        list_2.addParticipant(account);
+        // Account is in two lists now, after being added to one
+        assertEquals(2, groceryListDAO.getAmountOfListsForUser(account.getId()));
+        // Meanwhile another account is in one, after just creating one
+        assertEquals(1, groceryListDAO.getAmountOfListsForUser(anotherAccount.getId()));
+
+        // Robustness checks, create a list for both accounts
+        GroceryList list_3 = groceryListDAO.create(NAME_4, account);
+        assertEquals(3, groceryListDAO.getAmountOfListsForUser(account.getId()));
+        // Second list another account created
+        GroceryList list_4 = groceryListDAO.create(NAME_3, anotherAccount);
+        assertEquals(2, groceryListDAO.getAmountOfListsForUser(anotherAccount.getId()));
+
+        // Add another account to list 3, check if he's now in 3 lists
+        list_3.addParticipant(anotherAccount);
+        assertEquals(3, groceryListDAO.getAmountOfListsForUser(anotherAccount.getId()));
     }
 
     @Test

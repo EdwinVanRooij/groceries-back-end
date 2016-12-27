@@ -39,16 +39,19 @@ public class GroceryListDAO {
     }
 
     /**
-     * Returns all GroceryLists an account is in
+     * Returns all GroceryLists an account is in, this includes where the account is owner and where it's a participant
      *
      * @param accountId unique identifier for the account
      * @return
      */
-    @SuppressWarnings("JavaDoc")
+    @SuppressWarnings({"JavaDoc", "unchecked"})
     public List<GroceryList> getLists(int accountId) {
         entityManager.getTransaction().begin();
 
-        Query query = entityManager.createQuery("SELECT l FROM GroceryList l WHERE owner.id = :id");
+        Query query = entityManager.createQuery(
+                "SELECT l FROM GroceryList l " +
+                        "WHERE owner.id = :id " +
+                        "OR :id IN(SELECT id FROM l.participants)");
         query.setParameter("id", accountId);
         List<GroceryList> lists = query.getResultList();
 
@@ -63,11 +66,11 @@ public class GroceryListDAO {
     /**
      * Return the amount of lists the user is in
      *
-     * @param id account id of the user to search for
+     * @param accountId account id of the user to search for
      * @return integer value
      */
-    public int getAmountOfListsForUser(int id) {
-        return getLists(id).size();
+    public int getAmountOfListsForUser(int accountId) {
+        return getLists(accountId).size();
     }
 
     /**
