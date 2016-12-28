@@ -75,6 +75,23 @@ public class GroceryListService extends DefaultService {
             }
         }, json());
 
+        post("/list/:id/products/new", (request, response) -> {
+            String idString = request.params(":id");
+            int id = Integer.valueOf(idString);
+
+            String json = request.body();
+            System.out.println(String.format("Received json from /list/%s/products/new in req body: %s", String.valueOf(id), json));
+
+            Product product = new Gson().fromJson(json, Product.class);
+            System.out.println(String.format("Retrieved product: %s", product.toString()));
+
+            Product productFromDb = listManager.addProduct(id, product);
+            System.out.println(String.format("Returning product %s", productFromDb.toString()));
+
+            return productFromDb;
+
+        }, json());
+
         delete("/lists/:listId/products/:productId", (request, response) -> {
             int listId = Integer.valueOf(request.params(":listId"));
             int productId = Integer.valueOf(request.params(":productId"));
