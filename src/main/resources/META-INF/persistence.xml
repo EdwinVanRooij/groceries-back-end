@@ -12,6 +12,9 @@
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost/groceries_db"/>
             <property name="hibernate.connection.username" value="groceries_user"/>
+            <!--Development env-->
+            <!--<property name="hibernate.connection.password" value="QncMX89S83hdn12Sd0"/>-->
+            <!--Production env-->
             <property name="hibernate.connection.password" value="dn3coQiwx2pdSxsA"/>
 
             <property name="hibernate.archive.autodetection" value="class"/>
