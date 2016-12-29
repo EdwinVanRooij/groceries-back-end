@@ -12,7 +12,7 @@
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost/groceries_db"/>
             <property name="hibernate.connection.username" value="groceries_user"/>
-            <property name="hibernate.connection.password" value="QncMX89S83hdn12Sd0"/>
+            <property name="hibernate.connection.password" value="dn3coQiwx2pdSxsA"/>
 
             <property name="hibernate.archive.autodetection" value="class"/>
             <property name="hibernate.show_sql" value="true"/>
