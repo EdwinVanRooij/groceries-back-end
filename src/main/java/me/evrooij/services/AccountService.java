@@ -16,6 +16,9 @@ public class AccountService extends DefaultService {
     public AccountService() {
         accountManager = new AccountManager();
 
+        // Production env
+        port(6438);
+
         get("/users/login", (request, response) -> {
             String username = request.queryParams("username");
             String password = request.queryParams("password");

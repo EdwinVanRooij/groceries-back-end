@@ -16,8 +16,6 @@ public class GroceryListService extends DefaultService {
     public GroceryListService() {
         listManager = new GroceryListManager();
 
-        // Production env
-        port(6438);
 
         get("/user/:id/lists", (request, response) -> {
             String idString = request.params(":id");
