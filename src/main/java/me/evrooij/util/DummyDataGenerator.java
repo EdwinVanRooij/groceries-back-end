@@ -67,18 +67,9 @@ public class DummyDataGenerator {
         listManager.addParticipant(list.getId(), account_3);
         System.out.println(String.format("Added %s as participant to list %s", account_3.toString(), list.toString()));
 
-        Product product_1 = listManager.addProduct(list.getId(), new Product(PRODUCT_NAME_1, PRODUCT_AMOUNT_1, PRODUCT_COMMENT_1, account_1.getUsername()));
-        Product product_2 = listManager.addProduct(list.getId(), new Product(PRODUCT_NAME_2, PRODUCT_AMOUNT_2, PRODUCT_COMMENT_2, account_1.getUsername()));
-        Product product_3 = listManager.addProduct(list.getId(), new Product(PRODUCT_NAME_3, PRODUCT_AMOUNT_3, PRODUCT_COMMENT_3, account_1.getUsername()));
-        Product product_4 = listManager.addProduct(list.getId(), new Product(PRODUCT_NAME_3, PRODUCT_AMOUNT_3, PRODUCT_COMMENT_3, account_1.getUsername()));
-        Product product_5 = listManager.addProduct(list.getId(), new Product(PRODUCT_NAME_3, PRODUCT_AMOUNT_3, PRODUCT_COMMENT_3, account_1.getUsername()));
-        Product product_6 = listManager.addProduct(list.getId(), new Product(PRODUCT_NAME_3, PRODUCT_AMOUNT_3, PRODUCT_COMMENT_3, account_1.getUsername()));
-        Product product_7 = listManager.addProduct(list.getId(), new Product(PRODUCT_NAME_3, PRODUCT_AMOUNT_3, PRODUCT_COMMENT_3, account_1.getUsername()));
-        Product product_8 = listManager.addProduct(list.getId(), new Product(PRODUCT_NAME_3, PRODUCT_AMOUNT_3, PRODUCT_COMMENT_3, account_1.getUsername()));
-        Product product_9 = listManager.addProduct(list.getId(), new Product(PRODUCT_NAME_3, PRODUCT_AMOUNT_3, PRODUCT_COMMENT_3, account_1.getUsername()));
-        System.out.println(String.format("Created product: %s", product_1.toString()));
-        System.out.println(String.format("Created product: %s", product_2.toString()));
-        System.out.println(String.format("Created product: %s", product_3.toString()));
+        for (int i = 0; i < 10; i++) {
+            listManager.addProduct(list.getId(), new Product(String.format("%s: %s", PRODUCT_NAME_1, i), PRODUCT_AMOUNT_3, PRODUCT_COMMENT_3, account_1.getUsername()));
+        }
     }
 
     public static void main(String[] args) {

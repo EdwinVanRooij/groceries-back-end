@@ -42,7 +42,7 @@ public class GroceryListService extends DefaultService {
             return listFromDb;
         }, json());
 
-        post("/lists/:listId/products/:productId/edit", (request, response) -> {
+        put("/lists/:listId/products/:productId/edit", (request, response) -> {
             int listId = Integer.valueOf(request.params(":listId"));
             int productId = Integer.valueOf(request.params(":productId"));
             String json = request.body();
