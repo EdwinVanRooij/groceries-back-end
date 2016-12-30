@@ -2,9 +2,6 @@
   <artifact type="jar" name="GroceriesBackEnd_main:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/GroceriesBackEnd_main_jar</output-path>
     <root id="archive" name="GroceriesBackEnd_main.jar">
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/java/META-INF/MANIFEST.MF" />
-      </element>
       <element id="module-output" name="GroceriesBackEnd_main" />
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/xml-apis/xml-apis/1.0.b2/3136ca936f64c9d68529f048c2618bd356bf85c9/xml-apis-1.0.b2.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.1-api/1.0.0.Final/5e731d961297e5a07290bfaf3db1fbc8bbbf405a/hibernate-jpa-2.1-api-1.0.0.Final.jar" path-in-jar="/" />
