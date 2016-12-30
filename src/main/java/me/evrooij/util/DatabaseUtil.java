@@ -1,6 +1,7 @@
 package me.evrooij.util;
 
 import me.evrooij.domain.Account;
+import me.evrooij.domain.Feedback;
 import me.evrooij.domain.GroceryList;
 import me.evrooij.domain.Product;
 
@@ -21,6 +22,7 @@ public class DatabaseUtil {
      * Includes all of the persisted classes which will be emptied
      */
     private final Class<?>[] ENTITY_TYPES = {
+            Feedback.class,
             GroceryList.class,
             Account.class,
             Product.class,
