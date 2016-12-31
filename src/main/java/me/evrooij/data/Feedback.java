@@ -1,5 +1,6 @@
 package me.evrooij.data;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
@@ -12,14 +13,18 @@ import javax.persistence.*;
 public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Expose
     private int id;
+    @Expose
     private String message;
 
     // GSON annotation for deserialization
     @SerializedName("type")
+    @Expose
     private Type type;
 
     @ManyToOne
+    @Expose
     private Account sender;
 
     public Feedback(String message, Type type, Account sender) {

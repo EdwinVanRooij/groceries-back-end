@@ -137,6 +137,17 @@ public class AccountManager {
         accountDAO.addFriend(accountId, friend);
         // Add initiating user to new friend as well
         accountDAO.addFriend(friend.getId(), account);
+
+//        // Some final checks
+//        Account accountFromDb_1 = accountDAO.getAccount(accountId);
+//        Account accountFromDb_2 = accountDAO.getAccount(friend.getId());
+//        if (!accountFromDb_1.isFriendsWith(accountFromDb_2.getId())) {
+//            return false;
+//        }
+//        if (!accountFromDb_2.isFriendsWith(accountFromDb_1.getId())) {
+//            return false;
+//        }
+
         return true;
     }
 

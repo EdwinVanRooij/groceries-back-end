@@ -23,7 +23,7 @@ public class DefaultService {
      * @param response the response to send back
      */
     protected void afterRouteHandle(Request request, Response response) {
-        response.type("application/json");
+        response.type("application/json2");
     }
 
     /**
@@ -35,7 +35,7 @@ public class DefaultService {
      */
     protected void handleException(Exception exception, Request request, Response response) {
         response.status(400);
-        response.type("application/json");
+        response.type("application/json2");
         response.body(JsonUtil.toJson(new ResponseMessage(exception)));
     }
 }

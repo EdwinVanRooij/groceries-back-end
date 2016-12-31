@@ -1,5 +1,7 @@
 package me.evrooij.data;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 
 /**
@@ -10,10 +12,15 @@ import javax.persistence.*;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Expose
     private int id;
+    @Expose
     private String name;
+    @Expose
     private int amount;
+    @Expose
     private String owner;
+    @Expose
     private String comment;
 
     public int getId() {

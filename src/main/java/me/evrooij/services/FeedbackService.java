@@ -16,7 +16,7 @@ public class FeedbackService extends DefaultService {
 
         post("/feedback/new", (request, response) -> {
             String json = request.body();
-            System.out.println(String.format("Received json from /bugs/new in req body: %s", json));
+            System.out.println(String.format("Received json2 from /bugs/new in req body: %s", json));
 
             Feedback feedback = new Gson().fromJson(json, Feedback.class);
             System.out.println(String.format("Retrieved feedback: %s", feedback.toString()));

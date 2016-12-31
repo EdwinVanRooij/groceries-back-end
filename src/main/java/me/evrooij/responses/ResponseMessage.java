@@ -5,7 +5,7 @@ package me.evrooij.responses;
  *         Small helper class which converts an exception or unformatted string message to a complete string field
  */
 public class ResponseMessage {
-    // Method is used by json converter to show it's message
+    // Method is used by json2 converter to show it's message
     @SuppressWarnings("unused")
     private String message;
 

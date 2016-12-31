@@ -1,6 +1,7 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
@@ -34,7 +35,8 @@ public class GroceryListService extends DefaultService {
             String json = request.body();
             System.out.println(String.format("Received json from /lists/new in req body: %s", json));
 
-            GroceryList list = new Gson().fromJson(json, GroceryList.class);
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            GroceryList list = gson.fromJson(json, GroceryList.class);
             System.out.println(String.format("Retrieved list: %s", list.toString()));
 
             GroceryList listFromDb = listManager.createGroceryList(list.getName(), list.getOwner(), list.getParticipants());

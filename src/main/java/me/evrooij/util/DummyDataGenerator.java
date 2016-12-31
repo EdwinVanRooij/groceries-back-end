@@ -56,7 +56,6 @@ public class DummyDataGenerator {
 
         accountManager.addFriend(account_1.getId(), account_2);
         accountManager.addFriend(account_1.getId(), account_3);
-        accountManager.addFriend(account_2.getId(), account_3);
         System.out.println(String.format("Added %s as friend to %s", account_3, account_1));
 
         GroceryList list = listManager.createGroceryList(NAME_1, account_1, null);

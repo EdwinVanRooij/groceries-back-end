@@ -1,6 +1,7 @@
 package me.evrooij;
 
 import me.evrooij.services.AccountService;
+import me.evrooij.services.DummyService;
 import me.evrooij.services.FeedbackService;
 import me.evrooij.services.GroceryListService;
 
@@ -10,5 +11,6 @@ public class Main {
         new AccountService();
         new GroceryListService();
         new FeedbackService();
+        new DummyService();
     }
 }

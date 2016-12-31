@@ -1,5 +1,7 @@
 package me.evrooij.data;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +14,16 @@ import java.util.List;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Expose
     private int id;
+    @Expose
     private String username;
+    @Expose
     private String email;
     private String password;
 
     @ManyToMany
-    private transient List<Account> friends;
+    private List<Account> friends;
 
     public Account(String username, String email, String password) {
         this.username = username;

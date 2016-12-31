@@ -1,5 +1,7 @@
 package me.evrooij.data;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -13,15 +15,20 @@ import javax.persistence.*;
 public class GroceryList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Expose
     private int id;
+    @Expose
     private String name;
 
+    @Expose
     @ManyToOne// A list can have one owner, an account can have multiple list
     private Account owner;
 
+    @Expose
     @ManyToMany// A list can have multiple participants, a user can be in multiple lists
     private List<Account> participants;
 
+    @Expose
     @OneToMany(cascade = CascadeType.ALL)// A list can have multiple products, a product belongs to one list
     private List<Product> productList;
 

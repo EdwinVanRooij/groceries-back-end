@@ -5,6 +5,7 @@ import me.evrooij.data.Account;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.responses.ResponseMessage;
 
+import java.util.List;
 import java.util.Map;
 
 import static me.evrooij.util.JsonUtil.json;
@@ -29,7 +30,7 @@ public class AccountService extends DefaultService {
             String json = request.body();
             System.out.println(String.format("Received json from /users/register in req body: %s", json));
 
-            Map<String, String> accountMap = new Gson().fromJson(request.body(), Map.class);
+            @SuppressWarnings("unchecked") Map<String, String> accountMap = new Gson().fromJson(request.body(), Map.class);
             String username = accountMap.get("username");
             String email = accountMap.get("email");
             String password = accountMap.get("password");
@@ -51,7 +52,14 @@ public class AccountService extends DefaultService {
         get("/accounts/:accountId/friends", (request, response) -> {
             int accountId = Integer.valueOf(request.params(":accountId"));
 
-            return accountManager.getFriends(accountId);
+            System.out.println(String.format("Searching for friends of account %s", accountId));
+            List<Account> accountList = accountManager.getFriends(accountId);
+            if (accountList != null) {
+                System.out.println(String.format("returning an account list with %s accounts", accountList.size()));
+            } else {
+                System.out.println("Accountlist is null");
+            }
+            return accountList;
         }, json());
 
         post("/accounts/:accountId/friends/add", (request, response) -> {
