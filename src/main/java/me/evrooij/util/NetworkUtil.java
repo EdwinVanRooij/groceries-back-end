@@ -4,11 +4,7 @@ import spark.utils.IOUtils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author eddy on 31-12-16.

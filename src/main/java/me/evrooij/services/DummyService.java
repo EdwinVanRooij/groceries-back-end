@@ -4,7 +4,7 @@ import me.evrooij.data.Student;
 import me.evrooij.managers.AccountManager;
 
 import static me.evrooij.util.JsonUtil.json;
-import static spark.Spark.*;
+import static spark.Spark.get;
 
 public class DummyService {
     private AccountManager accountManager;

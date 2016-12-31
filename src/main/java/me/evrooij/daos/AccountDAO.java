@@ -4,7 +4,9 @@ import me.evrooij.data.Account;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.List;
 
 /**
