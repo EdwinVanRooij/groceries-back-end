@@ -235,7 +235,6 @@ public class AccountManagerTest {
          */
         int expectedSize_5 = 0;
         accountManager.addFriend(searcher.getId(), account_1);
-        System.out.println(String.format("Account has %s friends", accountManager.getFriends(searcher.getId())));
         List<Account> accountList_9 = accountManager.searchFriends(searcher.getId(), account_1.getUsername());
         assertEquals(expectedSize_5, accountList_9.size());
         /*
