@@ -18,7 +18,7 @@ public class Account {
     private String password;
 
     @ManyToMany
-    private List<Account> friends;
+    private transient List<Account> friends;
 
     public Account(String username, String email, String password) {
         this.username = username;

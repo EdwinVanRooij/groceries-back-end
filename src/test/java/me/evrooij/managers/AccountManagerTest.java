@@ -264,6 +264,21 @@ public class AccountManagerTest {
         Account account_3 = accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_3);
         boolean result_2 = accountManager.addFriend(account_1.getId(), account_3);
         assertTrue(result_2);
+        /*
+         * Verify that accounts are added as friends reversely as well
+         */
+        // Account 1 added two accounts as friends
+        int expectedSize_1 = 2;
+        int actualSize_1 = accountManager.getFriends(account_1.getId()).size();
+        assertEquals(expectedSize_1, actualSize_1);
+        // Account 2 and 3 were both added by one account, account 1
+        int expectedSize_2 = 1;
+        int actualSize_2 = accountManager.getFriends(account_2.getId()).size();
+        assertEquals(expectedSize_2, actualSize_2);
+
+        int expectedSize_3 = 1;
+        int actualSize_3 = accountManager.getFriends(account_2.getId()).size();
+        assertEquals(expectedSize_3, actualSize_3);
 
         /*
          * Verify that friend is not added to an account who they're friends with already
@@ -298,13 +313,49 @@ public class AccountManagerTest {
          */
         int invalidAccountId = account_1.getId() - 1;
         assertNull(accountManager.getFriends(invalidAccountId));
+
+        /*
+         * Verify that we can get friends who added each other as friend
+         */
+        // Account 1 added friend 1, so do the reverse now
+        accountManager.addFriend(friend_1.getId(), account_1);
+        // Check if friend 1 can still add friend 2, just to be sure
+        accountManager.addFriend(friend_1.getId(), friend_2);
+        // Friend 1 should have 2 friends now
+        int expectedSize_2 = 2;
+        int actualSize_2 = accountManager.getFriends(friend_1.getId()).size();
+        assertEquals(expectedSize_2, actualSize_2);
+    }
+
+    @Test
+    public void getFriendsOfEachOther() throws Exception {
+        /*
+         * I'm still suspicious about getting friends of an account
+         * who's friends with the said account. Robustness checks here.
+         */
+        // Check if we can add each other
+        Account account_1 = accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
+        Account account_2 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_1);
+        Account account_3 = accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_1);
+
+        // Add account 2 as friends to account 1
+        boolean result = accountManager.addFriend(account_1.getId(), account_2);
+        assertTrue(result);
+
+        // Add account 3 as friends to account 1
+        boolean result_2 = accountManager.addFriend(account_1.getId(), account_3);
+        assertTrue(result_2);
+
+        // Check if account 1 now has two friends
+        int expectedSize = 2;
+        int actualSize = accountManager.getFriends(account_1.getId()).size();
+        assertEquals(expectedSize, actualSize);
+
+        // Check if account 2 now has one friend, account 1
+        assertEquals(account_1, accountManager.getFriends(account_2.getId()).get(0));
+
+        // Check if account 3 now has one friend, account 1
+        assertEquals(account_1, accountManager.getFriends(account_3.getId()).get(0));
     }
 }
-
-
-
-
-
-
-
 

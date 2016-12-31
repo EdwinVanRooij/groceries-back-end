@@ -122,6 +122,7 @@ public class AccountManager {
 
     /**
      * Adds friend to account of accountId, if friend is not already a friend of account
+     * Both accounts are friends with each other now.
      *
      * @param accountId account to add friend to
      * @param friend    account to add as new friend
@@ -132,7 +133,10 @@ public class AccountManager {
         if (account.isFriendsWith(friend.getId())) {
             return false;
         }
+        // Add new friend to initiating user
         accountDAO.addFriend(accountId, friend);
+        // Add initiating user to new friend as well
+        accountDAO.addFriend(friend.getId(), account);
         return true;
     }
 
