@@ -19,7 +19,7 @@ public class AccountManagerTest {
     /*
      * at least 6 characters, at max 30
      */
-    private static final String CORRECT_USERNAME_1 = "111111";
+    private static final String CORRECT_USERNAME_1 = "222222";
     private static final String CORRECT_USERNAME_2 = "111111111111111111111111111111";
     private static final String CORRECT_USERNAME_3 = "Hankinson";
     private static final String INCORRECT_USERNAME_1 = "11111";
@@ -230,6 +230,26 @@ public class AccountManagerTest {
         List<Account> accountList_8 = accountManager.searchFriends(searcher.getId(), "searcher");
         assertEquals(expectedSize_4, accountList_7.size());
         assertEquals(expectedSize_4, accountList_8.size());
+        /*
+         * Check if it doesn't match on already friends
+         */
+        int expectedSize_5 = 0;
+        accountManager.addFriend(searcher.getId(), account_1);
+        System.out.println(String.format("Account has %s friends", accountManager.getFriends(searcher.getId())));
+        List<Account> accountList_9 = accountManager.searchFriends(searcher.getId(), account_1.getUsername());
+        assertEquals(expectedSize_5, accountList_9.size());
+        /*
+         * Robustness checks
+         */
+        int expectedSize_6 = 0;
+        accountManager.addFriend(searcher.getId(), account_2);
+        List<Account> accountList_10 = accountManager.searchFriends(searcher.getId(), account_2.getEmail());
+        assertEquals(expectedSize_6, accountList_10.size());
+
+        int expectedSize_7 = 0;
+        accountManager.addFriend(searcher.getId(), account_3);
+        List<Account> accountList_11 = accountManager.searchFriends(searcher.getId(), account_3.getUsername());
+        assertEquals(expectedSize_7, accountList_11.size());
     }
 
     @Test

@@ -15,6 +15,16 @@ public class AccountManager {
     }
 
     /**
+     * Retrieves the user's Account on id
+     *
+     * @return account object
+     */
+    @SuppressWarnings("JavaDoc")
+    public Account getAccount(int id) {
+        return accountDAO.getAccount(id);
+    }
+
+    /**
      * Retrieves the user's Account on a correct username with password combination.
      *
      * @param username globally unique username
@@ -87,11 +97,22 @@ public class AccountManager {
      *                    - query equals email
      *                    - query partially equals username
      *                    - query partially equals email
+     *                    Does not match:
+     *                    - own account
+     *                    - accounts which are already friends
      * @return a list with accounts that match the search query
      */
     public List<Account> searchFriends(int searcherId, String searchQuery) {
+        Account searcher = getAccount(searcherId);
+
         List<Account> matchList = new ArrayList<>();
         for (Account a : accountDAO.getAccounts()) {
+            // If searcher is already friends with, ignore
+            if (searcher.isFriendsWith(a.getId())) {
+                continue;
+            }
+
+            // If account matches the search query
             if (a.matchesFriendSearch(searcherId, searchQuery)) {
                 matchList.add(a);
             }

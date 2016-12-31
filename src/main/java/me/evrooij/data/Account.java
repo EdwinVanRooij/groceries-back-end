@@ -87,6 +87,9 @@ public class Account {
      *                    - query equals email
      *                    - query partially equals username
      *                    - query partially equals email
+     *                    Does not match:
+     *                    - own account
+     *                    - accounts which are already friends
      * @return true on match, false on no match
      */
     public boolean matchesFriendSearch(int searcherId, String searchQuery) {
@@ -95,21 +98,30 @@ public class Account {
             return false;
         }
 
+        // If the account already is a friend, don't match
+        if (isFriendsWith(searcherId)) {
+            return false;
+        }
+
         // Match on query equals username
         if (searchQuery.toLowerCase().matches(getUsername().toLowerCase())) {
+            System.out.println(String.format("Matching true on query %s to username %s", searchQuery, username));
             return true;
         }
         // Match on query equals email
         if (searchQuery.toLowerCase().matches(getEmail().toLowerCase())) {
+            System.out.println(String.format("Matching true on query %s to mail %s", searchQuery, email));
             return true;
         }
 
         // Match on partially equals username
         if (getUsername().toLowerCase().contains(searchQuery.toLowerCase())) {
+            System.out.println(String.format("Matching true on query %s to partial username %s", searchQuery, username));
             return true;
         }
         // Match on partially equals email
         if (getEmail().toLowerCase().contains(searchQuery.toLowerCase())) {
+            System.out.println(String.format("Matching true on query %s to partial mail %s", searchQuery, email));
             return true;
         }
 
