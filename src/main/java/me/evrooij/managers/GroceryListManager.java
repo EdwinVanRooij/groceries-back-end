@@ -1,11 +1,10 @@
 package me.evrooij.managers;
 
 import com.sun.istack.internal.Nullable;
-import me.evrooij.daos.AccountDAO;
 import me.evrooij.daos.GroceryListDAO;
-import me.evrooij.domain.Account;
-import me.evrooij.domain.GroceryList;
-import me.evrooij.domain.Product;
+import me.evrooij.data.Account;
+import me.evrooij.data.GroceryList;
+import me.evrooij.data.Product;
 
 import java.util.List;
 

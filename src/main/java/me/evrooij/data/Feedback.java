@@ -1,4 +1,4 @@
-package me.evrooij.domain;
+package me.evrooij.data;
 
 import com.google.gson.annotations.SerializedName;
 

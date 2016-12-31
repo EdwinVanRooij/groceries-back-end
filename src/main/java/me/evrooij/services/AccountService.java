@@ -1,7 +1,7 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
-import me.evrooij.domain.Account;
+import me.evrooij.data.Account;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.responses.ResponseMessage;
 

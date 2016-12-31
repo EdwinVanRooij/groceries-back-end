@@ -1,7 +1,7 @@
 package me.evrooij.daos;
 
-import me.evrooij.domain.Account;
-import me.evrooij.domain.Feedback;
+import me.evrooij.data.Account;
+import me.evrooij.data.Feedback;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

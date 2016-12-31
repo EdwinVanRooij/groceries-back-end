@@ -1,4 +1,4 @@
-package me.evrooij.domain;
+package me.evrooij.data;
 
 import org.junit.After;
 import org.junit.Before;

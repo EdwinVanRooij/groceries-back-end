@@ -1,9 +1,9 @@
 package me.evrooij.util;
 
-import me.evrooij.domain.Account;
-import me.evrooij.domain.Feedback;
-import me.evrooij.domain.GroceryList;
-import me.evrooij.domain.Product;
+import me.evrooij.data.Account;
+import me.evrooij.data.Feedback;
+import me.evrooij.data.GroceryList;
+import me.evrooij.data.Product;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

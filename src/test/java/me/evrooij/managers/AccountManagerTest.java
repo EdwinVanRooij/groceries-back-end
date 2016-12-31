@@ -1,6 +1,6 @@
 package me.evrooij.managers;
 
-import me.evrooij.domain.Account;
+import me.evrooij.data.Account;
 import me.evrooij.util.DatabaseUtil;
 import org.junit.After;
 import org.junit.Before;

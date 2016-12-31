@@ -1,14 +1,8 @@
 package me.evrooij.managers;
 
-import com.sun.istack.internal.Nullable;
 import me.evrooij.daos.FeedbackDAO;
-import me.evrooij.daos.GroceryListDAO;
-import me.evrooij.domain.Account;
-import me.evrooij.domain.Feedback;
-import me.evrooij.domain.GroceryList;
-import me.evrooij.domain.Product;
-
-import java.util.List;
+import me.evrooij.data.Account;
+import me.evrooij.data.Feedback;
 
 public class FeedbackManager {
 

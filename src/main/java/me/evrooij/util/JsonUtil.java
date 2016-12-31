@@ -1,7 +1,6 @@
 package me.evrooij.util;
 
 import com.google.gson.Gson;
-import me.evrooij.domain.Account;
 import spark.ResponseTransformer;
 
 public class JsonUtil {

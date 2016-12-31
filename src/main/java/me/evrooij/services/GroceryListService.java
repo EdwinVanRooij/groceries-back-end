@@ -1,9 +1,9 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
-import me.evrooij.domain.Account;
-import me.evrooij.domain.GroceryList;
-import me.evrooij.domain.Product;
+import me.evrooij.data.Account;
+import me.evrooij.data.GroceryList;
+import me.evrooij.data.Product;
 import me.evrooij.managers.GroceryListManager;
 import me.evrooij.responses.ResponseMessage;
 

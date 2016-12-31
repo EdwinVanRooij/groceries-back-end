@@ -1,7 +1,7 @@
 package me.evrooij.managers;
 
 import me.evrooij.daos.AccountDAO;
-import me.evrooij.domain.Account;
+import me.evrooij.data.Account;
 
 import java.util.ArrayList;
 import java.util.List;

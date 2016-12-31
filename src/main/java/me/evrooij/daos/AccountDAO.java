@@ -1,6 +1,6 @@
 package me.evrooij.daos;
 
-import me.evrooij.domain.Account;
+import me.evrooij.data.Account;
 import org.hibernate.Query;
 import org.hibernate.Session;
 

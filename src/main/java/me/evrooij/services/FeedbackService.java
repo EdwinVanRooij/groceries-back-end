@@ -1,9 +1,7 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
-import jdk.nashorn.internal.runtime.ECMAException;
-import me.evrooij.domain.Feedback;
-import me.evrooij.domain.GroceryList;
+import me.evrooij.data.Feedback;
 import me.evrooij.managers.FeedbackManager;
 import me.evrooij.responses.ResponseMessage;
 

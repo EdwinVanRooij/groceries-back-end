@@ -1,6 +1,4 @@
-package me.evrooij.domain;
-
-import sun.plugin2.message.GetAppletMessage;
+package me.evrooij.data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
