@@ -8,6 +8,7 @@ import me.evrooij.data.Product;
 import me.evrooij.managers.GroceryListManager;
 import me.evrooij.responses.ResponseMessage;
 import me.evrooij.util.JsonUtil;
+import spark.Spark;
 
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
@@ -17,7 +18,6 @@ public class GroceryListService {
 
     public GroceryListService() {
         listManager = new GroceryListManager();
-
 
         get("/user/:id/lists", (request, response) -> {
             String idString = request.params(":id");

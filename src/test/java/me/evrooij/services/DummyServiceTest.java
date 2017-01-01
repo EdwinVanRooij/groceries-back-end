@@ -3,9 +3,7 @@ package me.evrooij.services;
 import com.google.gson.Gson;
 import me.evrooij.Main;
 import me.evrooij.data.Student;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import spark.Spark;
 
 import static me.evrooij.util.NetworkUtil.request;
@@ -16,7 +14,7 @@ import static org.junit.Assert.*;
  */
 public class DummyServiceTest {
 
-//    @BeforeClass
+    //    @BeforeClass
 //    public static void beforeClass() {
 //        Main.main(null);
 //    }
@@ -25,6 +23,16 @@ public class DummyServiceTest {
 //    public static void afterClass() {
 //        Spark.stop();
 //    }
+
+    @Before
+    public void setUp() throws Exception {
+
+    }
+
+    @After
+    public void tearDown() throws Exception {
+
+    }
 
     @Test
     public void aNewUserShouldBeCreated() throws Exception {

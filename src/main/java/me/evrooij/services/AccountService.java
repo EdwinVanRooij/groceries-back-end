@@ -5,10 +5,6 @@ import me.evrooij.data.Account;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.responses.ResponseMessage;
 import me.evrooij.util.JsonUtil;
-import spark.ExceptionHandler;
-import spark.Filter;
-import spark.Request;
-import spark.Response;
 
 import java.util.List;
 import java.util.Map;
@@ -21,9 +17,6 @@ public class AccountService {
 
     public AccountService() {
         accountManager = new AccountManager();
-
-        // Production env
-//        port(6438);
 
         get("/users/login", (request, response) -> {
             String username = request.queryParams("username");

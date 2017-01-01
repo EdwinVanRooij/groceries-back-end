@@ -5,8 +5,13 @@ import me.evrooij.services.DummyService;
 import me.evrooij.services.FeedbackService;
 import me.evrooij.services.GroceryListService;
 
+import static spark.Spark.port;
+
 public class Main {
     public static void main(String[] args) {
+        // Production env
+//        port(6438);
+
         // Source: https://dzone.com/articles/building-simple-restful-api
         new AccountService();
         new GroceryListService();
