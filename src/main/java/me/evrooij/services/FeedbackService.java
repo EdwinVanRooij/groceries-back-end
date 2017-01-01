@@ -4,11 +4,12 @@ import com.google.gson.Gson;
 import me.evrooij.data.Feedback;
 import me.evrooij.managers.FeedbackManager;
 import me.evrooij.responses.ResponseMessage;
+import me.evrooij.util.JsonUtil;
 
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
 
-public class FeedbackService extends DefaultService {
+public class FeedbackService {
     private FeedbackManager feedbackManager;
 
     public FeedbackService() {
@@ -32,8 +33,12 @@ public class FeedbackService extends DefaultService {
 
         }, json());
 
-        before(this::beforeRouteHandle);
-        after(this::afterRouteHandle);
-        exception(Exception.class, this::handleException);
+        after((request, response) -> response.type("application/json"));
+
+        exception(Exception.class, (exception, request, response) -> {
+            response.status(400);
+            response.type("application/json");
+            response.body(JsonUtil.toJson(new ResponseMessage(exception)));
+        });
     }
 }

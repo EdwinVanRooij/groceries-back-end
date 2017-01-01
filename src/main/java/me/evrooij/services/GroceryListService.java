@@ -7,11 +7,12 @@ import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
 import me.evrooij.managers.GroceryListManager;
 import me.evrooij.responses.ResponseMessage;
+import me.evrooij.util.JsonUtil;
 
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
 
-public class GroceryListService extends DefaultService {
+public class GroceryListService {
     private GroceryListManager listManager;
 
     public GroceryListService() {
@@ -106,8 +107,12 @@ public class GroceryListService extends DefaultService {
             }
         }, json());
 
-        before(this::beforeRouteHandle);
-        after(this::afterRouteHandle);
-        exception(Exception.class, this::handleException);
+        after((request, response) -> response.type("application/json"));
+
+        exception(Exception.class, (exception, request, response) -> {
+            response.status(400);
+            response.type("application/json");
+            response.body(JsonUtil.toJson(new ResponseMessage(exception)));
+        });
     }
 }

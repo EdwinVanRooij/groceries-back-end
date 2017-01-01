@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 /**
  * @author eddy on 5-12-16.
  */
-public class UserServiceTest {
+public class DummyServiceTest {
 
 //    @BeforeClass
 //    public static void beforeClass() {

@@ -4,6 +4,11 @@ import com.google.gson.Gson;
 import me.evrooij.data.Account;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.responses.ResponseMessage;
+import me.evrooij.util.JsonUtil;
+import spark.ExceptionHandler;
+import spark.Filter;
+import spark.Request;
+import spark.Response;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +16,7 @@ import java.util.Map;
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
 
-public class AccountService extends DefaultService {
+public class AccountService {
     private AccountManager accountManager;
 
     public AccountService() {
@@ -79,8 +84,12 @@ public class AccountService extends DefaultService {
             }
         }, json());
 
-        before(this::beforeRouteHandle);
-        after(this::afterRouteHandle);
-        exception(Exception.class, this::handleException);
+        after((request, response) -> response.type("application/json"));
+
+        exception(Exception.class, (exception, request, response) -> {
+            response.status(400);
+            response.type("application/json");
+            response.body(JsonUtil.toJson(new ResponseMessage(exception)));
+        });
     }
 }
