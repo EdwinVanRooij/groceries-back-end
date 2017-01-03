@@ -11,7 +11,7 @@
         <class>me.evrooij.data.Feedback</class>
 
         <properties>
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost/groceries_db"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost/groceries_db?autoReconnect=true"/>
             <property name="hibernate.connection.username" value="groceries_user"/>
             <!--Development env-->
             <property name="hibernate.connection.password" value="QncMX89S83hdn12Sd0"/>
