@@ -91,4 +91,33 @@ public class GroceryListServiceTest {
         assertEquals(expectedCode, actualCode);
     }
 
+    @Test
+    public void testEditProduct() throws Exception {
+        Product product = groceryListManager.addProduct(list.getId(), dummyDataGenerator.generateProduct());
+        String newName = "nameee";
+        int newAmount = 9000;
+        String newComment = "Anothaa!!";
+
+        Response response = NetworkUtil.put(
+                String.format("/lists/%s/products/%s/edit", list.getId(), product.getId()),
+                "{\n" +
+                        String.format("\"id\": %s,\n", product.getId()) +
+                        String.format("\"name\": \"%s\",\n", newName) +
+                        String.format("\"amount\": %s,\n", newAmount) +
+                        String.format("\"owner\": \"%s\",\n", product.getOwner()) +
+                        String.format("\"comment\": \"%s\"\n", newComment) +
+                        "}"
+        );
+
+        // Verify message
+        ResponseMessage expectedMessage = new ResponseMessage("Product updated successfully.");
+        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+        assertEquals(expectedMessage, actualMessage);
+
+        // Verify code
+        int expectedCode = 200;
+        int actualCode = response.code();
+        assertEquals(expectedCode, actualCode);
+    }
+
 }
