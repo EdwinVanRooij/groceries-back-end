@@ -3,7 +3,7 @@ package me.evrooij.services;
 import com.google.gson.Gson;
 import me.evrooij.data.Feedback;
 import me.evrooij.managers.FeedbackManager;
-import me.evrooij.responses.ResponseMessage;
+import me.evrooij.data.ResponseMessage;
 import me.evrooij.util.JsonUtil;
 
 import static me.evrooij.Config.*;

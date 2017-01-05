@@ -1,4 +1,6 @@
-package me.evrooij.responses;
+package me.evrooij.data;
+
+import com.google.gson.annotations.Expose;
 
 /**
  * @author eddy on 6-12-16.
@@ -7,6 +9,7 @@ package me.evrooij.responses;
 public class ResponseMessage {
     // Method is used by json2 converter to show it's message
     @SuppressWarnings("unused")
+    @Expose
     private String message;
 
     public ResponseMessage(String message, String... args) {
@@ -15,5 +18,18 @@ public class ResponseMessage {
 
     public ResponseMessage(Exception e) {
         this.message = e.getMessage();
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        ResponseMessage other = (ResponseMessage) obj;
+        if (other.getMessage().equals(getMessage())) {
+            return true;
+        }
+        return super.equals(obj);
     }
 }

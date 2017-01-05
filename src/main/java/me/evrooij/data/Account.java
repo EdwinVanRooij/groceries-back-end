@@ -136,7 +136,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return String.format("%s (%s), %s, %s", getUsername(), getId(), getEmail(), getPassword());
+        return String.format("%s (%s), %s", getUsername(), getId(), getEmail());
     }
 
     /**

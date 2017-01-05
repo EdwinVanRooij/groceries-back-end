@@ -1,10 +1,9 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
-import me.evrooij.Config;
 import me.evrooij.data.Account;
 import me.evrooij.managers.AccountManager;
-import me.evrooij.responses.ResponseMessage;
+import me.evrooij.data.ResponseMessage;
 import me.evrooij.util.JsonUtil;
 
 import java.util.List;

@@ -130,7 +130,14 @@ public class AccountManager {
      */
     public boolean addFriend(int accountId, Account friend) {
         Account account = accountDAO.getAccount(accountId);
+        if (account == null) {
+            // If account doesn't even exist, return false
+            System.out.println(String.format("Account %s doesn't exist in database", friend.toString()));
+            return false;
+        }
         if (account.isFriendsWith(friend.getId())) {
+            // Already friends, don't add again
+            System.out.println(String.format("Account %s is already friends with account with id %s", friend.toString(), accountId));
             return false;
         }
         // Add new friend to initiating user
