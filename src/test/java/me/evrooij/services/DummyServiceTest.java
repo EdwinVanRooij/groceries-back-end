@@ -37,7 +37,7 @@ public class DummyServiceTest {
         String name = "john";
         int age = 20;
 
-        String json = NetworkUtil.get(String.format("/student?name=%s&age=%s", name, age));
+        String json = NetworkUtil.get(String.format("/student?name=%s&age=%s", name, age)).body().string();
         System.out.println(json);
         Student student = new Gson().fromJson(json, Student.class);
 

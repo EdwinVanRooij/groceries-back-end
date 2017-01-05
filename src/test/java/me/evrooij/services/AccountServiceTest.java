@@ -6,6 +6,7 @@ import me.evrooij.managers.AccountManager;
 import me.evrooij.data.ResponseMessage;
 import me.evrooij.util.DatabaseUtil;
 import me.evrooij.util.NetworkUtil;
+import okhttp3.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -48,13 +49,23 @@ public class AccountServiceTest {
     @Test
     public void testAddFriend() throws Exception {
 //        Adds a new friend to both users, the one initiating the friend request and the one being added.
-        String body = String.format("{\n\"id\": %s,\n\"username\": \"%s\",\n\"email\": \"%s\"\n}", String.valueOf(otherAccount.getId()), otherAccount.getUsername(), otherAccount.getEmail());
+        Response response = NetworkUtil.post(
+                String.format("/accounts/%s/friends/add", thisAccount.getId()),
+                "{\n" +
+                        String.format("\"id\": %s,\n", otherAccount.getId()) +
+                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
+                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
+                        "}"
+        );
+        // Verify message
+        ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
+        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+        assertEquals(expectedMessage, actualMessage);
 
-        String response = NetworkUtil.post(String.format("/accounts/%s/friends/add", thisAccount.getId()), body);
-
-        ResponseMessage expected = new ResponseMessage("Successfully added friend.");
-        ResponseMessage actual = new Gson().fromJson(response, ResponseMessage.class);
-        assertEquals(expected, actual);
+        // Verify code
+        int expectedCode = 200;
+        int actualCode = response.code();
+        assertEquals(expectedCode, actualCode);
 
     }
 }
