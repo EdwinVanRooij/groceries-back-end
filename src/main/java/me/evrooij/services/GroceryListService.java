@@ -101,7 +101,7 @@ public class GroceryListService {
             int productId = Integer.valueOf(request.params(":productId"));
 
             if (listManager.deleteProduct(listId, productId)) {
-                return new ResponseMessage("Product deleted successfully.");
+                return new ResponseMessage("Successfully deleted product.");
             } else {
                 return new ResponseMessage("Error: product was not deleted.");
             }

@@ -3,7 +3,9 @@ package me.evrooij.services;
 import com.google.gson.Gson;
 import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
+import me.evrooij.data.Product;
 import me.evrooij.data.ResponseMessage;
+import me.evrooij.managers.GroceryListManager;
 import me.evrooij.util.DatabaseUtil;
 import me.evrooij.util.DummyDataGenerator;
 import me.evrooij.util.NetworkUtil;
@@ -25,6 +27,8 @@ public class GroceryListServiceTest {
     private Account otherAccount;
     private GroceryList list;
 
+    private GroceryListManager groceryListManager;
+
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         new DatabaseUtil().clean();
@@ -32,6 +36,7 @@ public class GroceryListServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        groceryListManager = new GroceryListManager();
         dummyDataGenerator = new DummyDataGenerator();
 
         thisAccount = dummyDataGenerator.generateAccount();
@@ -46,7 +51,7 @@ public class GroceryListServiceTest {
     }
 
     @Test
-    public void test() throws Exception {
+    public void testAddParticipant() throws Exception {
         Response response = NetworkUtil.post(
                 String.format("/lists/%s/participants/new", list.getId()),
                 "{\n" +
@@ -67,5 +72,23 @@ public class GroceryListServiceTest {
         assertEquals(expectedCode, actualCode);
     }
 
+    @Test
+    public void testDeleteProduct() throws Exception {
+        Product product = groceryListManager.addProduct(list.getId(), dummyDataGenerator.generateProduct());
+
+        Response response = NetworkUtil.delete(
+                String.format("/lists/%s/products/%s", list.getId(), product.getId())
+        );
+
+        // Verify message
+        ResponseMessage expectedMessage = new ResponseMessage("Successfully deleted product.");
+        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+        assertEquals(expectedMessage, actualMessage);
+
+        // Verify code
+        int expectedCode = 200;
+        int actualCode = response.code();
+        assertEquals(expectedCode, actualCode);
+    }
 
 }

@@ -21,6 +21,7 @@ public class DummyDataGenerator {
     private static final int PRODUCT_AMOUNT = 3;
     private static final String PRODUCT_COMMENT = "The red ones1";
 
+    private int productIndex = -1;
     private int groceryListIndex = -1;
     private int accountIndex = -1;
 
@@ -33,6 +34,13 @@ public class DummyDataGenerator {
         listManager = new GroceryListManager();
     }
 
+    /**
+     * Generates a new product
+     */
+    public Product generateProduct() {
+        productIndex++;
+        return new Product(String.format("%s - %s", PRODUCT_NAME, groceryListIndex) , PRODUCT_AMOUNT, PRODUCT_COMMENT, "DummyName");
+    }
 
     /**
      * Generates a new GroceryList
@@ -80,4 +88,5 @@ public class DummyDataGenerator {
             e.printStackTrace();
         }
     }
+
 }
