@@ -2,6 +2,9 @@ package me.evrooij.managers;
 
 import me.evrooij.daos.AccountDAO;
 import me.evrooij.data.Account;
+import me.evrooij.exceptions.InstanceDoesNotExistException;
+import me.evrooij.exceptions.InvalidFriendRequestException;
+import me.evrooij.exceptions.InvalidLoginCredentialsException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +44,7 @@ public class AccountManager {
      *
      * @param username identification name, must be:
      *                 unique relative to all of the other usernames
-     *                 at least 6 characters long
+     *                 at least 2 characters long
      *                 at max 30 characters long
      *                 only alphanumeric characters
      * @param email    e-mail address of the user used for communication purposes, must:
@@ -57,7 +60,7 @@ public class AccountManager {
      */
     @SuppressWarnings("JavaDoc")
     public Account registerAccount(String username, String email, String password) {
-        String regexUsername = "^[a-zA-Z0-9]{6,30}$";
+        String regexUsername = "^[a-zA-Z0-9]{2,30}$";
         String regexEmail = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+\\.?[a-zA-Z0-9]*$";
         String regexPassword = "^.{8,100}$";
 
@@ -76,15 +79,17 @@ public class AccountManager {
      *
      * @param username
      * @param password
-     * @return boolean value indicating the exit status of removal
+     * @return true if account was deleted, false if it wasn't
+     * @throws InvalidLoginCredentialsException on incorrect login credentials
      */
     @SuppressWarnings("JavaDoc")
-    public boolean removeAccount(String username, String password) {
-        if (accountDAO.getAccount(username, password) != null) {
-            accountDAO.deleteAccount(username, password);
-            return true;
+    public boolean removeAccount(String username, String password) throws InvalidLoginCredentialsException {
+        Account account = accountDAO.getAccount(username, password);
+        if (account == null) {
+            throw new InvalidLoginCredentialsException("Invalid login credentials. Please try again.");
         }
-        return false;
+        accountDAO.deleteAccount(username, password);
+        return true;
     }
 
     /**
@@ -127,33 +132,27 @@ public class AccountManager {
      * @param accountId account to add friend to
      * @param friend    account to add as new friend
      * @return value indicating success or failure
+     * @throws InstanceDoesNotExistException if the friend account doesn't exist
+     * @throws InvalidFriendRequestException if they're already friends
      */
-    public boolean addFriend(int accountId, Account friend) {
+    public boolean addFriend(int accountId, Account friend) throws InstanceDoesNotExistException, InvalidFriendRequestException {
         Account account = accountDAO.getAccount(accountId);
         if (account == null) {
             // If account doesn't even exist, return false
             System.out.println(String.format("Account %s doesn't exist in database", friend.toString()));
-            return false;
+            throw new InstanceDoesNotExistException(String.format("Account %s doesn't exist in database", friend.toString()));
         }
         if (account.isFriendsWith(friend.getId())) {
             // Already friends, don't add again
             System.out.println(String.format("Account %s is already friends with account with id %s", friend.toString(), accountId));
-            return false;
+            throw new InvalidFriendRequestException(String.format("Account %s is already friends with account with id %s", friend.toString(), accountId));
         }
+
         // Add new friend to initiating user
         accountDAO.addFriend(accountId, friend);
+
         // Add initiating user to new friend as well
         accountDAO.addFriend(friend.getId(), account);
-
-//        // Some final checks
-//        Account accountFromDb_1 = accountDAO.getAccount(accountId);
-//        Account accountFromDb_2 = accountDAO.getAccount(friend.getId());
-//        if (!accountFromDb_1.isFriendsWith(accountFromDb_2.getId())) {
-//            return false;
-//        }
-//        if (!accountFromDb_2.isFriendsWith(accountFromDb_1.getId())) {
-//            return false;
-//        }
 
         return true;
     }

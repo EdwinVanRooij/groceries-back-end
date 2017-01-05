@@ -1,11 +1,10 @@
 package me.evrooij.managers;
 
 import me.evrooij.data.Account;
+import me.evrooij.exceptions.InvalidFriendRequestException;
+import me.evrooij.exceptions.InvalidLoginCredentialsException;
 import me.evrooij.util.DatabaseUtil;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class AccountManagerTest {
     private static final String CORRECT_USERNAME_1 = "222222";
     private static final String CORRECT_USERNAME_2 = "111111111111111111111111111111";
     private static final String CORRECT_USERNAME_3 = "Hankinson";
-    private static final String INCORRECT_USERNAME_1 = "11111";
+    private static final String INCORRECT_USERNAME_1 = "1";
     private static final String INCORRECT_USERNAME_2 = "1111111111111111111111111111111";
     private static final String INCORRECT_USERNAME_3 = "hank@hankinson.com";
     private static final String CORRECT_EMAIL_1 = "mail@gmail.com";
@@ -140,13 +139,23 @@ public class AccountManagerTest {
          * Check if removing non-existent accounts returns false
          */
         // Try to remove previous account again, which should be deleted now
-        boolean result_2 = accountManager.removeAccount(CORRECT_USERNAME_1, CORRECT_PASS_1);
-        assertFalse(result_2);
+        try {
+            accountManager.removeAccount(CORRECT_USERNAME_1, CORRECT_PASS_1);
+            Assert.fail();
+        } catch (InvalidLoginCredentialsException e) {
+            e.printStackTrace();
+        }
         // Robustness checks
-        boolean result_3 = accountManager.removeAccount(CORRECT_USERNAME_3, CORRECT_PASS_3);
-        assertFalse(result_3);
-        boolean result_4 = accountManager.removeAccount(INCORRECT_USERNAME_2, INCORRECT_PASS_2);
-        assertFalse(result_4);
+        try {
+            accountManager.removeAccount(CORRECT_USERNAME_3, CORRECT_PASS_3);
+            fail();
+        } catch (InvalidLoginCredentialsException e) {
+        }
+        try {
+            accountManager.removeAccount(INCORRECT_USERNAME_2, INCORRECT_PASS_2);
+            fail();
+        } catch (InvalidLoginCredentialsException e) {
+        }
 
         /*
          * Check if removing account with incorrect credentials returns false
@@ -154,15 +163,24 @@ public class AccountManagerTest {
         // Create valid account
         accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
         // Attempt to remove with incorrect credentials
-        boolean result_5 = accountManager.removeAccount(CORRECT_USERNAME_2, INCORRECT_PASS_2);
-        assertFalse(result_5);
+        try {
+            accountManager.removeAccount(CORRECT_USERNAME_2, INCORRECT_PASS_2);
+            fail();
+        } catch (InvalidLoginCredentialsException e) {
+        }
         // Robustness checks
         accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_2);
-        boolean result_6 = accountManager.removeAccount(CORRECT_USERNAME_2, INCORRECT_PASS_2);
-        assertFalse(result_6);
+        try {
+            accountManager.removeAccount(CORRECT_USERNAME_2, INCORRECT_PASS_2);
+            fail();
+        } catch (InvalidLoginCredentialsException e) {
+        }
         accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_3);
-        boolean result_7 = accountManager.removeAccount(INCORRECT_USERNAME_1, CORRECT_PASS_2);
-        assertFalse(result_7);
+        try {
+            accountManager.removeAccount(INCORRECT_USERNAME_1, CORRECT_PASS_2);
+            fail();
+        } catch (InvalidLoginCredentialsException e) {
+        }
     }
 
     @Test
@@ -284,8 +302,11 @@ public class AccountManagerTest {
          * Verify that friend is not added to an account who they're friends with already
          */
         // Account_2 was added as friend to account_1, so check if we can't add account_2 to account_1 again
-        boolean result_3 = accountManager.addFriend(account_1.getId(), account_2);
-        assertFalse(result_3);
+        try {
+            accountManager.addFriend(account_1.getId(), account_2);
+            fail();
+        } catch (InvalidFriendRequestException e) {
+        }
     }
 
     @Test
@@ -313,18 +334,6 @@ public class AccountManagerTest {
          */
         int invalidAccountId = account_1.getId() - 1;
         assertNull(accountManager.getFriends(invalidAccountId));
-
-        /*
-         * Verify that we can get friends who added each other as friend
-         */
-        // Account 1 added friend 1, so do the reverse now
-        accountManager.addFriend(friend_1.getId(), account_1);
-        // Check if friend 1 can still add friend 2, just to be sure
-        accountManager.addFriend(friend_1.getId(), friend_2);
-        // Friend 1 should have 2 friends now
-        int expectedSize_2 = 2;
-        int actualSize_2 = accountManager.getFriends(friend_1.getId()).size();
-        assertEquals(expectedSize_2, actualSize_2);
     }
 
     @Test
