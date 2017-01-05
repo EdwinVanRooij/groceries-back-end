@@ -8,8 +8,8 @@ import me.evrooij.data.Product;
 import me.evrooij.managers.GroceryListManager;
 import me.evrooij.responses.ResponseMessage;
 import me.evrooij.util.JsonUtil;
-import spark.Spark;
 
+import static me.evrooij.Config.*;
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
 
@@ -19,20 +19,20 @@ public class GroceryListService {
     public GroceryListService() {
         listManager = new GroceryListManager();
 
-        get("/user/:id/lists", (request, response) -> {
+        get(PATH_LISTS, (request, response) -> {
             String idString = request.params(":id");
             int id = Integer.valueOf(idString);
 
             return listManager.getListsByAccountId(id);
         }, json());
 
-        get("lists/:id", (request, response) -> {
+        get(PATH_LISTS_GET, (request, response) -> {
             int listId = Integer.valueOf(request.params(":id"));
 
             return listManager.getList(listId);
         }, json());
 
-        post("/lists/new", (request, response) -> {
+        post(PATH_LISTS_NEW, (request, response) -> {
             String json = request.body();
             System.out.println(String.format("Received json from /lists/new in req body: %s", json));
 
@@ -46,7 +46,7 @@ public class GroceryListService {
             return listFromDb;
         }, json());
 
-        put("/lists/:listId/products/:productId/edit", (request, response) -> {
+        put(PATH_LISTS_PRODUCTS_EDIT, (request, response) -> {
             int listId = Integer.valueOf(request.params(":listId"));
             int productId = Integer.valueOf(request.params(":productId"));
             String json = request.body();
@@ -63,7 +63,7 @@ public class GroceryListService {
             }
         }, json());
 
-        post("/lists/:listId/participants/new", (request, response) -> {
+        post(PATH_LISTS_PARTICIPANTS_NEW, (request, response) -> {
             int listId = Integer.valueOf(request.params(":listId"));
 
             String json = request.body();
@@ -79,7 +79,7 @@ public class GroceryListService {
             }
         }, json());
 
-        post("/list/:id/products/new", (request, response) -> {
+        post(PATH_LISTS_PRODUCTS_NEW, (request, response) -> {
             String idString = request.params(":id");
             int id = Integer.valueOf(idString);
 
@@ -96,7 +96,7 @@ public class GroceryListService {
 
         }, json());
 
-        delete("/lists/:listId/products/:productId", (request, response) -> {
+        delete(PATH_LISTS_PRODUCTS_DELETE, (request, response) -> {
             int listId = Integer.valueOf(request.params(":listId"));
             int productId = Integer.valueOf(request.params(":productId"));
 

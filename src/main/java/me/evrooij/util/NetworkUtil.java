@@ -15,7 +15,7 @@ public class NetworkUtil {
     public static String post(String path, String json) throws IOException {
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .url(Config.URL + path)
+                .url(Config.BASE_URL + path)
                 .post(body)
                 .build();
         Response response = client.newCall(request).execute();
@@ -25,7 +25,7 @@ public class NetworkUtil {
     public static String put(String path, String json) throws IOException {
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .url(Config.URL + path)
+                .url(Config.BASE_URL + path)
                 .put(body)
                 .build();
         Response response = client.newCall(request).execute();
@@ -34,7 +34,7 @@ public class NetworkUtil {
 
     public static String delete(String path) throws IOException {
         Request request = new Request.Builder()
-                .url(Config.URL + path)
+                .url(Config.BASE_URL + path)
                 .delete()
                 .build();
         Response response = client.newCall(request).execute();
@@ -44,7 +44,7 @@ public class NetworkUtil {
 
     public static String get(String path) throws IOException {
         Request request = new Request.Builder()
-                .url(Config.URL + path)
+                .url(Config.BASE_URL + path)
                 .build();
         Response response = client.newCall(request).execute();
 

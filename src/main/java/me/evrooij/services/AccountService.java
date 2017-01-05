@@ -1,6 +1,7 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
+import me.evrooij.Config;
 import me.evrooij.data.Account;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.responses.ResponseMessage;
@@ -9,6 +10,7 @@ import me.evrooij.util.JsonUtil;
 import java.util.List;
 import java.util.Map;
 
+import static me.evrooij.Config.*;
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
 
@@ -18,13 +20,13 @@ public class AccountService {
     public AccountService() {
         accountManager = new AccountManager();
 
-        get("/users/login", (request, response) -> {
+        get(PATH_LOGIN, (request, response) -> {
             String username = request.queryParams("username");
             String password = request.queryParams("password");
             return accountManager.getAccount(username, password);
         }, json());
 
-        post("/users/register", (request, response) -> {
+        post(PATH_REGISTER, (request, response) -> {
             String json = request.body();
             System.out.println(String.format("Received json from /users/register in req body: %s", json));
 
@@ -39,7 +41,7 @@ public class AccountService {
             return returning;
         }, json());
 
-        get("/accounts/:accountId/friends/find", (request, response) -> {
+        get(PATH_FIND_FRIEND, (request, response) -> {
             int accountId = Integer.valueOf(request.params(":accountId"));
 
             String searchQuery = request.queryParams("query");
@@ -47,7 +49,7 @@ public class AccountService {
             return accountManager.searchFriends(accountId, searchQuery);
         }, json());
 
-        get("/accounts/:accountId/friends", (request, response) -> {
+        get(PATH_GET_FRIENDS, (request, response) -> {
             int accountId = Integer.valueOf(request.params(":accountId"));
 
             System.out.println(String.format("Searching for friends of account %s", accountId));
@@ -60,7 +62,7 @@ public class AccountService {
             return accountList;
         }, json());
 
-        post("/accounts/:accountId/friends/add", (request, response) -> {
+        post(PATH_ADD_FRIEND, (request, response) -> {
             int accountId = Integer.valueOf(request.params(":accountId"));
 
             String json = request.body();

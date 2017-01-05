@@ -6,6 +6,7 @@ import me.evrooij.managers.FeedbackManager;
 import me.evrooij.responses.ResponseMessage;
 import me.evrooij.util.JsonUtil;
 
+import static me.evrooij.Config.*;
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
 
@@ -15,7 +16,7 @@ public class FeedbackService {
     public FeedbackService() {
         feedbackManager = new FeedbackManager();
 
-        post("/feedback/new", (request, response) -> {
+        post(PATH_FEEDBACK_NEW, (request, response) -> {
             String json = request.body();
             System.out.println(String.format("Received json2 from /bugs/new in req body: %s", json));
 
