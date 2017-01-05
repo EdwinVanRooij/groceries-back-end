@@ -26,6 +26,7 @@ public class FeedbackService {
 
             if (feedbackFromDb != null) {
                 System.out.println(String.format("Feedback inserted: %s", feedbackFromDb.toString()));
+                response.status(400);
                 return new ResponseMessage("Thank you for your feedback!");
             } else {
                 return new ResponseMessage("Could not insert feedback. Please try again later.");

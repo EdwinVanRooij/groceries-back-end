@@ -1,12 +1,10 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
-import me.evrooij.Main;
 import me.evrooij.data.Student;
+import me.evrooij.util.NetworkUtil;
 import org.junit.*;
-import spark.Spark;
 
-import static me.evrooij.util.NetworkUtil.request;
 import static org.junit.Assert.*;
 
 /**
@@ -39,7 +37,8 @@ public class DummyServiceTest {
         String name = "john";
         int age = 20;
 
-        String json = request("GET", String.format("/student?name=%s&age=%s", name, String.valueOf(age)));
+        String json = NetworkUtil.get(String.format("/student?name=%s&age=%s", name, age));
+        System.out.println(json);
         Student student = new Gson().fromJson(json, Student.class);
 
         assertEquals(name, student.getName());

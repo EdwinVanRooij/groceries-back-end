@@ -1,31 +1,54 @@
 package me.evrooij.util;
 
-import spark.utils.IOUtils;
+import me.evrooij.Config;
+import okhttp3.*;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 /**
- * @author eddy on 31-12-16.
+ * @author eddy on 5-1-17.
  */
 public class NetworkUtil {
-    public static final String GET = "GET";
-    public static final String POST = "POST";
-    public static final String PUT = "PUT";
-    public static final String DELETE = "DELETE";
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private static OkHttpClient client = new OkHttpClient();
 
-    public static String request(String method, String path) throws IOException {
-        URL url = new URL("http://localhost:4567" + path);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod(method);
-        connection.setDoOutput(true);
-        connection.connect();
-        return IOUtils.toString(connection.getInputStream());
+    public static String post(String path, String json) throws IOException {
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(Config.URL + path)
+                .post(body)
+                .build();
+        Response response = client.newCall(request).execute();
+        return response.body().string();
     }
 
-    // Look on the internet for a library
-    // withURL
-    // withMethod
-    // .execute()
+    public static String put(String path, String json) throws IOException {
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(Config.URL + path)
+                .put(body)
+                .build();
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }
+
+    public static String delete(String path) throws IOException {
+        Request request = new Request.Builder()
+                .url(Config.URL + path)
+                .delete()
+                .build();
+        Response response = client.newCall(request).execute();
+
+        return response.body().string();
+    }
+
+    public static String get(String path) throws IOException {
+        Request request = new Request.Builder()
+                .url(Config.URL + path)
+                .build();
+        Response response = client.newCall(request).execute();
+
+        return response.body().string();
+    }
+
 }

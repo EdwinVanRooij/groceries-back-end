@@ -10,7 +10,7 @@ import static spark.Spark.port;
 public class Main {
     public static void main(String[] args) {
         // Production env
-//        port(6438);
+        port(Config.PORT);
 
         // Source: https://dzone.com/articles/building-simple-restful-api
         new AccountService();
