@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -56,6 +58,26 @@ public class AccountServiceTest {
         ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
         ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
         assertEquals(expectedMessage, actualMessage);
+
+        // Verify code
+        int expectedCode = 200;
+        int actualCode = response.code();
+        assertEquals(expectedCode, actualCode);
+    }
+
+    @Test
+    public void testFindFriend() throws Exception {
+        // Using '@' as search query, should return one account, since
+        // we added another account in the setup. @ matches with any email.
+        String query = "@";
+
+        Response response = NetworkUtil.get(
+                String.format("/accounts/%s/friends/find?query=%s", thisAccount.getId(), query)
+        );
+
+        // Verify message
+        @SuppressWarnings("unchecked") List<Account> list = new Gson().fromJson(response.body().string(), List.class);
+        assertEquals(1, list.size());
 
         // Verify code
         int expectedCode = 200;

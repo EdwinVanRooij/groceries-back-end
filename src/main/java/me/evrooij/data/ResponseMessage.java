@@ -30,6 +30,7 @@ public class ResponseMessage {
         if (other.getMessage().equals(getMessage())) {
             return true;
         }
+        System.out.println(String.format("This: %s\nOther: %s", getMessage(), other.getMessage()));
         return super.equals(obj);
     }
 }
