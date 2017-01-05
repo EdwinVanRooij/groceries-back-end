@@ -6,6 +6,7 @@ import me.evrooij.exceptions.InvalidLoginCredentialsException;
 import me.evrooij.util.DatabaseUtil;
 import org.junit.*;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -92,36 +93,72 @@ public class AccountManagerTest {
          */
 
         // Check incorrect username
-        Account incorrectAccountUsername1 = accountManager.registerAccount(INCORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
-        assertNull(incorrectAccountUsername1);
-        Account incorrectAccountUsername2 = accountManager.registerAccount(INCORRECT_USERNAME_2, CORRECT_EMAIL_1, CORRECT_PASS_1);
-        assertNull(incorrectAccountUsername2);
-        Account incorrectAccountUsername3 = accountManager.registerAccount(INCORRECT_USERNAME_3, CORRECT_EMAIL_1, CORRECT_PASS_1);
-        assertNull(incorrectAccountUsername3);
+        try {
+            accountManager.registerAccount(INCORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
+        try {
+            accountManager.registerAccount(INCORRECT_USERNAME_2, CORRECT_EMAIL_1, CORRECT_PASS_1);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
+        try {
+            accountManager.registerAccount(INCORRECT_USERNAME_3, CORRECT_EMAIL_1, CORRECT_PASS_1);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
 
         // Check incorrect email
-        Account incorrectAccountEmail1 = accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_1, CORRECT_PASS_1);
-        assertNull(incorrectAccountEmail1);
-        Account incorrectAccountEmail2 = accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_2, CORRECT_PASS_1);
-        assertNull(incorrectAccountEmail2);
-        Account incorrectAccountEmail3 = accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_3, CORRECT_PASS_1);
-        assertNull(incorrectAccountEmail3);
+        try {
+            accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_1, CORRECT_PASS_1);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
+        try {
+            accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_2, CORRECT_PASS_1);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
+        try {
+            accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_3, CORRECT_PASS_1);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
 
         // Check incorrect pass
-        Account incorrectAccountPass = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_3, INCORRECT_PASS_1);
-        assertNull(incorrectAccountPass);
-        Account incorrectAccountPass2 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_3, INCORRECT_PASS_2);
-        assertNull(incorrectAccountPass2);
-        Account incorrectAccountPass3 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_3, INCORRECT_PASS_3);
-        assertNull(incorrectAccountPass3);
+        try {
+            accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_3, INCORRECT_PASS_1);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
+        try {
+            accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_3, INCORRECT_PASS_2);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
+        try {
+            accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_3, INCORRECT_PASS_3);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
 
         // Now let's get batshit crazy
-        Account incorrectAccountEverything = accountManager.registerAccount(INCORRECT_USERNAME_1, INCORRECT_EMAIL_1, INCORRECT_PASS_1);
-        assertNull(incorrectAccountEverything);
-        Account incorrectAccountEverything2 = accountManager.registerAccount(INCORRECT_USERNAME_2, INCORRECT_EMAIL_2, INCORRECT_PASS_2);
-        assertNull(incorrectAccountEverything2);
-        Account incorrectAccountEverything3 = accountManager.registerAccount(INCORRECT_USERNAME_3, INCORRECT_EMAIL_3, INCORRECT_PASS_3);
-        assertNull(incorrectAccountEverything3);
+        try {
+            accountManager.registerAccount(INCORRECT_USERNAME_1, INCORRECT_EMAIL_1, INCORRECT_PASS_1);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
+        try {
+            accountManager.registerAccount(INCORRECT_USERNAME_2, INCORRECT_EMAIL_2, INCORRECT_PASS_2);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
+        try {
+            accountManager.registerAccount(INCORRECT_USERNAME_3, INCORRECT_EMAIL_3, INCORRECT_PASS_3);
+            fail();
+        } catch (InvalidParameterException e) {
+        }
     }
 
     @Test

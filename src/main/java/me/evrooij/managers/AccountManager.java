@@ -6,6 +6,7 @@ import me.evrooij.exceptions.InstanceDoesNotExistException;
 import me.evrooij.exceptions.InvalidFriendRequestException;
 import me.evrooij.exceptions.InvalidLoginCredentialsException;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,10 +66,21 @@ public class AccountManager {
         String regexPassword = "^.{8,100}$";
 
         // Match regular expressions with the user input
-        if (!username.matches(regexUsername) || !email.matches(regexEmail) || !password.matches(regexPassword)) {
-            // One of the parameters was invalid
-            return null;
+        if (!username.matches(regexUsername)) {
+            // Invalid username
+            throw new InvalidParameterException("Username must contain only 2 to 30 alphanumeric characters.");
         }
+
+        if (!email.matches(regexEmail)) {
+            // Invalid email
+            throw new InvalidParameterException("Please enter a valid email address.");
+        }
+
+        if (!password.matches(regexPassword)) {
+            // Invalid password
+            throw new InvalidParameterException("Password must be at least 8 characters.");
+        }
+
         return accountDAO.register(username, email, password);
     }
 
@@ -138,10 +150,17 @@ public class AccountManager {
     public boolean addFriend(int accountId, Account friend) throws InstanceDoesNotExistException, InvalidFriendRequestException {
         Account account = accountDAO.getAccount(accountId);
         if (account == null) {
-            // If account doesn't even exist, return false
-            System.out.println(String.format("Account %s doesn't exist in database", friend.toString()));
-            throw new InstanceDoesNotExistException(String.format("Account %s doesn't exist in database", friend.toString()));
+            // If account doesn't even exist, throw exception
+            throw new InstanceDoesNotExistException(String.format("Account with id %s doesn't exist in database", accountId));
         }
+
+        Account friendAccount = accountDAO.getAccount(friend.getId());
+        if (friendAccount == null) {
+            // If friend doesn't exist, throw exception
+            throw new InstanceDoesNotExistException(String.format("Friend account %s does not exist in database", friend.toString()));
+        }
+
+
         if (account.isFriendsWith(friend.getId())) {
             // Already friends, don't add again
             System.out.println(String.format("Account %s is already friends with account with id %s", friend.toString(), accountId));

@@ -44,28 +44,6 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void testAddFriend() throws Exception {
-//        Response response = NetworkUtil.post(
-//                String.format("/accounts/%s/friends/add", thisAccount.getId()),
-//                "{\n" +
-//                        String.format("\"id\": %s,\n", otherAccount.getId()) +
-//                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
-//                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
-//                        "}"
-//        );
-//
-//        // Verify message
-//        ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
-//        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
-//        assertEquals(expectedMessage, actualMessage);
-//
-//        // Verify code
-//        int expectedCode = 200;
-//        int actualCode = response.code();
-//        assertEquals(expectedCode, actualCode);
-    }
-
-    @Test
     public void testFindFriend() throws Exception {
         // Using '@' as search query, should return one account, since
         // we added another account in the setup. @ matches with any email.
@@ -78,6 +56,29 @@ public class AccountServiceTest {
         // Verify message
         @SuppressWarnings("unchecked") List<Account> list = new Gson().fromJson(response.body().string(), List.class);
         assertEquals(1, list.size());
+
+        // Verify code
+        int expectedCode = 200;
+        int actualCode = response.code();
+        assertEquals(expectedCode, actualCode);
+    }
+
+    @Test
+    public void testAddFriend() throws Exception {
+        Response response = NetworkUtil.post(
+//                /accounts/2159/friends/add
+                String.format("/accounts/%s/friends/add", thisAccount.getId()),
+                "{\n" +
+                        String.format("\"id\": %s,\n", otherAccount.getId()) +
+                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
+                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
+                        "}"
+        );
+
+        // Verify message
+        ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
+        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+        assertEquals(expectedMessage, actualMessage);
 
         // Verify code
         int expectedCode = 200;
