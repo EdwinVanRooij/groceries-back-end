@@ -133,12 +133,6 @@ public class AccountDAOTest {
 
     @Test
     public void deleteAccount() throws Exception {
-        /**
-         * Removes an account from the database
-         *
-         * @param username
-         * @param password
-         */
         // Create an account
         accountDAO.register(USERNAME_1, EMAIL_1, PASSWORD_1);
         // Remove it

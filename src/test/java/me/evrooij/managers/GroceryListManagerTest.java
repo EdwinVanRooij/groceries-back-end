@@ -3,6 +3,7 @@ package me.evrooij.managers;
 import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
+import me.evrooij.exceptions.InvalidParticipantException;
 import me.evrooij.util.DatabaseUtil;
 import me.evrooij.util.DummyDataGenerator;
 import org.junit.After;
@@ -10,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,17 +132,11 @@ public class GroceryListManagerTest {
         /*
          * Verify a product is not added to the list if the list doesn't exist
          */
-        // Make sure we get use a list id that doesn't exist
-        GroceryList nonExistentList;
-        int index = 1000;
-        do {
-            index++;
-            nonExistentList = groceryListManager.getList(index);
-        } while (nonExistentList != null);
-        // List is null when it exits this loop, get the id (index) used to keep the list null
-
-        Product productFromList_2 = groceryListManager.addProduct(index, product);
-        assertNull(productFromList_2);
+        try {
+            groceryListManager.addProduct(-1, product);
+            fail();
+        } catch (NullPointerException e) {
+        }
     }
 
     @Test
@@ -163,8 +159,11 @@ public class GroceryListManagerTest {
         /*
          * Verify the result is false if the product to delete doesn't exist
          */
-        boolean result_2 = groceryListManager.deleteProduct(list.getId(), productFromList.getId());
-        assertFalse(result_2);
+        try {
+            groceryListManager.deleteProduct(list.getId(), productFromList.getId());
+            fail();
+        } catch (NullPointerException e) {
+        }
     }
 
     @Test
@@ -184,14 +183,20 @@ public class GroceryListManagerTest {
         /*
          * Check if owner is not being added to the new list
          */
-        boolean result_2 = groceryListManager.addParticipant(list.getId(), account);
-        assertFalse(result_2);
+        try {
+            groceryListManager.addParticipant(list.getId(), account);
+            fail();
+        } catch (InvalidParticipantException e) {
+        }
 
         /*
          * Check if we can't add newParticipant again
          */
-        boolean result_3 = groceryListManager.addParticipant(list.getId(), newParticipant);
-        assertFalse(result_3);
+        try {
+            groceryListManager.addParticipant(list.getId(), newParticipant);
+            fail();
+        } catch (InvalidParticipantException e) {
+        }
     }
 
     @Test
@@ -207,14 +212,18 @@ public class GroceryListManagerTest {
         /*
          * Check if product isn't updated on invalid listId
          */
-        assertFalse(groceryListManager.updateProduct(
-                list.getId() - 1,
-                product.getId(),
-                product));
+        try {
+            groceryListManager.updateProduct(list.getId() - 1, product.getId(), product);
+            fail();
+        } catch (NullPointerException e) {
+        }
         /*
          * Check if product isn't updated on invalid productId
          */
-        assertFalse(groceryListManager.updateProduct(list.getId(), product.getId() - 1, product));
+        try {
+            groceryListManager.updateProduct(list.getId(), product.getId() - 1, product);
+        } catch (NullPointerException e) {
+        }
         /*
          * Check if product is updated on valid listId and productId
          */

@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.security.InvalidParameterException;
+
 import static org.junit.Assert.*;
 
 /**
@@ -68,9 +70,13 @@ public class FeedbackManagerTest {
          */
         String message_empty = "";
         Feedback.Type type = Feedback.Type.Bug;
-        Feedback feedback = feedbackManager.reportFeedback(message_empty, type, thisAccount);
         // Check if item was created
-        assertNull(feedback);
+        try {
+            feedbackManager.reportFeedback(message_empty, type, thisAccount);
+            fail();
+        } catch (InvalidParameterException e) {
+
+        }
     }
 
 }

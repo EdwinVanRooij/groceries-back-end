@@ -5,12 +5,16 @@ import me.evrooij.daos.GroceryListDAO;
 import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
+import me.evrooij.exceptions.InvalidParticipantException;
 
 import java.util.List;
 
 public class GroceryListManager {
 
     private GroceryListDAO groceryListDAO;
+
+    private String EXCEPTION_LIST_DOES_NOT_EXIST = "List with id %s does not exist.";
+    private String EXCEPTION_PRODUCT_DOES_NOT_EXIST = "Product with id %s does not exist.";
 
     public GroceryListManager() {
         groceryListDAO = new GroceryListDAO();
@@ -53,6 +57,10 @@ public class GroceryListManager {
      */
     @SuppressWarnings("JavaDoc")
     public GroceryList getList(int listId) {
+        GroceryList list = groceryListDAO.getList(listId);
+        if (list == null) {
+            throw new NullPointerException(String.format(EXCEPTION_LIST_DOES_NOT_EXIST, listId));
+        }
         return groceryListDAO.getList(listId);
     }
 
@@ -63,10 +71,9 @@ public class GroceryListManager {
      * @param product product to add
      * @return the product if operation was successful, null if it wasn't
      */
-    public Product addProduct(int listId, Product product) throws Exception {
+    public Product addProduct(int listId, Product product) {
         if (groceryListDAO.getList(listId) == null) {
-//            throw new Exception(String.format("List with id %s does not exist!", listId));
-            return null;
+            throw new NullPointerException(String.format(EXCEPTION_LIST_DOES_NOT_EXIST, listId));
         }
         return groceryListDAO.addProduct(listId, product);
     }
@@ -81,13 +88,11 @@ public class GroceryListManager {
     public boolean deleteProduct(int listId, int productId) {
         GroceryList list = groceryListDAO.getList(listId);
         if (list == null) {
-//            throw new Exception(String.format("List with id %s does not exist!", listId));
-            return false;
+            throw new NullPointerException(String.format(EXCEPTION_LIST_DOES_NOT_EXIST, listId));
         }
         Product product = list.getProduct(productId);
         if (product == null) {
-//            throw new Exception(String.format("Product with id %s does not exist!", productId));
-            return false;
+            throw new NullPointerException(String.format(EXCEPTION_PRODUCT_DOES_NOT_EXIST, productId));
         }
         groceryListDAO.deleteProduct(listId, productId);
         return true;
@@ -103,19 +108,19 @@ public class GroceryListManager {
      * @param newParticipant new participant to join the list
      * @return success if succeeded, false if not
      */
-    public boolean addParticipant(int listId, Account newParticipant) {
+    public boolean addParticipant(int listId, Account newParticipant) throws InvalidParticipantException {
         GroceryList list = groceryListDAO.getList(listId);
         if (list == null) {
             // List doesn't exist, return false
-            return false;
+            throw new NullPointerException(String.format(EXCEPTION_LIST_DOES_NOT_EXIST, listId));
         }
         if (list.getOwner().equals(newParticipant)) {
             // New participant is the owner, return false
-            return false;
+            throw new InvalidParticipantException("New participant must not be the owner.");
         }
         if (list.hasParticipant(newParticipant)) {
             // Trying to add a user who's already in the list, return false
-            return false;
+            throw new InvalidParticipantException("New participant is already in the list");
         }
         list.addParticipant(newParticipant);
         groceryListDAO.update(list);
@@ -134,11 +139,11 @@ public class GroceryListManager {
         GroceryList list = groceryListDAO.getList(listId);
         if (list == null) {
             // There is no such list, return false
-            return false;
+            throw new NullPointerException(String.format(EXCEPTION_LIST_DOES_NOT_EXIST, listId));
         }
         if (list.getProduct(productId) == null) {
             // There is no such product in this list, return false
-            return false;
+            throw new NullPointerException(String.format(EXCEPTION_PRODUCT_DOES_NOT_EXIST, productId));
         }
         // Update product, return true
         list.updateProduct(productId, product.getName(), product.getAmount(), product.getComment(), product.getOwner());

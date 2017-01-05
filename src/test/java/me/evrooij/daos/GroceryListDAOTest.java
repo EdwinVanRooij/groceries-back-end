@@ -241,12 +241,6 @@ public class GroceryListDAOTest {
     @SuppressWarnings("Duplicates")
     @Test
     public void deleteProduct() throws Exception {
-        /**
-         * Deletes a product from a list
-         *
-         * @param listId    list to delete product from
-         * @param productId product to delete
-         */
         /*
          * Verify the created product was deleted
          */
