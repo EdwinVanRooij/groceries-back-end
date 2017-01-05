@@ -73,7 +73,7 @@ public class GroceryListService {
             System.out.println(String.format("Retrieved new participant: %s", newParticipant.toString()));
 
             if (listManager.addParticipant(listId, newParticipant)) {
-                return new ResponseMessage("Participant added successfully.");
+                return new ResponseMessage("Successfully added new participant.");
             } else {
                 return new ResponseMessage("Error: participant was not added.");
             }

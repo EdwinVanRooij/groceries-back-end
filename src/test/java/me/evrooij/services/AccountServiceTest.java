@@ -2,7 +2,6 @@ package me.evrooij.services;
 
 import com.google.gson.Gson;
 import me.evrooij.data.Account;
-import me.evrooij.managers.AccountManager;
 import me.evrooij.data.ResponseMessage;
 import me.evrooij.util.DatabaseUtil;
 import me.evrooij.util.DummyDataGenerator;
@@ -13,7 +12,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author eddy on 1-1-17.

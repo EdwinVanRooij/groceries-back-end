@@ -48,15 +48,6 @@ public class GroceryListManagerTest {
 
     @Test
     public void createGroceryListWithInitialParticipants() throws Exception {
-        /**
-         * Creates a GroceryList
-         *
-         * @param name         name of the list
-         * @param owner        initial creator of the list
-         * @param participants list of accounts participating in this list
-         *                     if left null or length 0, don't use it
-         * @return
-         */
         /*
          * Check if no participants are added on 0 length participants addition
          */

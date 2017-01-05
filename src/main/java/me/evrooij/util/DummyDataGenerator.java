@@ -15,12 +15,13 @@ public class DummyDataGenerator {
     private static final String[] CORRECT_EMAILS = new String[]{"mailOne@gmail.com", "mailTwo@gmail.com", "mailThree@gmail.com", "mailAfterThree@gmail.com"};
     private static final String CORRECT_PASS = "password";
 
-    private static final String LIST_NAME = "My List";
+    private static final String[] GROCERY_LIST_NAMES = new String[]{"MyList 1", "MyList 2", "MyList 3", "MyList 4"};
 
     private static final String PRODUCT_NAME = "Apples1";
     private static final int PRODUCT_AMOUNT = 3;
     private static final String PRODUCT_COMMENT = "The red ones1";
 
+    private int groceryListIndex = -1;
     private int accountIndex = -1;
 
     private AccountManager accountManager;
@@ -32,14 +33,27 @@ public class DummyDataGenerator {
         listManager = new GroceryListManager();
     }
 
+
+    /**
+     * Generates a new GroceryList
+     *
+     * @param owner owner of the list
+     * @return a new GroceryList
+     */
+    public GroceryList generateList(Account owner) {
+        groceryListIndex++;
+        return listManager.createGroceryList(GROCERY_LIST_NAMES[groceryListIndex], owner, null);
+    }
+
+    /**
+     * Generates a new Account, max 4 accounts
+     */
     public Account generateAccount() {
         accountIndex++;
         return accountManager.registerAccount(CORRECT_USERNAMES[accountIndex], CORRECT_EMAILS[accountIndex], CORRECT_PASS);
     }
 
     public void generate() throws Exception {
-        System.out.println("Generating dummy data...");
-
         Account account_1 = generateAccount();
         Account account_2 = generateAccount();
         Account account_3 = generateAccount();
@@ -48,7 +62,7 @@ public class DummyDataGenerator {
         accountManager.addFriend(account_1.getId(), account_2);
         accountManager.addFriend(account_1.getId(), account_3);
 
-        GroceryList list = listManager.createGroceryList(LIST_NAME, account_1, null);
+        GroceryList list = generateList(account_1);
 
         listManager.addParticipant(list.getId(), account_2);
         listManager.addParticipant(list.getId(), account_3);
