@@ -3,6 +3,7 @@ package me.evrooij.managers;
 import me.evrooij.data.Account;
 import me.evrooij.data.Feedback;
 import me.evrooij.util.DatabaseUtil;
+import me.evrooij.util.DummyDataGenerator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -15,12 +16,8 @@ import static org.junit.Assert.*;
  */
 public class FeedbackManagerTest {
 
-    private AccountManager accountManager;
+    private DummyDataGenerator dummyDataGenerator;
     private FeedbackManager feedbackManager;
-
-    private static final String USERNAME = "111111";
-    private static final String EMAIL = "mail@gmail.com";
-    private static final String PASS = "mypass1332";
 
     private Account thisAccount;
 
@@ -31,10 +28,10 @@ public class FeedbackManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        accountManager = new AccountManager();
+        dummyDataGenerator = new DummyDataGenerator();
         feedbackManager = new FeedbackManager();
 
-        thisAccount = accountManager.registerAccount(USERNAME, EMAIL, PASS);
+        thisAccount = dummyDataGenerator.generateAccount();
     }
 
     @After

@@ -3,9 +3,11 @@ package me.evrooij.services;
 import me.evrooij.data.Account;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.util.DatabaseUtil;
+import me.evrooij.util.DummyDataGenerator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
@@ -14,13 +16,7 @@ import static org.junit.Assert.*;
  */
 public class GroceryListServiceTest {
 
-    private static final String USERNAME_1 = "111111";
-    private static final String USERNAME_2 = "222222";
-    private static final String EMAIL_1 = "mail1@gmail.com";
-    private static final String EMAIL_2 = "mail2@gmail.com";
-    private static final String PASSWORD = "thisi4sapassword";
-
-    private AccountManager accountManager;
+    private DummyDataGenerator dummyDataGenerator;
     private Account thisAccount;
     private Account otherAccount;
 
@@ -31,9 +27,9 @@ public class GroceryListServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        accountManager = new AccountManager();
-        thisAccount = accountManager.registerAccount(USERNAME_1, EMAIL_1, PASSWORD);
-        otherAccount = accountManager.registerAccount(USERNAME_2, EMAIL_2, PASSWORD);
+        dummyDataGenerator = new DummyDataGenerator();
+        thisAccount = dummyDataGenerator.generateAccount();
+        otherAccount = dummyDataGenerator.generateAccount();
     }
 
     @After
@@ -41,6 +37,10 @@ public class GroceryListServiceTest {
         new DatabaseUtil().clean();
     }
 
+    @Test
+    public void test() throws Exception {
+
+    }
 
 
 }

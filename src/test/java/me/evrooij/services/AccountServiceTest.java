@@ -5,6 +5,7 @@ import me.evrooij.data.Account;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.data.ResponseMessage;
 import me.evrooij.util.DatabaseUtil;
+import me.evrooij.util.DummyDataGenerator;
 import me.evrooij.util.NetworkUtil;
 import okhttp3.Response;
 import org.junit.After;
@@ -19,13 +20,7 @@ import static org.junit.Assert.*;
  */
 public class AccountServiceTest {
 
-    private static final String USERNAME_1 = "111111";
-    private static final String USERNAME_2 = "222222";
-    private static final String EMAIL_1 = "mail1@gmail.com";
-    private static final String EMAIL_2 = "mail2@gmail.com";
-    private static final String PASSWORD = "thisi4sapassword";
-
-    private AccountManager accountManager;
+    private DummyDataGenerator dummyDataGenerator;
     private Account thisAccount;
     private Account otherAccount;
 
@@ -36,9 +31,10 @@ public class AccountServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        accountManager = new AccountManager();
-        thisAccount = accountManager.registerAccount(USERNAME_1, EMAIL_1, PASSWORD);
-        otherAccount = accountManager.registerAccount(USERNAME_2, EMAIL_2, PASSWORD);
+        dummyDataGenerator = new DummyDataGenerator();
+
+        thisAccount = dummyDataGenerator.generateAccount();
+        otherAccount = dummyDataGenerator.generateAccount();
     }
 
     @After

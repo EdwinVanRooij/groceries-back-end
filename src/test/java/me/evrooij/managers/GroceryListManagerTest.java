@@ -4,6 +4,7 @@ import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
 import me.evrooij.util.DatabaseUtil;
+import me.evrooij.util.DummyDataGenerator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -23,17 +24,9 @@ public class GroceryListManagerTest {
     private static final String NAME_2 = "This is another list";
     private static final String NAME_3 = "List";
 
-    private static final String USERNAME_1 = "111111";
-    private static final String USERNAME_2 = "222222";
-    private static final String USERNAME_3 = "333333";
-    private static final String EMAIL_1 = "mail1@gmail.com";
-    private static final String EMAIL_2 = "mail2@gmail.com";
-    private static final String EMAIL_3 = "mail3@gmail.com";
-    private static final String PASSWORD = "thisi4sapassword";
-
     private Account account;
     private GroceryListManager groceryListManager;
-    private AccountManager accountManager;
+    private DummyDataGenerator dummyDataGenerator;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -43,8 +36,9 @@ public class GroceryListManagerTest {
     @Before
     public void setUp() throws Exception {
         groceryListManager = new GroceryListManager();
-        accountManager = new AccountManager();
-        account = accountManager.registerAccount(USERNAME_1, EMAIL_1, PASSWORD);
+        dummyDataGenerator = new DummyDataGenerator();
+
+        account = dummyDataGenerator.generateAccount();
     }
 
     @After
@@ -73,8 +67,8 @@ public class GroceryListManagerTest {
         /*
          * Check if all participants are added on initial participants addition
          */
-        participants_1.add(accountManager.registerAccount(USERNAME_2, EMAIL_2, PASSWORD));
-        participants_1.add(accountManager.registerAccount(USERNAME_3, EMAIL_3, PASSWORD));
+        participants_1.add(dummyDataGenerator.generateAccount());
+        participants_1.add(dummyDataGenerator.generateAccount());
         GroceryList list_2 = groceryListManager.createGroceryList(NAME_2, account, participants_1);
         int expectedSize_2 = 2;
         assertEquals(expectedSize_2, list_2.getAmountOfParticipants());
@@ -188,7 +182,7 @@ public class GroceryListManagerTest {
          * Check if participant was added to list with good listId
          */
         GroceryList list = groceryListManager.createGroceryList(NAME_1, account, null);
-        Account newParticipant = accountManager.registerAccount(USERNAME_2, EMAIL_2, PASSWORD);
+        Account newParticipant = dummyDataGenerator.generateAccount();
         boolean result_1 = groceryListManager.addParticipant(list.getId(), newParticipant);
         // Verify if this worked at all
         assertTrue(result_1);
