@@ -3,6 +3,7 @@ package me.evrooij.services;
 import com.google.gson.Gson;
 import me.evrooij.data.Account;
 import me.evrooij.data.ResponseMessage;
+import me.evrooij.managers.AccountManager;
 import me.evrooij.util.DatabaseUtil;
 import me.evrooij.util.DummyDataGenerator;
 import me.evrooij.util.NetworkUtil;
@@ -21,9 +22,15 @@ import static org.junit.Assert.assertEquals;
  */
 public class AccountServiceTest {
 
-    private DummyDataGenerator dummyDataGenerator;
+    //    private DummyDataGenerator dummyDataGenerator;
+    private static final String[] CORRECT_USERNAMES = new String[]{"UsernameOne", "UsernameTwo", "UsernameThree", "UserAfterThree"};
+    private static final String[] CORRECT_EMAILS = new String[]{"mailOne@gmail.com", "mailTwo@gmail.com", "mailThree@gmail.com", "mailAfterThree@gmail.com"};
+    private static final String CORRECT_PASS = "password";
+
     private Account thisAccount;
     private Account otherAccount;
+
+    private AccountManager accountManager;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -32,10 +39,12 @@ public class AccountServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        dummyDataGenerator = new DummyDataGenerator();
-
-        thisAccount = dummyDataGenerator.generateAccount();
-        otherAccount = dummyDataGenerator.generateAccount();
+//        dummyDataGenerator = new DummyDataGenerator();
+//        thisAccount = dummyDataGenerator.generateAccount();
+//        otherAccount = dummyDataGenerator.generateAccount();
+        accountManager = new AccountManager();
+        thisAccount = new AccountManager().registerAccount(CORRECT_USERNAMES[0], CORRECT_EMAILS[0], CORRECT_PASS);
+        otherAccount = new AccountManager().registerAccount(CORRECT_USERNAMES[1], CORRECT_EMAILS[1], CORRECT_PASS);
     }
 
     @After
@@ -66,7 +75,14 @@ public class AccountServiceTest {
     @Test
     public void testAddFriend() throws Exception {
         Response response = NetworkUtil.post(
-//                /accounts/2159/friends/add
+                String.format("/accounts/%s/friends/add", thisAccount.getId()),
+                "{\n" +
+                        String.format("\"id\": %s,\n", otherAccount.getId()) +
+                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
+                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
+                        "}"
+        );
+        response = NetworkUtil.post(
                 String.format("/accounts/%s/friends/add", thisAccount.getId()),
                 "{\n" +
                         String.format("\"id\": %s,\n", otherAccount.getId()) +

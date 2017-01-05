@@ -39,7 +39,7 @@ public class DummyDataGenerator {
      */
     public Product generateProduct() {
         productIndex++;
-        return new Product(String.format("%s - %s", PRODUCT_NAME, groceryListIndex) , PRODUCT_AMOUNT, PRODUCT_COMMENT, "DummyName");
+        return new Product(String.format("%s - %s", PRODUCT_NAME, productIndex), PRODUCT_AMOUNT, PRODUCT_COMMENT, "DummyName");
     }
 
     /**
