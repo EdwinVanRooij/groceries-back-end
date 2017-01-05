@@ -48,7 +48,6 @@ public class AccountServiceTest {
 
     @Test
     public void testAddFriend() throws Exception {
-//        Adds a new friend to both users, the one initiating the friend request and the one being added.
         Response response = NetworkUtil.post(
                 String.format("/accounts/%s/friends/add", thisAccount.getId()),
                 "{\n" +
@@ -57,6 +56,7 @@ public class AccountServiceTest {
                         String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
                         "}"
         );
+
         // Verify message
         ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
         ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
@@ -66,6 +66,5 @@ public class AccountServiceTest {
         int expectedCode = 200;
         int actualCode = response.code();
         assertEquals(expectedCode, actualCode);
-
     }
 }

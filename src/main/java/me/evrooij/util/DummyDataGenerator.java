@@ -11,27 +11,17 @@ import me.evrooij.managers.GroceryListManager;
  */
 public class DummyDataGenerator {
 
-    private static final String CORRECT_USERNAME_1 = "UsernameOne";
-    private static final String CORRECT_USERNAME_2 = "UsernameTwo";
-    private static final String CORRECT_USERNAME_3 = "UsernameThree";
-    private static final String CORRECT_USERNAME_4 = "UserAfterThree";
-    private static final String CORRECT_EMAIL_1 = "mailOne@gmail.com";
-    private static final String CORRECT_EMAIL_2 = "mailTwo@gmail.com";
-    private static final String CORRECT_EMAIL_3 = "mailThree@gmail.com";
-    private static final String CORRECT_EMAIL_4 = "mailAfterThree@gmail.com";
-    private static final String CORRECT_PASS_1 = "password";
+    private static final String[] CORRECT_USERNAMES = new String[]{"UsernameOne", "UsernameTwo", "UsernameThree", "UserAfterThree"};
+    private static final String[] CORRECT_EMAILS = new String[]{"mailOne@gmail.com", "mailTwo@gmail.com", "mailThree@gmail.com", "mailAfterThree@gmail.com"};
+    private static final String CORRECT_PASS = "password";
 
-    private static final String NAME_1 = "My List";
+    private static final String LIST_NAME = "My List";
 
-    private static final String PRODUCT_NAME_1 = "Apples1";
-    private static final String PRODUCT_NAME_2 = "Apples2";
-    private static final String PRODUCT_NAME_3 = "Apples3";
-    private static final int PRODUCT_AMOUNT_1 = 3;
-    private static final int PRODUCT_AMOUNT_2 = 2;
-    private static final int PRODUCT_AMOUNT_3 = 5;
-    private static final String PRODUCT_COMMENT_1 = "The red ones1";
-    private static final String PRODUCT_COMMENT_2 = "The red ones2";
-    private static final String PRODUCT_COMMENT_3 = "The red ones3";
+    private static final String PRODUCT_NAME = "Apples1";
+    private static final int PRODUCT_AMOUNT = 3;
+    private static final String PRODUCT_COMMENT = "The red ones1";
+
+    private int accountIndex = -1;
 
     private AccountManager accountManager;
     private GroceryListManager listManager;
@@ -42,32 +32,29 @@ public class DummyDataGenerator {
         listManager = new GroceryListManager();
     }
 
+    public Account generateAccount() {
+        accountIndex++;
+        return accountManager.registerAccount(CORRECT_USERNAMES[accountIndex], CORRECT_EMAILS[accountIndex], CORRECT_PASS);
+    }
+
     public void generate() throws Exception {
         System.out.println("Generating dummy data...");
 
-        Account account_1 = accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
-        System.out.println(String.format("Created account: %s", account_1.toString()));
-        Account account_2 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_1);
-        System.out.println(String.format("Created account: %s", account_2.toString()));
-        Account account_3 = accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_1);
-        System.out.println(String.format("Created account: %s", account_3.toString()));
-        Account account_4 = accountManager.registerAccount(CORRECT_USERNAME_4, CORRECT_EMAIL_4, CORRECT_PASS_1);
-        System.out.println(String.format("Created account: %s", account_4.toString()));
+        Account account_1 = generateAccount();
+        Account account_2 = generateAccount();
+        Account account_3 = generateAccount();
+        generateAccount();
 
         accountManager.addFriend(account_1.getId(), account_2);
         accountManager.addFriend(account_1.getId(), account_3);
-        System.out.println(String.format("Added %s as friend to %s", account_3, account_1));
 
-        GroceryList list = listManager.createGroceryList(NAME_1, account_1, null);
-        System.out.println(String.format("Created list: %s", list.toString()));
+        GroceryList list = listManager.createGroceryList(LIST_NAME, account_1, null);
 
         listManager.addParticipant(list.getId(), account_2);
-        System.out.println(String.format("Added %s as participant to list %s", account_2.toString(), list.toString()));
         listManager.addParticipant(list.getId(), account_3);
-        System.out.println(String.format("Added %s as participant to list %s", account_3.toString(), list.toString()));
 
         for (int i = 0; i < 10; i++) {
-            listManager.addProduct(list.getId(), new Product(String.format("%s: %s", PRODUCT_NAME_1, i), PRODUCT_AMOUNT_3, PRODUCT_COMMENT_3, account_1.getUsername()));
+            listManager.addProduct(list.getId(), new Product(String.format("%s: %s", PRODUCT_NAME, i), PRODUCT_AMOUNT, PRODUCT_COMMENT, account_1.getUsername()));
         }
     }
 
