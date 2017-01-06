@@ -55,7 +55,7 @@ public class GroceryListDAOTest {
         /*
          * Create a list
          */
-        GroceryList groceryList_1 = groceryListDAO.create(NAME_1, account, null);
+        GroceryList groceryList_1 = groceryListDAO.create(NAME_1, account);
         /*
          * Verify it's existence
          */
@@ -70,10 +70,10 @@ public class GroceryListDAOTest {
         /*
          * Create two more lists for robustness check
          */
-        GroceryList groceryList_2 = groceryListDAO.create(NAME_2, account, null);
+        GroceryList groceryList_2 = groceryListDAO.create(NAME_2, account);
         assertNotNull(groceryList_2);
 
-        GroceryList groceryList_3 = groceryListDAO.create(NAME_3, account, null);
+        GroceryList groceryList_3 = groceryListDAO.create(NAME_3, account);
         assertNotNull(groceryList_3);
     }
 
@@ -88,7 +88,7 @@ public class GroceryListDAOTest {
         /*
          * Create a grocery lists
          */
-        groceryListDAO.create(NAME_1, account, null);
+        groceryListDAO.create(NAME_1, account);
         /*
          * Verify that the user is in one list now
          */
@@ -98,10 +98,10 @@ public class GroceryListDAOTest {
         /*
          * Robustness checks
          */
-        groceryListDAO.create(NAME_3, account, null);
-        groceryListDAO.create(NAME_4, account, null);
-        groceryListDAO.create(NAME_5, account, null);
-        groceryListDAO.create(NAME_6, account, null);
+        groceryListDAO.create(NAME_3, account);
+        groceryListDAO.create(NAME_4, account);
+        groceryListDAO.create(NAME_5, account);
+        groceryListDAO.create(NAME_6, account);
         int expected_3 = 5;
         int actual_3 = groceryListDAO.getAmountOfListsForUser(account.getId());
         assertEquals(expected_3, actual_3);
@@ -112,7 +112,7 @@ public class GroceryListDAOTest {
         /*
          * Create a list
          */
-        GroceryList list_1 = groceryListDAO.create(NAME_1, account, null);
+        GroceryList list_1 = groceryListDAO.create(NAME_1, account);
         /*
          * Verify that the user is the owner of this list
          */
@@ -126,11 +126,11 @@ public class GroceryListDAOTest {
          * Now add 5 more lists
          * Check if list_3 is in one of the lists the user is in
          */
-        groceryListDAO.create(NAME_2, account, null);
-        GroceryList list_3 = groceryListDAO.create(NAME_3, account, null);
-        groceryListDAO.create(NAME_4, account, null);
-        groceryListDAO.create(NAME_5, account, null);
-        groceryListDAO.create(NAME_6, account, null);
+        groceryListDAO.create(NAME_2, account);
+        GroceryList list_3 = groceryListDAO.create(NAME_3, account);
+        groceryListDAO.create(NAME_4, account);
+        groceryListDAO.create(NAME_5, account);
+        groceryListDAO.create(NAME_6, account);
         // Create boolean to verify later on
         boolean foundList_3 = false;
         for (GroceryList list : groceryListDAO.getLists(account.getId())) {
@@ -152,12 +152,12 @@ public class GroceryListDAOTest {
          */
         // Account is in no lists now
         assertEquals(0, groceryListDAO.getAmountOfListsForUser(account.getId()));
-        GroceryList list_1 = groceryListDAO.create(NAME_1, account, null);
+        GroceryList list_1 = groceryListDAO.create(NAME_1, account);
         // Account is in one list now after creating one
         assertEquals(1, groceryListDAO.getAmountOfListsForUser(account.getId()));
 
         // Create a list as anotherAccount, add account as participant
-        GroceryList list_2 = groceryListDAO.create(NAME_2, anotherAccount, null);
+        GroceryList list_2 = groceryListDAO.create(NAME_2, anotherAccount);
         list_2.addParticipant(account);
         // Account is in two lists now, after being added to one
         assertEquals(2, groceryListDAO.getAmountOfListsForUser(account.getId()));
@@ -165,10 +165,10 @@ public class GroceryListDAOTest {
         assertEquals(1, groceryListDAO.getAmountOfListsForUser(anotherAccount.getId()));
 
         // Robustness checks, create a list for both accounts
-        GroceryList list_3 = groceryListDAO.create(NAME_4, account, null);
+        GroceryList list_3 = groceryListDAO.create(NAME_4, account);
         assertEquals(3, groceryListDAO.getAmountOfListsForUser(account.getId()));
         // Second list another account created
-        GroceryList list_4 = groceryListDAO.create(NAME_3, anotherAccount, null);
+        GroceryList list_4 = groceryListDAO.create(NAME_3, anotherAccount);
         assertEquals(2, groceryListDAO.getAmountOfListsForUser(anotherAccount.getId()));
 
         // Add another account to list 3, check if he's now in 3 lists
@@ -182,21 +182,21 @@ public class GroceryListDAOTest {
          * Verify if the lists are equal when we retrieve the created one
          * from the database again.
          */
-        GroceryList list_1 = groceryListDAO.create(NAME_1, account, null);
+        GroceryList list_1 = groceryListDAO.create(NAME_1, account);
         GroceryList list_2 = groceryListDAO.getList(list_1.getId());
         assertEquals(list_1, list_2);
         /*
          * Robustness checks
          */
-        GroceryList list_3 = groceryListDAO.create(NAME_2, account, null);
+        GroceryList list_3 = groceryListDAO.create(NAME_2, account);
         GroceryList list_4 = groceryListDAO.getList(list_3.getId());
         assertEquals(list_3, list_4);
 
-        GroceryList list_5 = groceryListDAO.create(NAME_3, account, null);
+        GroceryList list_5 = groceryListDAO.create(NAME_3, account);
         GroceryList list_6 = groceryListDAO.getList(list_5.getId());
         assertEquals(list_5, list_6);
 
-        GroceryList list_7 = groceryListDAO.create(NAME_4, account, null);
+        GroceryList list_7 = groceryListDAO.create(NAME_4, account);
         GroceryList list_8 = groceryListDAO.getList(list_7.getId());
         assertEquals(list_7, list_8);
     }
@@ -208,7 +208,7 @@ public class GroceryListDAOTest {
          * Verify the created product equals the added product
          */
         // Create a list
-        GroceryList list = groceryListDAO.create(NAME_1, account, null);
+        GroceryList list = groceryListDAO.create(NAME_1, account);
         // Declare some product info
         String name_1 = "Apples1";
         String name_2 = "Apples2";
@@ -245,7 +245,7 @@ public class GroceryListDAOTest {
          * Verify the created product was deleted
          */
         // Create a list
-        GroceryList list = groceryListDAO.create(NAME_1, account, null);
+        GroceryList list = groceryListDAO.create(NAME_1, account);
         // Declare some product info
         String name_1 = "Apples1";
         String name_2 = "Apples2";
@@ -295,7 +295,7 @@ public class GroceryListDAOTest {
          * Check if an added product is still added in db after update
          */
         // Add product to a list
-        GroceryList list_1 = groceryListDAO.create(NAME_1, account, null);
+        GroceryList list_1 = groceryListDAO.create(NAME_1, account);
         list_1.addProduct(productName, productAmount, productComment, productOwner);
         groceryListDAO.update(list_1);
         // Get the added product
