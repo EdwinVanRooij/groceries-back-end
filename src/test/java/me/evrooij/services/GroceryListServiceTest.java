@@ -51,7 +51,7 @@ public class GroceryListServiceTest {
     }
 
     @Test
-    public void testAddParticipant() throws Exception {
+    public void addParticipant() throws Exception {
         Response response = NetworkUtil.post(
                 String.format("/lists/%s/participants/new", list.getId()),
                 "{\n" +
@@ -73,7 +73,7 @@ public class GroceryListServiceTest {
     }
 
     @Test
-    public void testDeleteProduct() throws Exception {
+    public void deleteProduct() throws Exception {
         Product product = groceryListManager.addProduct(list.getId(), dummyDataGenerator.generateProduct());
 
         Response response = NetworkUtil.delete(
@@ -92,7 +92,7 @@ public class GroceryListServiceTest {
     }
 
     @Test
-    public void testEditProduct() throws Exception {
+    public void editProduct() throws Exception {
         Product product = groceryListManager.addProduct(list.getId(), dummyDataGenerator.generateProduct());
         String newName = "nameee";
         int newAmount = 9000;
@@ -113,6 +113,22 @@ public class GroceryListServiceTest {
         ResponseMessage expectedMessage = new ResponseMessage("Product updated successfully.");
         ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
         assertEquals(expectedMessage, actualMessage);
+
+        // Verify code
+        int expectedCode = 200;
+        int actualCode = response.code();
+        assertEquals(expectedCode, actualCode);
+    }
+
+    @Test
+    public void getList() throws Exception {
+        Response response = NetworkUtil.get(
+                String.format("/lists/%s", list.getId())
+        );
+
+        // Verify
+        GroceryList actual = new Gson().fromJson(response.body().string(), GroceryList.class);
+        assertEquals(list, actual);
 
         // Verify code
         int expectedCode = 200;
