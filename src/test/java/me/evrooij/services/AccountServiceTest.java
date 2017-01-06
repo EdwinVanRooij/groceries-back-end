@@ -48,7 +48,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void testFindFriend() throws Exception {
+    public void findFriend() throws Exception {
         new Thread(() -> {
             try {
                 // Using '@' as search query, should return one account, since
@@ -76,7 +76,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void testAddFriend() throws Exception {
+    public void addFriend() throws Exception {
         new Thread(() -> {
             try {
                 Response response = NetworkUtil.post(
@@ -106,7 +106,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void testGetAccount() throws Exception {
+    public void getAccount() throws Exception {
         new Thread(() -> {
             try {
                 Response response = NetworkUtil.get(
@@ -115,6 +115,34 @@ public class AccountServiceTest {
 
                 // Verify Account
                 Account actual = new Gson().fromJson(response.body().string(), Account.class);
+                assertEquals(thisAccount, actual);
+
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(200);
+    }
+
+    @Test
+    public void getFriends() throws Exception {
+        AccountManager accountManager = new AccountManager();
+        accountManager.addFriend(thisAccount.getId(), otherAccount);
+
+        new Thread(() -> {
+            try {
+                Response response = NetworkUtil.get(
+                        String.format("/accounts/%s/friends", thisAccount.getId())
+                );
+
+                // Verify friend
+                @SuppressWarnings("unchecked") List<Account> list = new Gson().fromJson(response.body().string(), List.class);
+                Account actual = list.get(0);
                 assertEquals(thisAccount, actual);
 
                 // Verify code
