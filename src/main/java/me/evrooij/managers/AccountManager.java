@@ -25,7 +25,7 @@ public class AccountManager {
      */
     @SuppressWarnings("JavaDoc")
     public Account getAccount(int id) {
-        return accountDAO.getAccount(id);
+        return accountDAO.get(id);
     }
 
     /**
@@ -37,7 +37,7 @@ public class AccountManager {
      */
     @SuppressWarnings("JavaDoc")
     public Account getAccount(String username, String password) {
-        return accountDAO.getAccount(username, password);
+        return accountDAO.get(username, password);
     }
 
     /**
@@ -81,7 +81,7 @@ public class AccountManager {
             throw new InvalidParameterException("Password must be at least 8 characters.");
         }
 
-        return accountDAO.register(username, email, password);
+        return accountDAO.create(username, email, password);
     }
 
     /**
@@ -96,11 +96,11 @@ public class AccountManager {
      */
     @SuppressWarnings("JavaDoc")
     public boolean removeAccount(String username, String password) throws InvalidLoginCredentialsException {
-        Account account = accountDAO.getAccount(username, password);
+        Account account = accountDAO.get(username, password);
         if (account == null) {
             throw new InvalidLoginCredentialsException("Invalid login credentials. Please try again.");
         }
-        accountDAO.deleteAccount(username, password);
+        accountDAO.deleteAccount(account);
         return true;
     }
 
@@ -148,13 +148,13 @@ public class AccountManager {
      * @throws InvalidFriendRequestException if they're already friends
      */
     public boolean addFriend(int accountId, Account friend) throws InstanceDoesNotExistException, InvalidFriendRequestException {
-        Account account = accountDAO.getAccount(accountId);
+        Account account = accountDAO.get(accountId);
         if (account == null) {
             // If account doesn't even exist, throw exception
             throw new InstanceDoesNotExistException(String.format("Account with id %s doesn't exist in database", accountId));
         }
 
-        Account friendAccount = accountDAO.getAccount(friend.getId());
+        Account friendAccount = accountDAO.get(friend.getId());
         if (friendAccount == null) {
             // If friend doesn't exist, throw exception
             throw new InstanceDoesNotExistException(String.format("Friend account %s does not exist in database", friend.toString()));
@@ -183,7 +183,7 @@ public class AccountManager {
      * @return list of account objects if accountId was valid, null if it wasn't
      */
     public List<Account> getFriends(int accountId) {
-        Account account = accountDAO.getAccount(accountId);
+        Account account = accountDAO.get(accountId);
         if (account != null) {
             return account.getFriends();
         }

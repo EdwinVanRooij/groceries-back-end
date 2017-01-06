@@ -20,16 +20,7 @@ public class AccountDAO {
     public AccountDAO() {
     }
 
-    /**
-     * Registers a new account
-     *
-     * @param username
-     * @param email
-     * @param password
-     * @return newly created account
-     */
-    @SuppressWarnings("JavaDoc")
-    public Account register(String username, String email, String password) {
+    public Account create(String username, String email, String password) {
         Account account = new Account(username, email, password);
         entityManager.getTransaction().begin();
         entityManager.persist(account);
@@ -44,7 +35,7 @@ public class AccountDAO {
      * @param password password of the account
      * @return Account object
      */
-    public Account getAccount(String username, String password) {
+    public Account get(String username, String password) {
         entityManager.getTransaction().begin();
         Query query = getSession().createQuery("SELECT a FROM Account a WHERE a.username = :username AND a.password = :password");
         query.setString("username", username);
@@ -54,47 +45,29 @@ public class AccountDAO {
         return account;
     }
 
-    /**
-     * Retrieves an account from the database if username/password combination is correct
-     *
-     * @param id id of the account
-     * @return Account object
-     */
-    public Account getAccount(int id) {
+    public Account get(int id) {
         entityManager.getTransaction().begin();
-        Query query = getSession().createQuery("SELECT a FROM Account a WHERE a.id = :id");
-        query.setInteger("id", id);
-        Account account = (Account) query.uniqueResult();
+        Account account = entityManager.find(Account.class, id);
         entityManager.getTransaction().commit();
         return account;
-    }
-
-    /**
-     * Gets the amount of accounts in the database
-     *
-     * @return integer value
-     */
-    public int getAmountOfAccounts() {
-        return ((Long) getSession().createQuery("select count(*) from Account").uniqueResult()).intValue();
     }
 
     private Session getSession() {
         return entityManager.unwrap(Session.class);
     }
 
+    public int getAmount() {
+        return ((Long) getSession().createQuery("select count(*) from Account").uniqueResult()).intValue();
+    }
+
     /**
      * Removes an account from the database
      *
-     * @param username
-     * @param password
+     * @param account account to remove
      */
-    @SuppressWarnings("JavaDoc")
-    public void deleteAccount(String username, String password) {
+    public void deleteAccount(Account account) {
         entityManager.getTransaction().begin();
-        Query query = getSession().createQuery("DELETE FROM Account a WHERE a.username = :username AND a.password = :password");
-        query.setString("username", username);
-        query.setString("password", password);
-        query.executeUpdate();
+        entityManager.remove(account);
         entityManager.getTransaction().commit();
     }
 
@@ -115,11 +88,11 @@ public class AccountDAO {
      */
     @SuppressWarnings("JavaDoc")
     public void addFriend(int accountId, Account friend) {
-        Account accountToAddTo = getAccount(accountId);
+        Account accountToAddTo = get(accountId);
         entityManager.getTransaction().begin();
 
         accountToAddTo.addFriend(friend);
-        entityManager.persist(accountToAddTo);
+        entityManager.merge(accountToAddTo);
 
         entityManager.getTransaction().commit();
     }

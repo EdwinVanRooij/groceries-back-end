@@ -240,6 +240,7 @@ public class AccountManagerTest {
         Account account_2 = accountManager.registerAccount(username_2, email_2, password);
         // Below accounts are named for reference purposes
         Account account_3 = accountManager.registerAccount(username_3, email_3, password);
+        //noinspection unused
         Account account_4 = accountManager.registerAccount(username_4, email_4, password);
         /*
          * Check if equal usernames are found, case insensitively
