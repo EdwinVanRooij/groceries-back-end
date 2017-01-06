@@ -6,12 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * @author eddy on 8-12-16.
