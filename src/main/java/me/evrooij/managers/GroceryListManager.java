@@ -32,7 +32,7 @@ public class GroceryListManager {
     public GroceryList createGroceryList(String name, Account owner, @Nullable List<Account> participants) {
         if (participants == null || participants.size() == 0) {
             // If participants was not filled in correctly, ignore it
-            return groceryListDAO.create(name, owner);
+            return groceryListDAO.create(name, owner, null);
         }
         // Use participants
         return groceryListDAO.create(name, owner, participants);

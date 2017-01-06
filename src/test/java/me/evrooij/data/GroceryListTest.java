@@ -23,7 +23,7 @@ public class GroceryListTest {
     @Before
     public void setUp() throws Exception {
         currentAccount = new Account(USERNAME, EMAIL, PASSWORD);
-        currentList = new GroceryList(LIST_NAME, currentAccount);
+        currentList = new GroceryList(LIST_NAME, currentAccount, null);
     }
 
     @After
@@ -150,16 +150,5 @@ public class GroceryListTest {
         int expectedPostLots = 16;
         int actualPostLots = currentList.getAmountOfProducts();
         assertEquals(expectedPostLots, actualPostLots);
-    }
-
-
-    @Test
-    public void testConstructor() throws Exception {
-        // Create a list
-        GroceryList list = new GroceryList("Name", currentAccount);
-
-        // Check if basic parameters were initialized correctly
-        assertNotNull(list.getName());
-        assertNotNull(list.getOwner());
     }
 }

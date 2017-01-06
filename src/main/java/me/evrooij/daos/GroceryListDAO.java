@@ -1,5 +1,6 @@
 package me.evrooij.daos;
 
+import com.sun.istack.internal.Nullable;
 import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
@@ -27,27 +28,11 @@ public class GroceryListDAO {
      *
      * @param name
      * @param owner
-     * @return newly created list
-     */
-    @SuppressWarnings("JavaDoc")
-    public GroceryList create(String name, Account owner) {
-        GroceryList groceryList = new GroceryList(name, owner);
-        entityManager.getTransaction().begin();
-        entityManager.persist(groceryList);
-        entityManager.getTransaction().commit();
-        return groceryList;
-    }
-
-    /**
-     * Creates a new GroceryList
-     *
-     * @param name
-     * @param owner
      * @param participants
      * @return newly created list
      */
     @SuppressWarnings("JavaDoc")
-    public GroceryList create(String name, Account owner, List<Account> participants) {
+    public GroceryList create(String name, Account owner, @Nullable List<Account> participants) {
         GroceryList groceryList = new GroceryList(name, owner, participants);
         entityManager.getTransaction().begin();
         entityManager.persist(groceryList);
@@ -58,7 +43,7 @@ public class GroceryListDAO {
     /**
      * Returns all GroceryLists an account is in, this includes where the account is owner and where it's a participant
      *
-     * @param accountId unique identifier for the account
+     * @param accountId id of the account
      * @return
      */
     @SuppressWarnings({"JavaDoc", "unchecked"})
@@ -118,7 +103,7 @@ public class GroceryListDAO {
 
         entityManager.getTransaction().begin();
         list.addProduct(product.getName(), product.getAmount(), product.getComment(), product.getOwner());
-        entityManager.persist(list);
+        entityManager.merge(list);
         entityManager.getTransaction().commit();
         return list.getProduct(product.getName(), product.getOwner(), product.getComment());
     }
@@ -134,7 +119,7 @@ public class GroceryListDAO {
 
         entityManager.getTransaction().begin();
         list.removeItem(productId);
-        entityManager.persist(list);
+        entityManager.merge(list);
         entityManager.getTransaction().commit();
     }
 
@@ -145,7 +130,7 @@ public class GroceryListDAO {
      */
     public void update(GroceryList list) {
         entityManager.getTransaction().begin();
-        getSession().saveOrUpdate(list);
+        getSession().merge(list);
         entityManager.getTransaction().commit();
     }
 }
