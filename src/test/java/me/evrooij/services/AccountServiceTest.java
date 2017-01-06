@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -48,43 +49,59 @@ public class AccountServiceTest {
 
     @Test
     public void testFindFriend() throws Exception {
-        // Using '@' as search query, should return one account, since
-        // we added another account in the setup. @ matches with any email.
-        String query = "@";
+        new Thread(() -> {
+            try {
+                // Using '@' as search query, should return one account, since
+                // we added another account in the setup. @ matches with any email.
+                String query = "@";
 
-        Response response = NetworkUtil.get(
-                String.format("/accounts/%s/friends/find?query=%s", thisAccount.getId(), query)
-        );
+                Response response = NetworkUtil.get(
+                        String.format("/accounts/%s/friends/find?query=%s", thisAccount.getId(), query)
+                );
 
-        // Verify message
-        @SuppressWarnings("unchecked") List<Account> list = new Gson().fromJson(response.body().string(), List.class);
-        assertEquals(1, list.size());
+                // Verify message
+                @SuppressWarnings("unchecked") List<Account> list = new Gson().fromJson(response.body().string(), List.class);
+                assertEquals(1, list.size());
 
-        // Verify code
-        int expectedCode = 200;
-        int actualCode = response.code();
-        assertEquals(expectedCode, actualCode);
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(200);
     }
 
     @Test
     public void testAddFriend() throws Exception {
-        Response response = NetworkUtil.post(
-                String.format("/accounts/%s/friends/add", thisAccount.getId()),
-                "{\n" +
-                        String.format("\"id\": %s,\n", otherAccount.getId()) +
-                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
-                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
-                        "}"
-        );
+        new Thread(() -> {
+            try {
+                Response response = NetworkUtil.post(
+                        String.format("/accounts/%s/friends/add", thisAccount.getId()),
+                        "{\n" +
+                                String.format("\"id\": %s,\n", otherAccount.getId()) +
+                                String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
+                                String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
+                                "}"
+                );
 
-        // Verify message
-        ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
-        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
-        assertEquals(expectedMessage, actualMessage);
+                // Verify message
+                ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
+                ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+                assertEquals(expectedMessage, actualMessage);
 
-        // Verify code
-        int expectedCode = 200;
-        int actualCode = response.code();
-        assertEquals(expectedCode, actualCode);
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(200);
     }
 }
