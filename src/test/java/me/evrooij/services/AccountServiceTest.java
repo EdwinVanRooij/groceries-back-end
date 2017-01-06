@@ -82,7 +82,65 @@ public class AccountServiceTest {
                         String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
                         "}"
         );
-        response = NetworkUtil.post(
+
+        // Verify message
+        ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
+        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+        assertEquals(expectedMessage, actualMessage);
+
+        // Verify code
+        int expectedCode = 200;
+        int actualCode = response.code();
+        assertEquals(expectedCode, actualCode);
+    }
+
+    @Test
+    public void testAddFriend2() throws Exception {
+         Response response = NetworkUtil.post(
+                String.format("/accounts/%s/friends/add", thisAccount.getId()),
+                "{\n" +
+                        String.format("\"id\": %s,\n", otherAccount.getId()) +
+                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
+                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
+                        "}"
+        );
+
+        // Verify message
+        ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
+        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+        assertEquals(expectedMessage, actualMessage);
+
+        // Verify code
+        int expectedCode = 200;
+        int actualCode = response.code();
+        assertEquals(expectedCode, actualCode);
+    }
+
+    @Test
+    public void testAddFriend3() throws Exception {
+                 Response response = NetworkUtil.post(
+                String.format("/accounts/%s/friends/add", thisAccount.getId()),
+                "{\n" +
+                        String.format("\"id\": %s,\n", otherAccount.getId()) +
+                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
+                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
+                        "}"
+        );
+
+        // Verify message
+        ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
+        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+        assertEquals(expectedMessage, actualMessage);
+
+        // Verify code
+        int expectedCode = 200;
+        int actualCode = response.code();
+        assertEquals(expectedCode, actualCode);
+    }
+
+    @Test
+    public void testAddFriend4() throws Exception {
+                 Response response = NetworkUtil.post(
                 String.format("/accounts/%s/friends/add", thisAccount.getId()),
                 "{\n" +
                         String.format("\"id\": %s,\n", otherAccount.getId()) +
