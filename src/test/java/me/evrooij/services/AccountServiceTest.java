@@ -104,4 +104,28 @@ public class AccountServiceTest {
 
         Thread.sleep(200);
     }
+
+    @Test
+    public void testGetAccount() throws Exception {
+        new Thread(() -> {
+            try {
+                Response response = NetworkUtil.get(
+                        String.format("/users/login?username=%s&password=%s", thisAccount.getUsername(), thisAccount.getPassword())
+                );
+
+                // Verify Account
+                Account actual = new Gson().fromJson(response.body().string(), Account.class);
+                assertEquals(thisAccount, actual);
+
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(200);
+    }
 }
