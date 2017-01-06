@@ -5,7 +5,6 @@ import me.evrooij.data.Account;
 import me.evrooij.data.ResponseMessage;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.util.DatabaseUtil;
-import me.evrooij.util.DummyDataGenerator;
 import me.evrooij.util.NetworkUtil;
 import okhttp3.Response;
 import org.junit.After;

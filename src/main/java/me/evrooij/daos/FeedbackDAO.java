@@ -5,8 +5,6 @@ import me.evrooij.data.Feedback;
 import me.evrooij.util.HibernateUtil;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  * @author eddy on 8-12-16.

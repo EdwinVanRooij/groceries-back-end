@@ -9,7 +9,7 @@ import static spark.Spark.port;
 public class Main {
     public static void main(String[] args) {
         // Production env
-        port(Config.PORT);
+        port(Config.getInstance().PORT);
 
         // Source: https://dzone.com/articles/building-simple-restful-api
         new AccountService();

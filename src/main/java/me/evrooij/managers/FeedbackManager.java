@@ -4,7 +4,6 @@ import me.evrooij.daos.FeedbackDAO;
 import me.evrooij.data.Account;
 import me.evrooij.data.Feedback;
 
-import java.io.InvalidObjectException;
 import java.security.InvalidParameterException;
 
 public class FeedbackManager {

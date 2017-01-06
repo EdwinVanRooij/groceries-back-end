@@ -5,8 +5,8 @@ import com.google.gson.GsonBuilder;
 import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
-import me.evrooij.managers.GroceryListManager;
 import me.evrooij.data.ResponseMessage;
+import me.evrooij.managers.GroceryListManager;
 import me.evrooij.util.JsonUtil;
 
 import static me.evrooij.Config.*;

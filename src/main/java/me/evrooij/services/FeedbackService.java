@@ -2,11 +2,11 @@ package me.evrooij.services;
 
 import com.google.gson.Gson;
 import me.evrooij.data.Feedback;
-import me.evrooij.managers.FeedbackManager;
 import me.evrooij.data.ResponseMessage;
+import me.evrooij.managers.FeedbackManager;
 import me.evrooij.util.JsonUtil;
 
-import static me.evrooij.Config.*;
+import static me.evrooij.Config.PATH_FEEDBACK_NEW;
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
 
