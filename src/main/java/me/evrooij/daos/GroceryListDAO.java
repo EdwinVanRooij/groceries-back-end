@@ -1,6 +1,5 @@
 package me.evrooij.daos;
 
-import com.sun.istack.internal.Nullable;
 import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
@@ -32,7 +31,7 @@ public class GroceryListDAO {
      * @return newly created list
      */
     @SuppressWarnings("JavaDoc")
-    public GroceryList create(String name, Account owner, @Nullable List<Account> participants) {
+    public GroceryList create(String name, Account owner, List<Account> participants) {
         GroceryList groceryList = new GroceryList(name, owner, participants);
         entityManager.getTransaction().begin();
         entityManager.persist(groceryList);

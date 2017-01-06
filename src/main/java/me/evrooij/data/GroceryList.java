@@ -1,7 +1,6 @@
 package me.evrooij.data;
 
 import com.google.gson.annotations.Expose;
-import com.sun.istack.internal.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -76,7 +75,7 @@ public class GroceryList {
      * @param owner        account of the user who created this list
      * @param participants list of accounts who are participating in this list, may be null
      */
-    public GroceryList(String name, Account owner, @Nullable List<Account> participants) {
+    public GroceryList(String name, Account owner, List<Account> participants) {
         this.name = name;
         this.owner = owner;
 
