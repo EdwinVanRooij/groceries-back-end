@@ -36,8 +36,12 @@ public class AccountManager {
      * @return returns the account on correct login credentials, null on incorrect login credentials
      */
     @SuppressWarnings("JavaDoc")
-    public Account getAccount(String username, String password) {
-        return accountDAO.get(username, password);
+    public Account getAccount(String username, String password) throws InvalidLoginCredentialsException {
+        Account account = accountDAO.get(username, password);
+        if (account == null) {
+            throw new InvalidLoginCredentialsException("Incorrect login credentials.");
+        }
+        return account;
     }
 
     /**
