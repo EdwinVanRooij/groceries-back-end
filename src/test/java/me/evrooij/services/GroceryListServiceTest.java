@@ -1,6 +1,7 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
+import me.evrooij.TestConfig;
 import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
@@ -14,6 +15,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -52,43 +56,59 @@ public class GroceryListServiceTest {
 
     @Test
     public void addParticipant() throws Exception {
-        Response response = NetworkUtil.post(
-                String.format("/lists/%s/participants/new", list.getId()),
-                "{\n" +
-                        String.format("\"id\": %s,\n", otherAccount.getId()) +
-                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
-                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
-                        "}"
-        );
+        new Thread(() -> {
+            try {
+                Response response = NetworkUtil.post(
+                        String.format("/lists/%s/participants/new", list.getId()),
+                        "{\n" +
+                                String.format("\"id\": %s,\n", otherAccount.getId()) +
+                                String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
+                                String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
+                                "}"
+                );
 
-        // Verify message
-        ResponseMessage expectedMessage = new ResponseMessage("Successfully added new participant.");
-        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
-        assertEquals(expectedMessage, actualMessage);
+                // Verify message
+                ResponseMessage expectedMessage = new ResponseMessage("Successfully added new participant.");
+                ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+                assertEquals(expectedMessage, actualMessage);
 
-        // Verify code
-        int expectedCode = 200;
-        int actualCode = response.code();
-        assertEquals(expectedCode, actualCode);
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(TestConfig.SLEEP_TIME);
     }
 
     @Test
     public void deleteProduct() throws Exception {
-        Product product = groceryListManager.addProduct(list.getId(), dummyDataGenerator.generateProduct());
+        new Thread(() -> {
+            try {
+                Product product = groceryListManager.addProduct(list.getId(), dummyDataGenerator.generateProduct());
 
-        Response response = NetworkUtil.delete(
-                String.format("/lists/%s/products/%s", list.getId(), product.getId())
-        );
+                Response response = NetworkUtil.delete(
+                        String.format("/lists/%s/products/%s", list.getId(), product.getId())
+                );
 
-        // Verify message
-        ResponseMessage expectedMessage = new ResponseMessage("Successfully deleted product.");
-        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
-        assertEquals(expectedMessage, actualMessage);
+                // Verify message
+                ResponseMessage expectedMessage = new ResponseMessage("Successfully deleted product.");
+                ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+                assertEquals(expectedMessage, actualMessage);
 
-        // Verify code
-        int expectedCode = 200;
-        int actualCode = response.code();
-        assertEquals(expectedCode, actualCode);
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(TestConfig.SLEEP_TIME);
     }
 
     @Test
@@ -98,42 +118,84 @@ public class GroceryListServiceTest {
         int newAmount = 9000;
         String newComment = "Anothaa!!";
 
-        Response response = NetworkUtil.put(
-                String.format("/lists/%s/products/%s/edit", list.getId(), product.getId()),
-                "{\n" +
-                        String.format("\"id\": %s,\n", product.getId()) +
-                        String.format("\"name\": \"%s\",\n", newName) +
-                        String.format("\"amount\": %s,\n", newAmount) +
-                        String.format("\"owner\": \"%s\",\n", product.getOwner()) +
-                        String.format("\"comment\": \"%s\"\n", newComment) +
-                        "}"
-        );
+        new Thread(() -> {
+            try {
+                Response response = NetworkUtil.put(
+                        String.format("/lists/%s/products/%s/edit", list.getId(), product.getId()),
+                        "{\n" +
+                                String.format("\"id\": %s,\n", product.getId()) +
+                                String.format("\"name\": \"%s\",\n", newName) +
+                                String.format("\"amount\": %s,\n", newAmount) +
+                                String.format("\"owner\": \"%s\",\n", product.getOwner()) +
+                                String.format("\"comment\": \"%s\"\n", newComment) +
+                                "}"
+                );
 
-        // Verify message
-        ResponseMessage expectedMessage = new ResponseMessage("Product updated successfully.");
-        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
-        assertEquals(expectedMessage, actualMessage);
+                // Verify message
+                ResponseMessage expectedMessage = new ResponseMessage("Product updated successfully.");
+                ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+                assertEquals(expectedMessage, actualMessage);
 
-        // Verify code
-        int expectedCode = 200;
-        int actualCode = response.code();
-        assertEquals(expectedCode, actualCode);
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(TestConfig.SLEEP_TIME);
     }
 
     @Test
     public void getList() throws Exception {
-        Response response = NetworkUtil.get(
-                String.format("/lists/%s", list.getId())
-        );
+        new Thread(() -> {
+            try {
+                Response response = NetworkUtil.get(
+                        String.format("/lists/%s", list.getId())
+                );
 
-        // Verify
-        GroceryList actual = new Gson().fromJson(response.body().string(), GroceryList.class);
-        assertEquals(list, actual);
+                // Verify
+                GroceryList actual = new Gson().fromJson(response.body().string(), GroceryList.class);
+                assertEquals(list, actual);
 
-        // Verify code
-        int expectedCode = 200;
-        int actualCode = response.code();
-        assertEquals(expectedCode, actualCode);
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(TestConfig.SLEEP_TIME);
+    }
+
+    @Test
+    public void getLists() throws Exception {
+        new Thread(() -> {
+            try {
+                Response response = NetworkUtil.get(
+                        String.format("/user/%s", list.getId())
+                );
+
+                // Verify
+                @SuppressWarnings("unchecked") List<GroceryList> list = new Gson().fromJson(response.body().string(), List.class);
+                GroceryList actual = list.get(0);
+                assertEquals(list, actual);
+
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(TestConfig.SLEEP_TIME);
     }
 
 }

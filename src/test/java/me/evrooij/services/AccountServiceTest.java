@@ -1,6 +1,7 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
+import me.evrooij.TestConfig;
 import me.evrooij.data.Account;
 import me.evrooij.data.ResponseMessage;
 import me.evrooij.managers.AccountManager;
@@ -72,7 +73,7 @@ public class AccountServiceTest {
             }
         }).start();
 
-        Thread.sleep(200);
+        Thread.sleep(TestConfig.SLEEP_TIME);
     }
 
     @Test
@@ -102,7 +103,7 @@ public class AccountServiceTest {
             }
         }).start();
 
-        Thread.sleep(200);
+        Thread.sleep(TestConfig.SLEEP_TIME);
     }
 
     @Test
@@ -126,7 +127,7 @@ public class AccountServiceTest {
             }
         }).start();
 
-        Thread.sleep(200);
+        Thread.sleep(TestConfig.SLEEP_TIME);
     }
 
     @Test
@@ -154,6 +155,6 @@ public class AccountServiceTest {
             }
         }).start();
 
-        Thread.sleep(200);
+        Thread.sleep(TestConfig.SLEEP_TIME);
     }
 }
