@@ -2,8 +2,7 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
     <persistence-unit name="GroceriesPersistenceUnit">
-        <!--<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>me.evrooij.data.Account</class>
         <class>me.evrooij.data.GroceryList</class>
@@ -11,10 +10,10 @@
         <class>me.evrooij.data.Feedback</class>
 
         <properties>
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost/groceries_db?autoReconnect=true"/>
-            <property name="hibernate.connection.username" value="groceries_user"/>
+            <!--<property name="hibernate.connection.url" value="jdbc:mysql://localhost/groceries_db?autoReconnect=true"/>-->
+            <!--<property name="hibernate.connection.username" value="groceries_user"/>-->
             <!--Development env-->
-            <property name="hibernate.connection.password" value="QncMX89S83hdn12Sd0"/>
+            <!--<property name="hibernate.connection.password" value="QncMX89S83hdn12Sd0"/>-->
             <!--Production env-->
             <!--<property name="hibernate.connection.password" value="dn3coQiwx2pdSxsA"/>-->
 
@@ -22,6 +21,8 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+            <!--<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>-->
         </properties>
     </persistence-unit>
 </persistence>

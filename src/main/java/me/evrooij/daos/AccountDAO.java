@@ -1,23 +1,27 @@
 package me.evrooij.daos;
 
 import me.evrooij.data.Account;
+import me.evrooij.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author eddy on 8-12-16.
  */
 
 public class AccountDAO {
-    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("GroceriesPersistenceUnit");
-    private final EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private final EntityManager entityManager;
 
     public AccountDAO() {
+        entityManager = HibernateUtil.getInstance().getEntityManager();
     }
 
     public Account create(String username, String email, String password) {

@@ -3,6 +3,7 @@ package me.evrooij.daos;
 import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
+import me.evrooij.util.HibernateUtil;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
@@ -16,10 +17,10 @@ import java.util.List;
  */
 
 public class GroceryListDAO {
-    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("GroceriesPersistenceUnit");
-    private final EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private final EntityManager entityManager;
 
     public GroceryListDAO() {
+        entityManager = HibernateUtil.getInstance().getEntityManager();
     }
 
     /**

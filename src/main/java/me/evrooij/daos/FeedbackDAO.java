@@ -2,6 +2,7 @@ package me.evrooij.daos;
 
 import me.evrooij.data.Account;
 import me.evrooij.data.Feedback;
+import me.evrooij.util.HibernateUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,10 +13,10 @@ import javax.persistence.Persistence;
  */
 
 public class FeedbackDAO {
-    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("GroceriesPersistenceUnit");
-    private final EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private final EntityManager entityManager;
 
     public FeedbackDAO() {
+        entityManager = HibernateUtil.getInstance().getEntityManager();
     }
 
     public Feedback create(String message, Feedback.Type type, Account sender) {
