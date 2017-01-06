@@ -12,10 +12,10 @@ import java.sql.SQLException;
 
 public class DatabaseUtil {
 
-    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("GroceriesPersistenceUnit");
-    private final EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private final EntityManager entityManager;
 
     public DatabaseUtil() {
+        entityManager = HibernateUtil.getInstance().getEntityManager();
     }
 
     /**

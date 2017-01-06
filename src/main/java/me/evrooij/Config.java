@@ -14,7 +14,7 @@ public class Config {
     public int PORT;
 //    public static final int PORT = 6438;
 
-    public String BASE_URL = String.format("http://127.0.0.1:%d", PORT);
+    public String BASE_URL;
 
     // Account service
     public static final String PATH_LOGIN = "/users/login";
@@ -56,6 +56,7 @@ public class Config {
             in.close();
 
             PORT = Integer.valueOf(prop.getProperty("port"));
+            BASE_URL = String.format("http://127.0.0.1:%d", PORT);
             System.out.println(String.format("Found port %s", String.valueOf(PORT)));
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,6 +5,7 @@ import me.evrooij.data.Account;
 import me.evrooij.data.ResponseMessage;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.util.DatabaseUtil;
+import me.evrooij.util.DummyDataGenerator;
 import me.evrooij.util.NetworkUtil;
 import okhttp3.Response;
 import org.junit.After;
@@ -19,17 +20,14 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author eddy on 1-1-17.
  */
+@SuppressWarnings("Duplicates")
 public class AccountServiceTest {
 
-    //    private DummyDataGenerator dummyDataGenerator;
-    private static final String[] CORRECT_USERNAMES = new String[]{"UsernameOne", "UsernameTwo", "UsernameThree", "UserAfterThree"};
-    private static final String[] CORRECT_EMAILS = new String[]{"mailOne@gmail.com", "mailTwo@gmail.com", "mailThree@gmail.com", "mailAfterThree@gmail.com"};
-    private static final String CORRECT_PASS = "password";
+    private DummyDataGenerator dummyDataGenerator;
 
     private Account thisAccount;
     private Account otherAccount;
 
-    private AccountManager accountManager;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -38,12 +36,9 @@ public class AccountServiceTest {
 
     @Before
     public void setUp() throws Exception {
-//        dummyDataGenerator = new DummyDataGenerator();
-//        thisAccount = dummyDataGenerator.generateAccount();
-//        otherAccount = dummyDataGenerator.generateAccount();
-        accountManager = new AccountManager();
-        thisAccount = new AccountManager().registerAccount(CORRECT_USERNAMES[0], CORRECT_EMAILS[0], CORRECT_PASS);
-        otherAccount = new AccountManager().registerAccount(CORRECT_USERNAMES[1], CORRECT_EMAILS[1], CORRECT_PASS);
+        dummyDataGenerator = new DummyDataGenerator();
+        thisAccount = dummyDataGenerator.generateAccount();
+        otherAccount = dummyDataGenerator.generateAccount();
     }
 
     @After
@@ -74,72 +69,6 @@ public class AccountServiceTest {
     @Test
     public void testAddFriend() throws Exception {
         Response response = NetworkUtil.post(
-                String.format("/accounts/%s/friends/add", thisAccount.getId()),
-                "{\n" +
-                        String.format("\"id\": %s,\n", otherAccount.getId()) +
-                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
-                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
-                        "}"
-        );
-
-        // Verify message
-        ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
-        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
-        assertEquals(expectedMessage, actualMessage);
-
-        // Verify code
-        int expectedCode = 200;
-        int actualCode = response.code();
-        assertEquals(expectedCode, actualCode);
-    }
-
-    @Test
-    public void testAddFriend2() throws Exception {
-         Response response = NetworkUtil.post(
-                String.format("/accounts/%s/friends/add", thisAccount.getId()),
-                "{\n" +
-                        String.format("\"id\": %s,\n", otherAccount.getId()) +
-                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
-                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
-                        "}"
-        );
-
-        // Verify message
-        ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
-        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
-        assertEquals(expectedMessage, actualMessage);
-
-        // Verify code
-        int expectedCode = 200;
-        int actualCode = response.code();
-        assertEquals(expectedCode, actualCode);
-    }
-
-    @Test
-    public void testAddFriend3() throws Exception {
-                 Response response = NetworkUtil.post(
-                String.format("/accounts/%s/friends/add", thisAccount.getId()),
-                "{\n" +
-                        String.format("\"id\": %s,\n", otherAccount.getId()) +
-                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
-                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
-                        "}"
-        );
-
-        // Verify message
-        ResponseMessage expectedMessage = new ResponseMessage("Successfully added friend.");
-        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
-        assertEquals(expectedMessage, actualMessage);
-
-        // Verify code
-        int expectedCode = 200;
-        int actualCode = response.code();
-        assertEquals(expectedCode, actualCode);
-    }
-
-    @Test
-    public void testAddFriend4() throws Exception {
-                 Response response = NetworkUtil.post(
                 String.format("/accounts/%s/friends/add", thisAccount.getId()),
                 "{\n" +
                         String.format("\"id\": %s,\n", otherAccount.getId()) +
