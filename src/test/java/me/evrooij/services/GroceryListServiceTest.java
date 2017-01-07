@@ -56,6 +56,44 @@ public class GroceryListServiceTest {
     }
 
     @Test
+    public void newProduct() throws Exception {
+        String name = "nameee";
+        int amount = 10;
+        String comment = "Anothaa!!";
+
+        new Thread(() -> {
+            try {
+                Response response = NetworkUtil.put(
+                        String.format("/list/%s/products/new", list.getId()),
+                        "{\n" +
+                                String.format("\"name\": \"%s\",\n", name) +
+                                String.format("\"amount\": %s,\n", amount) +
+                                String.format("\"owner\": \"%s\",\n", thisAccount.getUsername()) +
+                                String.format("\"comment\": \"%s\"\n", comment) +
+                                "}"
+                );
+
+                // Verify message
+                Product actual = new Gson().fromJson(response.body().string(), Product.class);
+                assertNotNull(actual);
+
+                // Sample
+                assertEquals(name, actual.getName());
+
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(TestConfig.SLEEP_TIME);
+    }
+
+    @Test
     public void newList() throws Exception {
         String listName = "NewList";
 
