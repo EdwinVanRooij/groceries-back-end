@@ -5,6 +5,7 @@ import me.evrooij.data.Account;
 import me.evrooij.data.Feedback;
 
 import java.security.InvalidParameterException;
+import java.util.List;
 
 public class FeedbackManager {
 
@@ -49,5 +50,20 @@ public class FeedbackManager {
         System.out.println("Deleting in manager");
         feedbackDAO.delete(feedback);
         return true;
+    }
+
+    /**
+     * Get all feedback items
+     *
+     * @return list of feedback items
+     */
+    public List<Feedback> getAllFeedback() {
+        List<Feedback> list = feedbackDAO.getAll();
+
+        if (list == null) {
+            throw new NullPointerException("List of feedback items from feedbackDAO is null.");
+        }
+
+        return list;
     }
 }

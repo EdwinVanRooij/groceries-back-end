@@ -1,11 +1,16 @@
 package me.evrooij.daos;
 
 import me.evrooij.data.Account;
+
+import javax.persistence.Query;
+
+import me.evrooij.data.GroceryList;
 import org.hibernate.Session;
 import me.evrooij.data.Feedback;
 import me.evrooij.util.HibernateUtil;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * @author eddy on 8-12-16.
@@ -24,6 +29,17 @@ public class FeedbackDAO {
         entityManager.persist(feedback);
         entityManager.getTransaction().commit();
         return feedback;
+    }
+
+    public List<Feedback> getAll() {
+        entityManager.getTransaction().begin();
+
+        Query query = entityManager.createQuery(
+                "SELECT l FROM Feedback l ");
+        List<Feedback> lists = query.getResultList();
+
+        entityManager.getTransaction().commit();
+        return lists;
     }
 
     public Feedback get(int id) {

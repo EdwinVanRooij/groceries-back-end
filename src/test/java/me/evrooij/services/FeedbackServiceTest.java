@@ -17,8 +17,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 /**
@@ -48,6 +50,34 @@ public class FeedbackServiceTest {
     @After
     public void tearDown() throws Exception {
         new DatabaseUtil().clean();
+    }
+
+    @Test
+    public void getAllFeedback() throws Exception {
+        new Thread(() -> {
+            try {
+                dummyDataGenerator.generateFeedback(thisAccount);
+
+                Response response = NetworkUtil.get(
+                        "/feedback"
+                );
+
+                // Verify message
+                @SuppressWarnings("unchecked") List<Feedback> actualList = new Gson().fromJson(response.body().string(), List.class);
+                assertNotNull(actualList);
+
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+                fail();
+            }
+        }).start();
+
+        Thread.sleep(TestConfig.SLEEP_TIME);
+        System.out.println("tjfsla");
     }
 
     @Test

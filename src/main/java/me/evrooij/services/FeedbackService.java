@@ -7,6 +7,7 @@ import me.evrooij.managers.FeedbackManager;
 import me.evrooij.util.JsonUtil;
 
 import static me.evrooij.Config.PATH_FEEDBACK_DELETE;
+import static me.evrooij.Config.PATH_FEEDBACK_LIST;
 import static me.evrooij.Config.PATH_FEEDBACK_NEW;
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
@@ -16,6 +17,10 @@ public class FeedbackService {
 
     public FeedbackService() {
         feedbackManager = new FeedbackManager();
+
+        get(PATH_FEEDBACK_LIST, (request, response) -> {
+            return feedbackManager.getAllFeedback();
+        }, json());
 
         delete(PATH_FEEDBACK_DELETE, (request, response) -> {
             int id = Integer.valueOf(request.params(":id"));

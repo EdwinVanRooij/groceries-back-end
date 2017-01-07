@@ -26,6 +26,7 @@ public class Config {
     // Feedback service
     public static final String PATH_FEEDBACK_NEW = "/feedback/new";
     public static final String PATH_FEEDBACK_DELETE = "/feedback/:id";
+    public static final String PATH_FEEDBACK_LIST = "/feedback";
 
     // GroceryList service
     // Lists
