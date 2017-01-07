@@ -6,6 +6,7 @@ import me.evrooij.data.ResponseMessage;
 import me.evrooij.managers.FeedbackManager;
 import me.evrooij.util.JsonUtil;
 
+import static me.evrooij.Config.PATH_FEEDBACK_DELETE;
 import static me.evrooij.Config.PATH_FEEDBACK_NEW;
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
@@ -15,6 +16,16 @@ public class FeedbackService {
 
     public FeedbackService() {
         feedbackManager = new FeedbackManager();
+
+        delete(PATH_FEEDBACK_DELETE, (request, response) -> {
+            int id = Integer.valueOf(request.params(":id"));
+
+            if (feedbackManager.deleteFeedback(id)) {
+                return new ResponseMessage("Successfully deleted feedback.");
+            } else {
+                return new ResponseMessage("Error: feedback was not deleted.");
+            }
+        });
 
         post(PATH_FEEDBACK_NEW, (request, response) -> {
             String json = request.body();

@@ -42,7 +42,7 @@ public class FeedbackManagerTest {
     }
 
     @Test
-    public void createFeedback() throws Exception {
+    public void reportFeedback() throws Exception {
         /*
          * Check if bug feedback is created on valid parameters
          */
@@ -76,6 +76,27 @@ public class FeedbackManagerTest {
             fail();
         } catch (InvalidParameterException e) {
 
+        }
+    }
+
+    @Test
+    public void deleteFeedback() throws Exception {
+        /*
+         * Create a feedback item, delete it
+         */
+        Feedback feedback = dummyDataGenerator.generateFeedback(thisAccount);
+        boolean result = feedbackManager.deleteFeedback(feedback.getId());
+        // Verify deletion
+        assertTrue(result);
+
+        /*
+         * Now check if we get a NullPointerException on invalid id,
+         * previous feedback should be deleted
+         */
+        try {
+            feedbackManager.deleteFeedback(feedback.getId());
+            fail();
+        } catch (NullPointerException e) {
         }
     }
 

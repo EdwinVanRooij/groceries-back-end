@@ -8,6 +8,8 @@ import java.security.InvalidParameterException;
 
 public class FeedbackManager {
 
+    private String EXCEPTION_FEEDBACK_DOES_NOT_EXIST = "Feedback with id %s does not exist.";
+
     private FeedbackDAO feedbackDAO;
 
     public FeedbackManager() {
@@ -30,5 +32,20 @@ public class FeedbackManager {
             throw new InvalidParameterException("Message should not be empty.");
         }
         return feedbackDAO.create(message, type, sender);
+    }
+
+    /**
+     * Deletes feedback
+     *
+     * @param id id of the feedback item
+     * @return true if feedback was deleted successfully, false if not
+     */
+    public boolean deleteFeedback(int id) {
+        Feedback feedback = feedbackDAO.get(id);
+        if (feedback == null) {
+            throw new NullPointerException(String.format(EXCEPTION_FEEDBACK_DOES_NOT_EXIST, id));
+        }
+        feedbackDAO.delete(feedback);
+        return true;
     }
 }
