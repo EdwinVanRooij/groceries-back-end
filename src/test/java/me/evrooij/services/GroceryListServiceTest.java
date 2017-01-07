@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author eddy on 5-1-17.
@@ -52,6 +53,48 @@ public class GroceryListServiceTest {
     @After
     public void tearDown() throws Exception {
         new DatabaseUtil().clean();
+    }
+
+    @Test
+    public void newList() throws Exception {
+        String listName = "NewList";
+
+        new Thread(() -> {
+            try {
+                Response response = NetworkUtil.post(
+                        "/lists/new",
+                        "{\n" +
+                                String.format("\"name\": \"%s\",\n", listName) +
+                                "\"owner\": {\n" +
+                                String.format("  \"id\": %s,\n", thisAccount.getId()) +
+                                String.format("  \"username\": \"%s\",\n", thisAccount.getUsername()) +
+                                String.format("  \"email\": \"%s\"\n", thisAccount.getEmail()) +
+                                "  },\n" +
+                                "    \"participants\": [{\n" +
+                                String.format("    \"id\": %s,\n", otherAccount.getId()) +
+                                String.format("    \"username\": \"%s\",\n", otherAccount.getUsername()) +
+                                String.format("    \"email\": \"%s\"\n", otherAccount.getEmail()) +
+                                "    }],\n" +
+                                "\"productList\": []\n" +
+                                "}"
+                );
+
+                // Verify
+                GroceryList actual = new Gson().fromJson(response.body().string(), GroceryList.class);
+                assertNotNull(actual);
+
+                assertEquals(actual.getName(), listName);
+
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(TestConfig.SLEEP_TIME);
     }
 
     @Test
