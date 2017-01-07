@@ -5,5 +5,5 @@ package me.evrooij;
  */
 public class TestConfig {
     // In ms
-    public static final int SLEEP_TIME = 2000;
+    public static final int SLEEP_TIME = 200;
 }

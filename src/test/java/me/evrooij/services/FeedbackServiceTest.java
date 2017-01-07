@@ -94,8 +94,7 @@ public class FeedbackServiceTest {
                                 "\"sender\": {\n" +
                                 String.format("    \"id\": %s,\n", thisAccount.getId()) +
                                 String.format("    \"username\": \"%s\",\n", thisAccount.getUsername()) +
-                                String.format("    \"email\": \"%s\",\n", thisAccount.getEmail()) +
-                                String.format("    \"password\": \"%s\"\n", thisAccount.getPassword()) +
+                                String.format("    \"email\": \"%s\"\n", thisAccount.getEmail()) +
                                 "    }\n" +
                                 "}"
                 );

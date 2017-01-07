@@ -43,8 +43,10 @@ public class FeedbackManager {
     public boolean deleteFeedback(int id) {
         Feedback feedback = feedbackDAO.get(id);
         if (feedback == null) {
+            System.out.println("Throwing nullpointer");
             throw new NullPointerException(String.format(EXCEPTION_FEEDBACK_DOES_NOT_EXIST, id));
         }
+        System.out.println("Deleting in manager");
         feedbackDAO.delete(feedback);
         return true;
     }

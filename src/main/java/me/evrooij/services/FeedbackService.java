@@ -25,7 +25,7 @@ public class FeedbackService {
             } else {
                 return new ResponseMessage("Error: feedback was not deleted.");
             }
-        });
+        }, json());
 
         post(PATH_FEEDBACK_NEW, (request, response) -> {
             String json = request.body();
@@ -38,7 +38,6 @@ public class FeedbackService {
 
             if (feedbackFromDb != null) {
                 System.out.println(String.format("Feedback inserted: %s", feedbackFromDb.toString()));
-                response.status(400);
                 return new ResponseMessage("Thank you for your feedback!");
             } else {
                 return new ResponseMessage("Could not insert feedback. Please try again later.");

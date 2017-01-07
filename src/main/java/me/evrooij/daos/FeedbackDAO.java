@@ -34,15 +34,8 @@ public class FeedbackDAO {
     }
 
     public void delete(Feedback feedback) {
-        Session session = getSession();
-
-        session.delete(feedback);
-
-        //This makes the pending delete to be done
-        session.flush();
-    }
-
-    private Session getSession() {
-        return entityManager.unwrap(Session.class);
+        entityManager.getTransaction().begin();
+        entityManager.remove(feedback);
+        entityManager.getTransaction().commit();
     }
 }
