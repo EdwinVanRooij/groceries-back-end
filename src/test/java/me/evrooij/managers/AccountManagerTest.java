@@ -75,8 +75,11 @@ public class AccountManagerTest {
          * Test if it doesn't return anything when we have a correct getAccount, but account was not registerAccounted
          */
         // Note how we don't registerAccount the account first
-        Account accountFail = accountManager.getAccount(CORRECT_USERNAME_3, CORRECT_PASS_3);
-        assertNull(accountFail);
+        try {
+            accountManager.getAccount(CORRECT_USERNAME_3, CORRECT_PASS_3);
+            fail();
+        } catch (InvalidLoginCredentialsException e) {
+        }
     }
 
     @Test

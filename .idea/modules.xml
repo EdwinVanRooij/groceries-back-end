@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/GroceriesBackEnd.iml" filepath="$PROJECT_DIR$/.idea/modules/GroceriesBackEnd.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GroceriesBackEnd_main.iml" filepath="$PROJECT_DIR$/.idea/modules/GroceriesBackEnd_main.iml" group="GroceriesBackEnd" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GroceriesBackEnd_test.iml" filepath="$PROJECT_DIR$/.idea/modules/GroceriesBackEnd_test.iml" group="GroceriesBackEnd" />
     </modules>
   </component>
 </project>

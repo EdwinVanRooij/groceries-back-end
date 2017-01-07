@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
  * @author eddy on 7-1-17.
  */
 public class FeedbackServiceTest {
+
     private DummyDataGenerator dummyDataGenerator;
 
     private Account thisAccount;
