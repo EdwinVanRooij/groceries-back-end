@@ -36,6 +36,10 @@ public class Feedback {
     public Feedback() {
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getMessage() {
         return message;
     }

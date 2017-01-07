@@ -1,9 +1,11 @@
 package me.evrooij.util;
 
 import me.evrooij.data.Account;
+import me.evrooij.data.Feedback;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
 import me.evrooij.managers.AccountManager;
+import me.evrooij.managers.FeedbackManager;
 import me.evrooij.managers.GroceryListManager;
 
 /**
@@ -17,29 +19,42 @@ public class DummyDataGenerator {
 
     private static final String[] GROCERY_LIST_NAMES = new String[]{"MyList 1", "MyList 2", "MyList 3", "MyList 4"};
 
+    private static final String[] FEEDBACK_MESSAGES = new String[]{"Help me with this!", "Another bug!!", "So many bugs!!", "Please implement this thingy.."};
+
     private static final String PRODUCT_NAME = "Apples1";
     private static final int PRODUCT_AMOUNT = 3;
     private static final String PRODUCT_COMMENT = "The red ones1";
 
+    private int feedbackIndex = -1;
     private int productIndex = -1;
     private int groceryListIndex = -1;
     private int accountIndex = -1;
 
     private AccountManager accountManager;
     private GroceryListManager listManager;
+    private FeedbackManager feedbackManager;
 
     public DummyDataGenerator() {
         System.out.println("Initializing...");
         accountManager = new AccountManager();
         listManager = new GroceryListManager();
+        feedbackManager = new FeedbackManager();
+    }
+
+    /**
+     * Generates a new feedback item
+     */
+    public Feedback generateFeedback(Account sender) {
+        feedbackIndex++;
+        return feedbackManager.reportFeedback(FEEDBACK_MESSAGES[feedbackIndex], Feedback.Type.Bug, sender);
     }
 
     /**
      * Generates a new product
      */
-    public Product generateProduct() {
+    public Product generateProduct(GroceryList list, Account owner) {
         productIndex++;
-        return new Product(String.format("%s - %s", PRODUCT_NAME, productIndex), PRODUCT_AMOUNT, PRODUCT_COMMENT, "DummyName");
+        return listManager.addProduct(list.getId(), new Product(String.format("%s - %s", PRODUCT_NAME, productIndex), PRODUCT_AMOUNT, PRODUCT_COMMENT, owner.getUsername()));
     }
 
     /**

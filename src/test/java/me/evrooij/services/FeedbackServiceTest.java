@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import me.evrooij.TestConfig;
 import me.evrooij.data.Account;
 import me.evrooij.data.Feedback;
+import me.evrooij.data.Product;
 import me.evrooij.data.ResponseMessage;
+import me.evrooij.managers.FeedbackManager;
 import me.evrooij.util.DatabaseUtil;
 import me.evrooij.util.DummyDataGenerator;
 import me.evrooij.util.NetworkUtil;
@@ -27,6 +29,8 @@ public class FeedbackServiceTest {
 
     private Account thisAccount;
 
+    private FeedbackManager feedbackManager;
+
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         new DatabaseUtil().clean();
@@ -35,6 +39,8 @@ public class FeedbackServiceTest {
     @Before
     public void setUp() throws Exception {
         dummyDataGenerator = new DummyDataGenerator();
+
+
         thisAccount = dummyDataGenerator.generateAccount();
     }
 
@@ -43,6 +49,32 @@ public class FeedbackServiceTest {
         new DatabaseUtil().clean();
     }
 
+    @Test
+    public void deleteFeedback() throws Exception {
+        new Thread(() -> {
+            try {
+                Feedback feedback = dummyDataGenerator.generateFeedback(thisAccount);
+
+                Response response = NetworkUtil.delete(
+                        String.format("/feedback/%s", feedback.getId())
+                );
+
+                // Verify message
+                ResponseMessage expectedMessage = new ResponseMessage("Successfully deleted feedback.");
+                ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+                assertEquals(expectedMessage, actualMessage);
+
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(TestConfig.SLEEP_TIME);
+    }
 
     @Test
     public void newFeedback() throws Exception {

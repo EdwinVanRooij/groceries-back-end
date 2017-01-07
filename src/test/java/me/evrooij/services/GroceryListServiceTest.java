@@ -32,8 +32,6 @@ public class GroceryListServiceTest {
     private Account otherAccount;
     private GroceryList list;
 
-    private GroceryListManager groceryListManager;
-
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         new DatabaseUtil().clean();
@@ -41,7 +39,6 @@ public class GroceryListServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        groceryListManager = new GroceryListManager();
         dummyDataGenerator = new DummyDataGenerator();
 
         thisAccount = dummyDataGenerator.generateAccount();
@@ -169,7 +166,7 @@ public class GroceryListServiceTest {
     public void deleteProduct() throws Exception {
         new Thread(() -> {
             try {
-                Product product = groceryListManager.addProduct(list.getId(), dummyDataGenerator.generateProduct());
+                Product product = dummyDataGenerator.generateProduct(list, thisAccount);
 
                 Response response = NetworkUtil.delete(
                         String.format("/lists/%s/products/%s", list.getId(), product.getId())
@@ -194,7 +191,7 @@ public class GroceryListServiceTest {
 
     @Test
     public void editProduct() throws Exception {
-        Product product = groceryListManager.addProduct(list.getId(), dummyDataGenerator.generateProduct());
+        Product product = dummyDataGenerator.generateProduct(list, thisAccount);
         String newName = "nameee";
         int newAmount = 9000;
         String newComment = "Anothaa!!";
