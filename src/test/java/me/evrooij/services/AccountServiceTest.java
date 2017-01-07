@@ -18,18 +18,17 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author eddy on 1-1-17.
  */
-@SuppressWarnings("Duplicates")
 public class AccountServiceTest {
 
     private DummyDataGenerator dummyDataGenerator;
 
     private Account thisAccount;
     private Account otherAccount;
-
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -145,6 +144,39 @@ public class AccountServiceTest {
                 @SuppressWarnings("unchecked") List<Account> list = new Gson().fromJson(response.body().string(), List.class);
                 Account actual = list.get(0);
                 assertEquals(thisAccount, actual);
+
+                // Verify code
+                int expectedCode = 200;
+                int actualCode = response.code();
+                assertEquals(expectedCode, actualCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Thread.sleep(TestConfig.SLEEP_TIME);
+    }
+
+    @Test
+    public void registerAccount() throws Exception {
+        String extraString = "salt";
+        new Thread(() -> {
+            try {
+                Response response = NetworkUtil.post(
+                        "/users/register",
+                        "{\n" +
+                                String.format("\"password\": \"%s%s\",\n", extraString, thisAccount.getPassword()) +
+                                String.format("\"email\": \"%s%s\",\n", extraString, thisAccount.getEmail()) +
+                                String.format("\"username\": \"%s%s\"\n", extraString, thisAccount.getUsername()) +
+                                "}"
+                );
+
+                // Verify
+                Account actual = new Gson().fromJson(response.body().string(), Account.class);
+                assertNotNull(actual);
+
+                // Sample
+                assertEquals(extraString + thisAccount.getUsername(), actual.getUsername());
 
                 // Verify code
                 int expectedCode = 200;
