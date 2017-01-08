@@ -29,15 +29,13 @@ import static org.junit.Assert.assertNotNull;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AccountServiceTest {
 
-    private static DummyDataGenerator dummyDataGenerator;
-
     private static Account thisAccount;
     private static Account otherAccount;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         new DatabaseUtil().clean();
-        dummyDataGenerator = new DummyDataGenerator();
+        DummyDataGenerator dummyDataGenerator = new DummyDataGenerator();
         thisAccount = dummyDataGenerator.generateAccount();
         otherAccount = dummyDataGenerator.generateAccount();
     }
@@ -78,7 +76,9 @@ public class AccountServiceTest {
         );
 
         // Verify message
-        @SuppressWarnings("unchecked") List<Account> list = new Gson().fromJson(response.body().string(), List.class);
+        Type listType = new TypeToken<ArrayList<Account>>() {
+        }.getType();
+        List<Account> list = new Gson().fromJson(response.body().string(), listType);
         assertEquals(1, list.size());
 
         // Verify code
