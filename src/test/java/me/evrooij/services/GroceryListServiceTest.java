@@ -1,6 +1,7 @@
 package me.evrooij.services;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import me.evrooij.TestConfig;
 import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
@@ -11,12 +12,12 @@ import me.evrooij.util.DatabaseUtil;
 import me.evrooij.util.DummyDataGenerator;
 import me.evrooij.util.NetworkUtil;
 import okhttp3.Response;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -26,239 +27,180 @@ import static org.junit.Assert.assertNotNull;
 /**
  * @author eddy on 5-1-17.
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GroceryListServiceTest {
 
-    private DummyDataGenerator dummyDataGenerator;
-    private Account thisAccount;
-    private Account otherAccount;
-    private GroceryList list;
+    private static Account thisAccount;
+    private static Account otherAccount;
+
+    private static GroceryList createdList;
+    private static Product createdProduct;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         new DatabaseUtil().clean();
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        dummyDataGenerator = new DummyDataGenerator();
+        DummyDataGenerator dummyDataGenerator = new DummyDataGenerator();
 
         thisAccount = dummyDataGenerator.generateAccount();
         otherAccount = dummyDataGenerator.generateAccount();
-
-        list = dummyDataGenerator.generateList(thisAccount);
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
         new DatabaseUtil().clean();
     }
 
     @Test
-    public void newProduct() throws Exception {
+    public void test7_newProduct() throws Exception {
         String name = "nameee";
         int amount = 10;
         String comment = "Anothaa!!";
 
-        new Thread(() -> {
-            try {
-                Response response = NetworkUtil.put(
-                        String.format("/list/%s/products/new", list.getId()),
-                        "{\n" +
-                                String.format("\"name\": \"%s\",\n", name) +
-                                String.format("\"amount\": %s,\n", amount) +
-                                String.format("\"owner\": \"%s\",\n", thisAccount.getUsername()) +
-                                String.format("\"comment\": \"%s\"\n", comment) +
-                                "}"
-                );
+        Response response = NetworkUtil.post(
+                String.format("/list/%s/products/new", createdList.getId()),
+                "{\n" +
+                        String.format("\"name\": \"%s\",\n", name) +
+                        String.format("\"amount\": %s,\n", amount) +
+                        String.format("\"owner\": \"%s\",\n", thisAccount.getUsername()) +
+                        String.format("\"comment\": \"%s\"\n", comment) +
+                        "}"
+        );
 
-                // Verify message
-                Product actual = new Gson().fromJson(response.body().string(), Product.class);
-                assertNotNull(actual);
+        // Verify message
+        Product actual = new Gson().fromJson(response.body().string(), Product.class);
+        assertNotNull(actual);
 
-                // Sample
-                assertEquals(name, actual.getName());
+        // Sample
+        assertEquals(name, actual.getName());
 
-                // Verify code
-                assertEquals(HTTP_OK, response.code());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        // Set product for tests after this one
+        createdProduct = actual;
 
-        Thread.sleep(TestConfig.SLEEP_TIME);
+        // Verify code
+        assertEquals(HTTP_OK, response.code());
     }
 
     @Test
-    public void newList() throws Exception {
+    public void test1_newList() throws Exception {
         String listName = "NewList";
 
-        new Thread(() -> {
-            try {
-                Response response = NetworkUtil.post(
-                        "/lists/new",
-                        "{\n" +
-                                String.format("\"name\": \"%s\",\n", listName) +
-                                "\"owner\": {\n" +
-                                String.format("  \"id\": %s,\n", thisAccount.getId()) +
-                                String.format("  \"username\": \"%s\",\n", thisAccount.getUsername()) +
-                                String.format("  \"email\": \"%s\"\n", thisAccount.getEmail()) +
-                                "  },\n" +
-                                "    \"participants\": [{\n" +
-                                String.format("    \"id\": %s,\n", otherAccount.getId()) +
-                                String.format("    \"username\": \"%s\",\n", otherAccount.getUsername()) +
-                                String.format("    \"email\": \"%s\"\n", otherAccount.getEmail()) +
-                                "    }],\n" +
-                                "\"productList\": []\n" +
-                                "}"
-                );
+        Response response = NetworkUtil.post(
+                "/lists/new",
+                "{\n" +
+                        String.format("\"name\": \"%s\",\n", listName) +
+                        "\"owner\": {\n" +
+                        String.format("  \"id\": %s,\n", thisAccount.getId()) +
+                        String.format("  \"username\": \"%s\",\n", thisAccount.getUsername()) +
+                        String.format("  \"email\": \"%s\"\n", thisAccount.getEmail()) +
+                        "  },\n" +
+                        "    \"participants\": [],\n" +
+                        "\"productList\": []\n" +
+                        "}"
+        );
 
-                // Verify
-                GroceryList actual = new Gson().fromJson(response.body().string(), GroceryList.class);
-                assertNotNull(actual);
+        // Verify
+        GroceryList actual = new Gson().fromJson(response.body().string(), GroceryList.class);
+        assertNotNull(actual);
 
-                assertEquals(actual.getName(), listName);
+        assertEquals(actual.getName(), listName);
 
-                // Verify code
-                assertEquals(HTTP_OK, response.code());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        // Set list for tests after this one
+        createdList = actual;
 
-        Thread.sleep(TestConfig.SLEEP_TIME);
+        // Verify code
+        assertEquals(HTTP_OK, response.code());
     }
 
     @Test
-    public void addParticipant() throws Exception {
-        new Thread(() -> {
-            try {
-                Response response = NetworkUtil.post(
-                        String.format("/lists/%s/participants/new", list.getId()),
-                        "{\n" +
-                                String.format("\"id\": %s,\n", otherAccount.getId()) +
-                                String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
-                                String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
-                                "}"
-                );
+    public void test2_addParticipant() throws Exception {
+        Response response = NetworkUtil.post(
+                String.format("/lists/%s/participants/new", createdList.getId()),
+                "{\n" +
+                        String.format("\"id\": %s,\n", otherAccount.getId()) +
+                        String.format("\"username\": \"%s\",\n", otherAccount.getUsername()) +
+                        String.format("\"email\": \"%s\"\n", otherAccount.getEmail()) +
+                        "}"
+        );
 
-                // Verify message
-                ResponseMessage expectedMessage = new ResponseMessage("Successfully added new participant.");
-                ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
-                assertEquals(expectedMessage, actualMessage);
+        // Verify message
+        ResponseMessage expectedMessage = new ResponseMessage("Successfully added new participant.");
+        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+        assertEquals(expectedMessage, actualMessage);
 
-                // Verify code
-                assertEquals(HTTP_OK, response.code());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        Thread.sleep(TestConfig.SLEEP_TIME);
+        // Verify code
+        assertEquals(HTTP_OK, response.code());
     }
 
     @Test
-    public void deleteProduct() throws Exception {
-        new Thread(() -> {
-            try {
-                Product product = dummyDataGenerator.generateProduct(list, thisAccount);
+    public void test9_deleteProduct() throws Exception {
+        Response response = NetworkUtil.delete(
+                String.format("/lists/%s/products/%s", createdList.getId(), createdProduct.getId())
+        );
 
-                Response response = NetworkUtil.delete(
-                        String.format("/lists/%s/products/%s", list.getId(), product.getId())
-                );
+        // Verify message
+        ResponseMessage expectedMessage = new ResponseMessage("Successfully deleted product.");
+        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+        assertEquals(expectedMessage, actualMessage);
 
-                // Verify message
-                ResponseMessage expectedMessage = new ResponseMessage("Successfully deleted product.");
-                ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
-                assertEquals(expectedMessage, actualMessage);
-
-                // Verify code
-                assertEquals(HTTP_OK, response.code());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        Thread.sleep(TestConfig.SLEEP_TIME);
+        // Verify code
+        assertEquals(HTTP_OK, response.code());
     }
 
     @Test
-    public void editProduct() throws Exception {
-        Product product = dummyDataGenerator.generateProduct(list, thisAccount);
+    public void test8_editProduct() throws Exception {
         String newName = "nameee";
         int newAmount = 9000;
         String newComment = "Anothaa!!";
 
-        new Thread(() -> {
-            try {
-                Response response = NetworkUtil.put(
-                        String.format("/lists/%s/products/%s/edit", list.getId(), product.getId()),
-                        "{\n" +
-                                String.format("\"id\": %s,\n", product.getId()) +
-                                String.format("\"name\": \"%s\",\n", newName) +
-                                String.format("\"amount\": %s,\n", newAmount) +
-                                String.format("\"owner\": \"%s\",\n", product.getOwner()) +
-                                String.format("\"comment\": \"%s\"\n", newComment) +
-                                "}"
-                );
+        Response response = NetworkUtil.put(
+                String.format("/lists/%s/products/%s/edit", createdList.getId(), createdProduct.getId()),
+                "{\n" +
+                        String.format("\"id\": %s,\n", createdProduct.getId()) +
+                        String.format("\"name\": \"%s\",\n", newName) +
+                        String.format("\"amount\": %s,\n", newAmount) +
+                        String.format("\"owner\": \"%s\",\n", createdProduct.getOwner()) +
+                        String.format("\"comment\": \"%s\"\n", newComment) +
+                        "}"
+        );
 
-                // Verify message
-                ResponseMessage expectedMessage = new ResponseMessage("Product updated successfully.");
-                ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
-                assertEquals(expectedMessage, actualMessage);
+        // Verify message
+        ResponseMessage expectedMessage = new ResponseMessage("Product updated successfully.");
+        ResponseMessage actualMessage = new Gson().fromJson(response.body().string(), ResponseMessage.class);
+        assertEquals(expectedMessage, actualMessage);
 
-                // Verify code
-                assertEquals(HTTP_OK, response.code());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        Thread.sleep(TestConfig.SLEEP_TIME);
+        // Verify code
+        assertEquals(HTTP_OK, response.code());
     }
 
     @Test
-    public void getList() throws Exception {
-        new Thread(() -> {
-            try {
-                Response response = NetworkUtil.get(
-                        String.format("/lists/%s", list.getId())
-                );
+    public void test3_getList() throws Exception {
+        Response response = NetworkUtil.get(
+                String.format("/lists/%s", createdList.getId())
+        );
 
-                // Verify
-                GroceryList actual = new Gson().fromJson(response.body().string(), GroceryList.class);
-                assertEquals(list, actual);
+        // Verify
+        GroceryList actual = new Gson().fromJson(response.body().string(), GroceryList.class);
+        assertEquals(createdList, actual);
 
-                // Verify code
-                assertEquals(HTTP_OK, response.code());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        Thread.sleep(TestConfig.SLEEP_TIME);
+        // Verify code
+        assertEquals(HTTP_OK, response.code());
     }
 
     @Test
-    public void getLists() throws Exception {
-        new Thread(() -> {
-            try {
-                Response response = NetworkUtil.get(
-                        String.format("/user/%s", list.getId())
-                );
+    public void test4_getLists() throws Exception {
+        Response response = NetworkUtil.get(
+                String.format("/user/%s/lists", thisAccount.getId())
+        );
 
-                // Verify
-                @SuppressWarnings("unchecked") List<GroceryList> list = new Gson().fromJson(response.body().string(), List.class);
-                GroceryList actual = list.get(0);
-                assertEquals(list, actual);
+        // Verify
+        Type listType = new TypeToken<ArrayList<GroceryList>>() {
+        }.getType();
+        List<GroceryList> list = new Gson().fromJson(response.body().string(), listType);
+        GroceryList actual = list.get(0);
+        assertEquals(createdList, actual);
 
-                // Verify code
-                assertEquals(HTTP_OK, response.code());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
 
-        Thread.sleep(TestConfig.SLEEP_TIME);
+        // Verify code
+        assertEquals(HTTP_OK, response.code());
     }
-
 }
