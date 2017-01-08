@@ -19,6 +19,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
+import static java.net.HttpURLConnection.HTTP_OK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -67,9 +68,7 @@ public class FeedbackServiceTest {
                 assertNotNull(actualList);
 
                 // Verify code
-                int expectedCode = 200;
-                int actualCode = response.code();
-                assertEquals(expectedCode, actualCode);
+                assertEquals(HTTP_OK, response.code());
             } catch (IOException e) {
                 e.printStackTrace();
                 fail();
@@ -96,9 +95,7 @@ public class FeedbackServiceTest {
                 assertEquals(expectedMessage, actualMessage);
 
                 // Verify code
-                int expectedCode = 200;
-                int actualCode = response.code();
-                assertEquals(expectedCode, actualCode);
+                assertEquals(HTTP_OK, response.code());
             } catch (IOException e) {
                 e.printStackTrace();
                 fail();
@@ -135,9 +132,7 @@ public class FeedbackServiceTest {
                 assertEquals(expectedMessage, actualMessage);
 
                 // Verify code
-                int expectedCode = 200;
-                int actualCode = response.code();
-                assertEquals(expectedCode, actualCode);
+                assertEquals(HTTP_OK, response.code());
             } catch (IOException e) {
                 e.printStackTrace();
                 fail();

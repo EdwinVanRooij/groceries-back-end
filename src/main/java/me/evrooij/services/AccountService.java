@@ -9,6 +9,7 @@ import me.evrooij.util.JsonUtil;
 import java.util.List;
 import java.util.Map;
 
+import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static me.evrooij.Config.*;
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
@@ -81,7 +82,7 @@ public class AccountService {
         after((request, response) -> response.type("application/json"));
 
         exception(Exception.class, (exception, request, response) -> {
-            response.status(400);
+            response.status(HTTP_BAD_REQUEST);
             response.type("application/json");
             response.body(JsonUtil.toJson(new ResponseMessage(exception)));
         });

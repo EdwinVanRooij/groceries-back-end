@@ -35,7 +35,6 @@ public class DummyDataGenerator {
     private FeedbackManager feedbackManager;
 
     public DummyDataGenerator() {
-        System.out.println("Initializing...");
         accountManager = new AccountManager();
         listManager = new GroceryListManager();
         feedbackManager = new FeedbackManager();

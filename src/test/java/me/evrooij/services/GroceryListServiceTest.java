@@ -19,6 +19,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
+import static java.net.HttpURLConnection.HTTP_OK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -78,10 +79,7 @@ public class GroceryListServiceTest {
                 assertEquals(name, actual.getName());
 
                 // Verify code
-                int expectedCode = 200;
-                int actualCode = response.code();
-                assertEquals(expectedCode, actualCode);
-
+                assertEquals(HTTP_OK, response.code());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -121,9 +119,7 @@ public class GroceryListServiceTest {
                 assertEquals(actual.getName(), listName);
 
                 // Verify code
-                int expectedCode = 200;
-                int actualCode = response.code();
-                assertEquals(expectedCode, actualCode);
+                assertEquals(HTTP_OK, response.code());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -151,9 +147,7 @@ public class GroceryListServiceTest {
                 assertEquals(expectedMessage, actualMessage);
 
                 // Verify code
-                int expectedCode = 200;
-                int actualCode = response.code();
-                assertEquals(expectedCode, actualCode);
+                assertEquals(HTTP_OK, response.code());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -178,9 +172,7 @@ public class GroceryListServiceTest {
                 assertEquals(expectedMessage, actualMessage);
 
                 // Verify code
-                int expectedCode = 200;
-                int actualCode = response.code();
-                assertEquals(expectedCode, actualCode);
+                assertEquals(HTTP_OK, response.code());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -215,10 +207,7 @@ public class GroceryListServiceTest {
                 assertEquals(expectedMessage, actualMessage);
 
                 // Verify code
-                int expectedCode = 200;
-                int actualCode = response.code();
-                assertEquals(expectedCode, actualCode);
-
+                assertEquals(HTTP_OK, response.code());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -240,9 +229,7 @@ public class GroceryListServiceTest {
                 assertEquals(list, actual);
 
                 // Verify code
-                int expectedCode = 200;
-                int actualCode = response.code();
-                assertEquals(expectedCode, actualCode);
+                assertEquals(HTTP_OK, response.code());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -265,9 +252,7 @@ public class GroceryListServiceTest {
                 assertEquals(list, actual);
 
                 // Verify code
-                int expectedCode = 200;
-                int actualCode = response.code();
-                assertEquals(expectedCode, actualCode);
+                assertEquals(HTTP_OK, response.code());
             } catch (IOException e) {
                 e.printStackTrace();
             }
