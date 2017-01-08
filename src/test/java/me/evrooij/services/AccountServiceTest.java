@@ -2,11 +2,8 @@ package me.evrooij.services;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import me.evrooij.Main;
-import me.evrooij.TestConfig;
 import me.evrooij.data.Account;
 import me.evrooij.data.ResponseMessage;
-import me.evrooij.managers.AccountManager;
 import me.evrooij.util.DatabaseUtil;
 import me.evrooij.util.DummyDataGenerator;
 import me.evrooij.util.NetworkUtil;
@@ -14,7 +11,6 @@ import okhttp3.Response;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
