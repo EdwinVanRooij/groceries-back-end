@@ -3,20 +3,25 @@ version '1.0'
 
 apply plugin: 'java'
 
-//mainClassName = 'me.evrooij.BlogService'
 sourceCompatibility = 1.8
 
-//create a single Jar with all dependencies
-task fatJar(type: Jar) {
+jar {
     manifest {
-        attributes 'Implementation-Title': 'Gradle Jar File Example',
-                'Implementation-Version': version,
-                'Main-Class': 'me.evrooij.Main'
+        attributes "Main-Class": "me.evrooij.Main"
     }
-    baseName = project.name + '-all'
+
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
 }
+
+////create a single Jar with all dependencies
+//task fatJar(type: Jar) {
+//    manifest {
+//        attributes 'Main-Class': 'me.evrooij.Main'
+//    }
+//    baseName = project.name + '-all'
+//    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+//    with jar
+//}
 
 repositories {
     mavenCentral()
