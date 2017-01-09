@@ -7,7 +7,6 @@ import me.evrooij.data.Feedback;
 import me.evrooij.data.ResponseMessage;
 import me.evrooij.util.DatabaseUtil;
 import me.evrooij.util.DummyDataGenerator;
-import me.evrooij.util.NetworkUtil;
 import okhttp3.Response;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
@@ -17,9 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.net.HttpURLConnection.HTTP_OK;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static me.evrooij.NetworkUtil.*;
+import static org.junit.Assert.*;
 
 /**
  * @author eddy on 7-1-17.
@@ -45,7 +43,7 @@ public class FeedbackServiceTest {
 
     @Test
     public void test2_getAllFeedback() throws Exception {
-        Response response = NetworkUtil.get(
+        Response response = get(
                 "/feedback"
         );
 
@@ -65,7 +63,7 @@ public class FeedbackServiceTest {
 
     @Test
     public void test3_deleteFeedback() throws Exception {
-        Response response = NetworkUtil.delete(
+        Response response = delete(
                 String.format("/feedback/%s", createdFeedback.getId())
         );
 
@@ -84,7 +82,7 @@ public class FeedbackServiceTest {
         Feedback.Type type = Feedback.Type.Bug;
         int typeInt = type.ordinal();
 
-        Response response = NetworkUtil.post(
+        Response response = post(
                 "/feedback/new",
                 "{\n" +
                         String.format("\"message\": \"%s\",\n", message) +

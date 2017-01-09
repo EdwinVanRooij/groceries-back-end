@@ -6,7 +6,6 @@ import me.evrooij.data.Account;
 import me.evrooij.data.ResponseMessage;
 import me.evrooij.util.DatabaseUtil;
 import me.evrooij.util.DummyDataGenerator;
-import me.evrooij.util.NetworkUtil;
 import okhttp3.Response;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
@@ -15,9 +14,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.evrooij.NetworkUtil.*;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * @author eddy on 1-1-17.
@@ -43,7 +42,7 @@ public class AccountServiceTest {
 
     @Test
     public void test1_addFriend() throws Exception {
-        Response response = NetworkUtil.post(
+        Response response = post(
                 String.format("/accounts/%s/friends/add", thisAccount.getId()),
                 "{\n" +
                         String.format("\"id\": %s,\n", otherAccount.getId()) +
@@ -67,7 +66,7 @@ public class AccountServiceTest {
         // we added another account in the test before this one. @ matches with any email.
         String query = "@";
 
-        Response response = NetworkUtil.get(
+        Response response = get(
                 String.format("/accounts/%s/friends/find?query=%s", thisAccount.getId(), query)
         );
 
@@ -83,7 +82,7 @@ public class AccountServiceTest {
 
     @Test
     public void test3_getFriends() throws Exception {
-        Response response = NetworkUtil.get(
+        Response response = get(
                 String.format("/accounts/%s/friends", thisAccount.getId())
         );
 
@@ -100,7 +99,7 @@ public class AccountServiceTest {
 
     @Test
     public void getAccount() throws Exception {
-        Response response = NetworkUtil.get(
+        Response response = get(
                 String.format("/users/login?username=%s&password=%s", thisAccount.getUsername(), thisAccount.getPassword())
         );
 
@@ -115,7 +114,7 @@ public class AccountServiceTest {
     @Test
     public void registerAccount() throws Exception {
         String extraString = "salt";
-        Response response = NetworkUtil.post(
+        Response response = post(
                 "/users/register",
                 "{\n" +
                         String.format("\"password\": \"%s%s\",\n", extraString, thisAccount.getPassword()) +

@@ -8,7 +8,6 @@ import me.evrooij.data.Product;
 import me.evrooij.data.ResponseMessage;
 import me.evrooij.util.DatabaseUtil;
 import me.evrooij.util.DummyDataGenerator;
-import me.evrooij.util.NetworkUtil;
 import okhttp3.Response;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
@@ -17,6 +16,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.evrooij.NetworkUtil.*;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -53,7 +53,7 @@ public class GroceryListServiceTest {
         int amount = 10;
         String comment = "Anothaa!!";
 
-        Response response = NetworkUtil.post(
+        Response response = post(
                 String.format("/list/%s/products/new", createdList.getId()),
                 "{\n" +
                         String.format("\"name\": \"%s\",\n", name) +
@@ -81,7 +81,7 @@ public class GroceryListServiceTest {
     public void test1_newList() throws Exception {
         String listName = "NewList";
 
-        Response response = NetworkUtil.post(
+        Response response = post(
                 "/lists/new",
                 "{\n" +
                         String.format("\"name\": \"%s\",\n", listName) +
@@ -110,7 +110,7 @@ public class GroceryListServiceTest {
 
     @Test
     public void test2_addParticipant() throws Exception {
-        Response response = NetworkUtil.post(
+        Response response = post(
                 String.format("/lists/%s/participants/new", createdList.getId()),
                 "{\n" +
                         String.format("\"id\": %s,\n", otherAccount.getId()) +
@@ -130,7 +130,7 @@ public class GroceryListServiceTest {
 
     @Test
     public void test9_deleteProduct() throws Exception {
-        Response response = NetworkUtil.delete(
+        Response response = delete(
                 String.format("/lists/%s/products/%s", createdList.getId(), createdProduct.getId())
         );
 
@@ -149,7 +149,7 @@ public class GroceryListServiceTest {
         int newAmount = 9000;
         String newComment = "Anothaa!!";
 
-        Response response = NetworkUtil.put(
+        Response response = put(
                 String.format("/lists/%s/products/%s/edit", createdList.getId(), createdProduct.getId()),
                 "{\n" +
                         String.format("\"id\": %s,\n", createdProduct.getId()) +
@@ -171,7 +171,7 @@ public class GroceryListServiceTest {
 
     @Test
     public void test3_getList() throws Exception {
-        Response response = NetworkUtil.get(
+        Response response = get(
                 String.format("/lists/%s", createdList.getId())
         );
 
@@ -185,7 +185,7 @@ public class GroceryListServiceTest {
 
     @Test
     public void test4_getLists() throws Exception {
-        Response response = NetworkUtil.get(
+        Response response = get(
                 String.format("/user/%s/lists", thisAccount.getId())
         );
 

@@ -1,4 +1,4 @@
-package me.evrooij.util;
+package me.evrooij;
 
 import me.evrooij.Config;
 import okhttp3.*;
