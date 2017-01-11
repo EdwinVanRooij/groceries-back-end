@@ -23,13 +23,13 @@ public class HibernateUtil {
     }
 
     private HibernateUtil() {
-        try {
-            String path = "./hibernate.properties";
-            FileInputStream fis = new FileInputStream(path);
-            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+        String path = "./hibernate.properties";
+        try (FileInputStream fis = new FileInputStream(path);
+             BufferedReader in = new BufferedReader(new InputStreamReader(fis))) {
+
             Properties prop = new Properties();
             prop.load(in);
-            in.close();
+
             entityManagerFactory = Persistence.createEntityManagerFactory("GroceriesPersistenceUnit", prop);
         } catch (IOException e) {
             e.printStackTrace();

@@ -28,6 +28,30 @@ public class AccountDAO {
     }
 
     /**
+     * Get the password hash for a username.
+     *
+     * @param username username of the account
+     * @return password hash of the account
+     */
+    public String getHash(String username) {
+        String result;
+
+        entityManager.getTransaction().begin();
+        Query query = getSession().createQuery("SELECT a.password FROM Account a WHERE a.username = :username");
+        query.setString("username", username);
+        List resultList = query.getResultList();
+        if (resultList == null) {
+            result = null;
+        } else if (resultList.size() == 0) {
+            result = null;
+        } else {
+            result = (String) query.getResultList().get(0);
+        }
+        entityManager.getTransaction().commit();
+        return result;
+    }
+
+    /**
      * Retrieves an account from the database if username/password combination is correct
      *
      * @param username username of the account

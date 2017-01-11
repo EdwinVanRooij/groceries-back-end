@@ -98,13 +98,17 @@ public class Account {
      * @return true on match, false on no match
      */
     public boolean matchesFriendSearch(int searcherId, String searchQuery) {
+        System.out.println("Starting matches friend...");
+
         // If this account is the account who's searching, don't match
         if (getId() == searcherId) {
+            System.out.println("Same id");
             return false;
         }
 
         // If the account already is a friend, don't match
         if (isFriendsWith(searcherId)) {
+            System.out.println("already friend");
             return false;
         }
 
@@ -129,6 +133,8 @@ public class Account {
             System.out.println(String.format("Matching true on query %s to partial mail %s", searchQuery, email));
             return true;
         }
+
+        System.out.println("Didn't match any friends...");
 
         // Didn't match any of the above, so it doesn't match this account
         return false;

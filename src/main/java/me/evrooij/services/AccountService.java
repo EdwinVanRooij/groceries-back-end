@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
-import static me.evrooij.Config.*;
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
 
@@ -23,7 +22,7 @@ public class AccountService {
         get("/users/login", (request, response) -> {
             String username = request.queryParams("username");
             String password = request.queryParams("password");
-            return accountManager.getAccount(username, password);
+            return accountManager.login(username, password);
         }, json());
 
         post("/users/register", (request, response) -> {
@@ -46,7 +45,10 @@ public class AccountService {
 
             String searchQuery = request.queryParams("query");
 
-            return accountManager.searchFriends(accountId, searchQuery);
+            List<Account> accountList = accountManager.searchFriends(accountId, searchQuery);
+            System.out.println(String.format("Returning a list of %s accounts in find account", accountList.size()));
+
+            return accountList;
         }, json());
 
         get("/accounts/:accountId/friends", (request, response) -> {

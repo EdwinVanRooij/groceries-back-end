@@ -30,9 +30,6 @@ public class AccountServiceTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         new DatabaseUtil().clean();
-        DummyDataGenerator dummyDataGenerator = new DummyDataGenerator();
-        thisAccount = dummyDataGenerator.generateAccount();
-        otherAccount = dummyDataGenerator.generateAccount();
     }
 
     @AfterClass
@@ -41,7 +38,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void test1_addFriend() throws Exception {
+    public void test4_addFriend() throws Exception {
         Response response = post(
                 String.format("/accounts/%s/friends/add", thisAccount.getId()),
                 "{\n" +
@@ -61,7 +58,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void test2_findFriend() throws Exception {
+    public void test3_findFriend() throws Exception {
         // Using '@' as search query, should return one account, since
         // we added another account in the test before this one. @ matches with any email.
         String query = "@";
@@ -81,7 +78,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void test3_getFriends() throws Exception {
+    public void test5_getFriends() throws Exception {
         Response response = get(
                 String.format("/accounts/%s/friends", thisAccount.getId())
         );
@@ -98,39 +95,62 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void getAccount() throws Exception {
+    public void test2_getAccount() throws Exception {
+        String password = "password";
         Response response = get(
-                String.format("/users/login?username=%s&password=%s", thisAccount.getUsername(), thisAccount.getPassword())
+                String.format("/users/login?username=%s&password=%s", thisAccount.getUsername(), password)
+        );
+        String password2 = "password";
+        Response response2 = get(
+                String.format("/users/login?username=%s&password=%s", otherAccount.getUsername(), password2)
         );
 
         // Verify Account
         Account actual = new Gson().fromJson(response.body().string(), Account.class);
         assertEquals(thisAccount, actual);
 
+        Account actual2 = new Gson().fromJson(response2.body().string(), Account.class);
+        assertEquals(otherAccount, actual2);
+
         // Verify code
         assertEquals(HTTP_OK, response.code());
+        assertEquals(HTTP_OK, response2.code());
     }
 
     @Test
-    public void registerAccount() throws Exception {
-        String extraString = "salt";
-        Response response = post(
+    public void test1_registerAccount() throws Exception {
+        String userName1 = "UsernameOne";
+        String userName2 = "UsernameTwo";
+        String email1 = "mailOne@gmail.com";
+        String email2 = "mailTwo@gmail.com";
+        String password = "password";
+
+        Response response1 = post(
                 "/users/register",
                 "{\n" +
-                        String.format("\"password\": \"%s%s\",\n", extraString, thisAccount.getPassword()) +
-                        String.format("\"email\": \"%s%s\",\n", extraString, thisAccount.getEmail()) +
-                        String.format("\"username\": \"%s%s\"\n", extraString, thisAccount.getUsername()) +
+                        String.format("\"password\": \"%s\",\n", password) +
+                        String.format("\"email\": \"%s\",\n", email1) +
+                        String.format("\"username\": \"%s\"\n", userName1) +
                         "}"
         );
+        Response response2 = post("/users/register", "{\n" + String.format("\"password\": \"%s\",\n", password) + String.format("\"email\": \"%s\",\n", email2) + String.format("\"username\": \"%s\"\n", userName2) + "}");
 
         // Verify
-        Account actual = new Gson().fromJson(response.body().string(), Account.class);
-        assertNotNull(actual);
+        Account actual1 = new Gson().fromJson(response1.body().string(), Account.class);
+        Account actual2 = new Gson().fromJson(response2.body().string(), Account.class);
+        assertNotNull(actual1);
+        assertNotNull(actual2);
 
         // Sample
-        assertEquals(extraString + thisAccount.getUsername(), actual.getUsername());
+        assertEquals(userName1, actual1.getUsername());
+        assertEquals(userName2, actual2.getUsername());
 
         // Verify code
-        assertEquals(HTTP_OK, response.code());
+        assertEquals(HTTP_OK, response1.code());
+        assertEquals(HTTP_OK, response2.code());
+
+        // Set thisAccount and create a second one
+        thisAccount = actual1;
+        otherAccount = actual2;
     }
 }

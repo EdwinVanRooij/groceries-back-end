@@ -59,24 +59,24 @@ public class AccountManagerTest {
     }
 
     @Test
-    public void getAccount() throws Exception {
+    public void login() throws Exception {
         /*
-         * Happy flow: correct getAccount
+         * Happy flow: correct login
          */
         // Test one
         accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
-        Account account = accountManager.getAccount(CORRECT_USERNAME_1, CORRECT_PASS_1);
+        Account account = accountManager.login(CORRECT_USERNAME_1, CORRECT_PASS_1);
         assertNotNull(account);
         // Test two
         accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_2);
-        Account account2 = accountManager.getAccount(CORRECT_USERNAME_2, CORRECT_PASS_2);
+        Account account2 = accountManager.login(CORRECT_USERNAME_2, CORRECT_PASS_2);
         assertNotNull(account2);
         /*
-         * Test if it doesn't return anything when we have a correct getAccount, but account was not registerAccounted
+         * Test if it doesn't return anything when we have a correct login, but account was not registerAccounted
          */
         // Note how we don't registerAccount the account first
         try {
-            accountManager.getAccount(CORRECT_USERNAME_3, CORRECT_PASS_3);
+            accountManager.login(CORRECT_USERNAME_3, CORRECT_PASS_3);
             fail();
         } catch (InvalidLoginCredentialsException e) {
         }
@@ -181,9 +181,8 @@ public class AccountManagerTest {
         // Try to remove previous account again, which should be deleted now
         try {
             accountManager.removeAccount(CORRECT_USERNAME_1, CORRECT_PASS_1);
-            Assert.fail();
+            fail();
         } catch (InvalidLoginCredentialsException e) {
-            e.printStackTrace();
         }
         // Robustness checks
         try {

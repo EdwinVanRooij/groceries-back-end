@@ -8,6 +8,8 @@ import me.evrooij.exceptions.InvalidLoginCredentialsException;
 import me.evrooij.util.HashUtil;
 
 import java.security.InvalidParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class AccountManager {
      * @return account object
      */
     @SuppressWarnings("JavaDoc")
-    public Account getAccount(int id) {
+    private Account getAccount(int id) {
         return accountDAO.get(id);
     }
 
@@ -37,12 +39,33 @@ public class AccountManager {
      * @return returns the account on correct login credentials, null on incorrect login credentials
      */
     @SuppressWarnings("JavaDoc")
-    public Account getAccount(String username, String password) throws InvalidLoginCredentialsException {
-        Account account = accountDAO.get(username, password);
-        if (account == null) {
+    public Account login(String username, String password) throws InvalidLoginCredentialsException, InvalidKeySpecException, NoSuchAlgorithmException {
+        return validateLoginCredentials(username, password);
+    }
+
+    /**
+     * Returns an account on correct login credentials
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws InvalidLoginCredentialsException
+     * @throws InvalidKeySpecException
+     * @throws NoSuchAlgorithmException
+     */
+    @SuppressWarnings("JavaDoc")
+    private Account validateLoginCredentials(String username, String password) throws InvalidLoginCredentialsException, InvalidKeySpecException, NoSuchAlgorithmException {
+        String hash = accountDAO.getHash(username);
+        if (hash == null) {
             throw new InvalidLoginCredentialsException("Incorrect login credentials.");
         }
-        return account;
+
+        if (HashUtil.validatePassword(password, hash)) {
+            // Password was correct, return account
+            return accountDAO.get(username, hash);
+        } else {
+            throw new InvalidLoginCredentialsException("Incorrect login credentials.");
+        }
     }
 
     /**
@@ -87,7 +110,11 @@ public class AccountManager {
         }
 
         // Hash password
-        password = HashUtil.hash(password);
+        try {
+            password = HashUtil.createHash(password);
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
 
         return accountDAO.create(username, email, password);
     }
@@ -103,12 +130,9 @@ public class AccountManager {
      * @throws InvalidLoginCredentialsException on incorrect login credentials
      */
     @SuppressWarnings("JavaDoc")
-    public boolean removeAccount(String username, String password) throws InvalidLoginCredentialsException {
-        Account account = accountDAO.get(username, password);
-        if (account == null) {
-            throw new InvalidLoginCredentialsException("Invalid login credentials. Please try again.");
-        }
-        accountDAO.deleteAccount(account);
+    public boolean removeAccount(String username, String password) throws InvalidLoginCredentialsException, InvalidKeySpecException, NoSuchAlgorithmException {
+        Account a = validateLoginCredentials(username, password);
+        accountDAO.deleteAccount(a);
         return true;
     }
 
