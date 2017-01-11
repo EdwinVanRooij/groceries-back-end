@@ -5,6 +5,7 @@ import me.evrooij.data.Account;
 import me.evrooij.exceptions.InstanceDoesNotExistException;
 import me.evrooij.exceptions.InvalidFriendRequestException;
 import me.evrooij.exceptions.InvalidLoginCredentialsException;
+import me.evrooij.util.HashUtil;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -84,6 +85,9 @@ public class AccountManager {
             // Invalid password
             throw new InvalidParameterException("Password must be at least 8 characters.");
         }
+
+        // Hash password
+        password = HashUtil.hash(password);
 
         return accountDAO.create(username, email, password);
     }

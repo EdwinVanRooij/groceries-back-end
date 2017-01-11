@@ -6,9 +6,6 @@ import me.evrooij.data.ResponseMessage;
 import me.evrooij.managers.FeedbackManager;
 import me.evrooij.util.JsonUtil;
 
-import static me.evrooij.Config.PATH_FEEDBACK_DELETE;
-import static me.evrooij.Config.PATH_FEEDBACK_LIST;
-import static me.evrooij.Config.PATH_FEEDBACK_NEW;
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
 
@@ -18,11 +15,11 @@ public class FeedbackService {
     public FeedbackService() {
         feedbackManager = new FeedbackManager();
 
-        get(PATH_FEEDBACK_LIST, (request, response) -> {
+        get("/feedback", (request, response) -> {
             return feedbackManager.getAllFeedback();
         }, json());
 
-        delete(PATH_FEEDBACK_DELETE, (request, response) -> {
+        delete("/feedback/:id", (request, response) -> {
             int id = Integer.valueOf(request.params(":id"));
 
             if (feedbackManager.deleteFeedback(id)) {
@@ -32,7 +29,7 @@ public class FeedbackService {
             }
         }, json());
 
-        post(PATH_FEEDBACK_NEW, (request, response) -> {
+        post("/feedback/new", (request, response) -> {
             String json = request.body();
             System.out.println(String.format("Received json2 from /bugs/new in req body: %s", json));
 

@@ -20,13 +20,13 @@ public class AccountService {
     public AccountService() {
         accountManager = new AccountManager();
 
-        get(PATH_LOGIN, (request, response) -> {
+        get("/users/login", (request, response) -> {
             String username = request.queryParams("username");
             String password = request.queryParams("password");
             return accountManager.getAccount(username, password);
         }, json());
 
-        post(PATH_REGISTER, (request, response) -> {
+        post("/users/register", (request, response) -> {
             String json = request.body();
             System.out.println(String.format("Received json from /users/register in req body: %s", json));
 
@@ -41,7 +41,7 @@ public class AccountService {
             return returning;
         }, json());
 
-        get(PATH_FIND_FRIEND, (request, response) -> {
+        get("/accounts/:accountId/friends/find", (request, response) -> {
             int accountId = Integer.valueOf(request.params(":accountId"));
 
             String searchQuery = request.queryParams("query");
@@ -49,7 +49,7 @@ public class AccountService {
             return accountManager.searchFriends(accountId, searchQuery);
         }, json());
 
-        get(PATH_GET_FRIENDS, (request, response) -> {
+        get("/accounts/:accountId/friends", (request, response) -> {
             int accountId = Integer.valueOf(request.params(":accountId"));
 
             System.out.println(String.format("Searching for friends of account %s", accountId));
@@ -62,7 +62,7 @@ public class AccountService {
             return accountList;
         }, json());
 
-        post(PATH_ADD_FRIEND, (request, response) -> {
+        post("/accounts/:accountId/friends/add", (request, response) -> {
             int accountId = Integer.valueOf(request.params(":accountId"));
 
             String json = request.body();
