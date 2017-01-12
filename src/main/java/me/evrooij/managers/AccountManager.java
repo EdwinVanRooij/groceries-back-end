@@ -2,10 +2,12 @@ package me.evrooij.managers;
 
 import me.evrooij.daos.AccountDAO;
 import me.evrooij.data.Account;
+import me.evrooij.exceptions.DuplicateUsernameException;
 import me.evrooij.exceptions.InstanceDoesNotExistException;
 import me.evrooij.exceptions.InvalidFriendRequestException;
 import me.evrooij.exceptions.InvalidLoginCredentialsException;
 import me.evrooij.util.HashUtil;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -88,10 +90,16 @@ public class AccountManager {
      * @return the user account if successful, null if unsuccessful
      */
     @SuppressWarnings("JavaDoc")
-    public Account registerAccount(String username, String email, String password) {
+    public Account registerAccount(String username, String email, String password) throws DuplicateUsernameException {
         String regexUsername = "^[a-zA-Z0-9]{2,30}$";
         String regexEmail = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+\\.?[a-zA-Z0-9]*$";
         String regexPassword = "^.{8,100}$";
+
+        // Check if username already exists
+        if (accountDAO.usernameExists(username)) {
+            // Username exists
+            throw new DuplicateUsernameException(String.format("Username %s already exists.", username));
+        }
 
         // Match regular expressions with the user input
         if (!username.matches(regexUsername)) {

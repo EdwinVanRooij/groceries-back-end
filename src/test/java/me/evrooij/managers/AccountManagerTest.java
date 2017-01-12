@@ -1,6 +1,7 @@
 package me.evrooij.managers;
 
 import me.evrooij.data.Account;
+import me.evrooij.exceptions.DuplicateUsernameException;
 import me.evrooij.exceptions.InvalidFriendRequestException;
 import me.evrooij.exceptions.InvalidLoginCredentialsException;
 import me.evrooij.util.DatabaseUtil;
@@ -161,6 +162,33 @@ public class AccountManagerTest {
             accountManager.registerAccount(INCORRECT_USERNAME_3, INCORRECT_EMAIL_3, INCORRECT_PASS_3);
             fail();
         } catch (InvalidParameterException e) {
+        }
+    }
+
+    @Test
+    public void registerAccountDuplicate() throws Exception {
+//     *                 unique relative to all of the other usernames
+        /*
+         * Create some valid accounts
+         */
+        Account account = accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
+        assertNotNull(account);
+        Account account2 = accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_2);
+        assertNotNull(account2);
+
+        /*
+         * Now try to recreate, expect an exception
+         */
+        try {
+            accountManager.registerAccount(CORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
+            fail();
+        } catch (DuplicateUsernameException e) {
+        }
+
+        try {
+            accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_2, CORRECT_PASS_2);
+            fail();
+        } catch (DuplicateUsernameException e) {
         }
     }
 

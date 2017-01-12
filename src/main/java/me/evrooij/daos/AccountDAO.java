@@ -119,4 +119,29 @@ public class AccountDAO {
 
         entityManager.getTransaction().commit();
     }
+
+    /**
+     * Checks if username exists
+     *
+     * @param username
+     * @return
+     */
+    @SuppressWarnings("JavaDoc")
+    public boolean usernameExists(String username) {
+        boolean result;
+
+        entityManager.getTransaction().begin();
+        Query query = getSession().createQuery("SELECT a.username FROM Account a WHERE a.username = :username");
+        query.setString("username", username);
+        List resultList = query.getResultList();
+        if (resultList == null) {
+            result = false;
+        } else if (resultList.size() == 0) {
+            result = false;
+        } else {
+            result = true;
+        }
+        entityManager.getTransaction().commit();
+        return result;
+    }
 }
