@@ -58,10 +58,15 @@ public class GroceryListServiceTest {
                 "{\n" +
                         String.format("\"name\": \"%s\",\n", name) +
                         String.format("\"amount\": %s,\n", amount) +
-                        String.format("\"owner\": \"%s\",\n", thisAccount.getUsername()) +
+                        "\"owner\": {\n" +
+                        String.format("    \"id\": %s,\n", thisAccount.getId()) +
+                        String.format("    \"username\": \"%s\",\n", thisAccount.getUsername()) +
+                        String.format("    \"email\": \"%s\"\n", thisAccount.getEmail()) +
+                        "    },\n" +
                         String.format("\"comment\": \"%s\"\n", comment) +
                         "}"
         );
+
 
         // Verify message
         Product actual = new Gson().fromJson(response.body().string(), Product.class);
@@ -155,7 +160,11 @@ public class GroceryListServiceTest {
                         String.format("\"id\": %s,\n", createdProduct.getId()) +
                         String.format("\"name\": \"%s\",\n", newName) +
                         String.format("\"amount\": %s,\n", newAmount) +
-                        String.format("\"owner\": \"%s\",\n", createdProduct.getOwner()) +
+                        "\"owner\": {\n" +
+                        String.format("    \"id\": %s,\n", thisAccount.getId()) +
+                        String.format("    \"username\": \"%s\",\n", thisAccount.getUsername()) +
+                        String.format("    \"email\": \"%s\"\n", thisAccount.getEmail()) +
+                        "    },\n" +
                         String.format("\"comment\": \"%s\"\n", newComment) +
                         "}"
         );

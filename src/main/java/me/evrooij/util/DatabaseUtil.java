@@ -24,8 +24,8 @@ public class DatabaseUtil {
     private final Class<?>[] ENTITY_TYPES = {
             Feedback.class,
             GroceryList.class,
-            Account.class,
             Product.class,
+            Account.class,
     };
 
     /**

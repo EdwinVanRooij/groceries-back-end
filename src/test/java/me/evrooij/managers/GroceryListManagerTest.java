@@ -25,7 +25,7 @@ public class GroceryListManagerTest {
     private static final String NAME_2 = "This is another list";
     private static final String NAME_3 = "List";
 
-    private Account account;
+    private Account thisAccount;
     private GroceryListManager groceryListManager;
     private DummyDataGenerator dummyDataGenerator;
 
@@ -39,7 +39,7 @@ public class GroceryListManagerTest {
         groceryListManager = new GroceryListManager();
         dummyDataGenerator = new DummyDataGenerator();
 
-        account = dummyDataGenerator.generateAccount();
+        thisAccount = dummyDataGenerator.generateAccount();
     }
 
     @After
@@ -53,7 +53,7 @@ public class GroceryListManagerTest {
          * Check if no participants are added on 0 length participants addition
          */
         List<Account> participants_1 = new ArrayList<>();
-        GroceryList list_1 = groceryListManager.createGroceryList(NAME_1, account, participants_1);
+        GroceryList list_1 = groceryListManager.createGroceryList(NAME_1, thisAccount, participants_1);
         int expectedSize_1 = 0;
         assertEquals(expectedSize_1, list_1.getAmountOfParticipants());
         /*
@@ -61,7 +61,7 @@ public class GroceryListManagerTest {
          */
         participants_1.add(dummyDataGenerator.generateAccount());
         participants_1.add(dummyDataGenerator.generateAccount());
-        GroceryList list_2 = groceryListManager.createGroceryList(NAME_2, account, participants_1);
+        GroceryList list_2 = groceryListManager.createGroceryList(NAME_2, thisAccount, participants_1);
         int expectedSize_2 = 2;
         assertEquals(expectedSize_2, list_2.getAmountOfParticipants());
     }
@@ -71,7 +71,7 @@ public class GroceryListManagerTest {
         /*
          * Create a list, verify existence by retrieving it
          */
-        GroceryList list_1 = groceryListManager.createGroceryList(NAME_1, account, null);
+        GroceryList list_1 = groceryListManager.createGroceryList(NAME_1, thisAccount, null);
         assertNotNull(list_1);
         // Check if getting this list is the same as
         // the just created list.
@@ -79,9 +79,9 @@ public class GroceryListManagerTest {
         assertEquals(list_1, list_2);
 
         // Robustness checks
-        GroceryList list_3 = groceryListManager.createGroceryList(NAME_2, account, null);
+        GroceryList list_3 = groceryListManager.createGroceryList(NAME_2, thisAccount, null);
         assertNotNull(list_3);
-        GroceryList list_4 = groceryListManager.createGroceryList(NAME_3, account, null);
+        GroceryList list_4 = groceryListManager.createGroceryList(NAME_3, thisAccount, null);
         assertNotNull(list_4);
     }
 
@@ -91,25 +91,25 @@ public class GroceryListManagerTest {
          * Get current lists by account id, should be 0
          */
         int expected = 0;
-        int actual = groceryListManager.getListsByAccountId(account.getId()).size();
+        int actual = groceryListManager.getListsByAccountId(thisAccount.getId()).size();
         assertEquals(expected, actual);
 
         // Create a list
-        GroceryList list_1 = groceryListManager.createGroceryList(NAME_1, account, null);
+        GroceryList list_1 = groceryListManager.createGroceryList(NAME_1, thisAccount, null);
         // Verify the one we get by account id is the one we just created
-        assertEquals(list_1, groceryListManager.getListsByAccountId(account.getId()).get(0));
+        assertEquals(list_1, groceryListManager.getListsByAccountId(thisAccount.getId()).get(0));
 
         // Create another list
-        groceryListManager.createGroceryList(NAME_2, account, null);
+        groceryListManager.createGroceryList(NAME_2, thisAccount, null);
         // Verify we have 2 lists now
         int expected_2 = 2;
-        int actual_2 = groceryListManager.getListsByAccountId(account.getId()).size();
+        int actual_2 = groceryListManager.getListsByAccountId(thisAccount.getId()).size();
         assertEquals(expected_2, actual_2);
     }
 
     @Test
     public void getList() throws Exception {
-        GroceryList expected = groceryListManager.createGroceryList(NAME_1, account, null);
+        GroceryList expected = groceryListManager.createGroceryList(NAME_1, thisAccount, null);
         GroceryList actual = groceryListManager.getList(expected.getId());
         assertEquals(expected, actual);
     }
@@ -119,12 +119,11 @@ public class GroceryListManagerTest {
         /*
          * Verify a product is added to the list if the list exists
          */
-        GroceryList list = groceryListManager.createGroceryList(NAME_1, account, null);
+        GroceryList list = groceryListManager.createGroceryList(NAME_1, thisAccount, null);
         String name = "Apples";
         int amount = 3;
         String comment = "The red ones";
-        String owner = "Foo";
-        Product product = new Product(name, amount, comment, owner);
+        Product product = new Product(name, amount, comment, thisAccount);
         Product productFromList = groceryListManager.addProduct(list.getId(), product);
         assertNotNull(productFromList);
 
@@ -140,18 +139,11 @@ public class GroceryListManagerTest {
 
     @Test
     public void deleteProduct() throws Exception {
-        /**
-         * Deletes a product by id from the list by list id
-         *
-         * @param listId    id of the list to delete product from
-         * @param productId id of product to delete
-         * @return true if operation succeeded, false if it didn't
-         */
         /*
          * Verify an existent product is deleted after deleteProduct
          */
-        GroceryList list = groceryListManager.createGroceryList(NAME_1, account, null);
-        Product product = new Product("Apples", 3, "The red ones", "Foo");
+        GroceryList list = groceryListManager.createGroceryList(NAME_1, thisAccount, null);
+        Product product = new Product("Apples", 3, "The red ones", thisAccount);
         Product productFromList = groceryListManager.addProduct(list.getId(), product);
         boolean result = groceryListManager.deleteProduct(list.getId(), productFromList.getId());
         assertTrue(result);
@@ -170,7 +162,7 @@ public class GroceryListManagerTest {
         /*
          * Check if participant was added to list with good listId
          */
-        GroceryList list = groceryListManager.createGroceryList(NAME_1, account, null);
+        GroceryList list = groceryListManager.createGroceryList(NAME_1, thisAccount, null);
         Account newParticipant = dummyDataGenerator.generateAccount();
         boolean result_1 = groceryListManager.addParticipant(list.getId(), newParticipant);
         // Verify if this worked at all
@@ -183,7 +175,7 @@ public class GroceryListManagerTest {
          * Check if owner is not being added to the new list
          */
         try {
-            groceryListManager.addParticipant(list.getId(), account);
+            groceryListManager.addParticipant(list.getId(), thisAccount);
             fail();
         } catch (InvalidParticipantException e) {
         }
@@ -201,13 +193,13 @@ public class GroceryListManagerTest {
     @Test
     public void updateProduct() throws Exception {
         // Create some valid objects
-        GroceryList list = groceryListManager.createGroceryList(NAME_1, account, null);
+        GroceryList list = groceryListManager.createGroceryList(NAME_1, thisAccount, null);
         String name = "apples";
         int amount = 10;
         String comment = "red ones";
         String owner = "foobar";
-        list.addProduct(name, amount, comment, owner);
-        Product product = list.getProduct(name, owner, comment);
+        list.addProduct(name, amount, comment, thisAccount);
+        Product product = list.getProduct(name, thisAccount, comment);
         /*
          * Check if product isn't updated on invalid listId
          */

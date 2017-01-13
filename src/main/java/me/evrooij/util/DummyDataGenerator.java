@@ -54,7 +54,7 @@ public class DummyDataGenerator {
      */
     public Product generateProduct(GroceryList list, Account owner) {
         productIndex++;
-        return listManager.addProduct(list.getId(), new Product(String.format("%s - %s", PRODUCT_NAME, productIndex), PRODUCT_AMOUNT, PRODUCT_COMMENT, owner.getUsername()));
+        return listManager.addProduct(list.getId(), new Product(String.format("%s - %s", PRODUCT_NAME, productIndex), PRODUCT_AMOUNT, PRODUCT_COMMENT, owner));
     }
 
     /**
@@ -91,7 +91,7 @@ public class DummyDataGenerator {
         listManager.addParticipant(list.getId(), account_3);
 
         for (int i = 0; i < 10; i++) {
-            listManager.addProduct(list.getId(), new Product(String.format("%s: %s", PRODUCT_NAME, i), PRODUCT_AMOUNT, PRODUCT_COMMENT, account_1.getUsername()));
+            listManager.addProduct(list.getId(), new Product(String.format("%s: %s", PRODUCT_NAME, i), PRODUCT_AMOUNT, PRODUCT_COMMENT, account_1));
         }
     }
 

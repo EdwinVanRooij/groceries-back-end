@@ -117,9 +117,9 @@ public class GroceryList {
      * @param name    name of the product
      * @param amount  amount of times you want the product
      * @param comment comment about the product
-     * @param owner   username of the user who added this product
+     * @param owner   user who added this product
      */
-    public void addProduct(String name, int amount, String comment, String owner) {
+    public void addProduct(String name, int amount, String comment, Account owner) {
         productList.add(new Product(name, amount, comment, owner));
     }
 
@@ -149,7 +149,7 @@ public class GroceryList {
      *                you're not allowed to edit the product of someone else
      * @return boolean indicating the exit status of the method
      */
-    public boolean editItem(int id, String name, int amount, String comment, String owner) {
+    public boolean editItem(int id, String name, int amount, String comment, Account owner) {
         Product product = getProduct(id);
         if (product.getOwner().equals(owner)) {
             product.setName(name);
@@ -214,7 +214,7 @@ public class GroceryList {
      * @return
      */
     @SuppressWarnings("JavaDoc")
-    public Product getProduct(String name, String owner, String comment) {
+    public Product getProduct(String name, Account owner, String comment) {
         for (Product p : productList) {
             if (p.getName().equals(name) && p.getOwner().equals(owner) && p.getComment().equals(comment)) {
                 // Product found
@@ -253,7 +253,7 @@ public class GroceryList {
      * @param owner
      */
     @SuppressWarnings("JavaDoc")
-    public void updateProduct(int productId, String name, int amount, String comment, String owner) {
+    public void updateProduct(int productId, String name, int amount, String comment, Account owner) {
         for (Product p : productList) {
             if (p.getId() == productId) {
                 p.setName(name);

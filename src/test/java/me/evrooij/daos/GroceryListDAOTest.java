@@ -221,21 +221,18 @@ public class GroceryListDAOTest {
         String comment_1 = "Ther red ones1";
         String comment_2 = "Ther red ones2";
         String comment_3 = "Ther red ones3";
-        String owner_1 = "Foo1";
-        String owner_2 = "Foo2";
-        String owner_3 = "Foo3";
         // Some final products
-        Product product_1 = new Product(name_1, amount_1, comment_1, owner_1);
+        Product product_1 = new Product(name_1, amount_1, comment_1, account);
         Product productFromList_1 = groceryListDAO.addProduct(list.getId(), product_1);
         // Verify equality
         assertEquals(product_1, productFromList_1);
 
         // Robustness checks
-        Product product_2 = new Product(name_2, amount_2, comment_2, owner_2);
+        Product product_2 = new Product(name_2, amount_2, comment_2, account);
         Product productFromList_2 = groceryListDAO.addProduct(list.getId(), product_2);
         assertEquals(product_2, productFromList_2);
 
-        Product product_3 = new Product(name_3, amount_3, comment_3, owner_3);
+        Product product_3 = new Product(name_3, amount_3, comment_3, anotherAccount);
         Product productFromList_3 = groceryListDAO.addProduct(list.getId(), product_3);
         assertEquals(product_3, productFromList_3);
     }
@@ -258,12 +255,9 @@ public class GroceryListDAOTest {
         String comment_1 = "Ther red ones1";
         String comment_2 = "Ther red ones2";
         String comment_3 = "Ther red ones3";
-        String owner_1 = "Foo1";
-        String owner_2 = "Foo2";
-        String owner_3 = "Foo3";
 
         // Verify deletion
-        Product product_1 = new Product(name_1, amount_1, comment_1, owner_1);
+        Product product_1 = new Product(name_1, amount_1, comment_1, account);
         Product productFromList_1 = groceryListDAO.addProduct(list.getId(), product_1);
         groceryListDAO.deleteProduct(list.getId(), productFromList_1.getId());
         GroceryList list_2 = groceryListDAO.getList(list.getId());
@@ -271,8 +265,8 @@ public class GroceryListDAOTest {
         assertNull(deletedProduct);
 
         // Robustness checks
-        Product product_2 = new Product(name_2, amount_2, comment_2, owner_2);
-        Product product_3 = new Product(name_3, amount_3, comment_3, owner_3);
+        Product product_2 = new Product(name_2, amount_2, comment_2, account);
+        Product product_3 = new Product(name_3, amount_3, comment_3, anotherAccount);
         Product productFromList_2 = groceryListDAO.addProduct(list.getId(), product_2);
         Product productFromList_3 = groceryListDAO.addProduct(list.getId(), product_3);
         groceryListDAO.deleteProduct(list.getId(), productFromList_2.getId());
@@ -292,20 +286,19 @@ public class GroceryListDAOTest {
         String productName = "name";
         String productComment = "comment";
         int productAmount = 10;
-        String productOwner = "owner";
         /*
          * Check if an added product is still added in db after update
          */
         // Add product to a list
         GroceryList list_1 = groceryListDAO.create(NAME_1, account, null);
-        list_1.addProduct(productName, productAmount, productComment, productOwner);
+        list_1.addProduct(productName, productAmount, productComment, account);
         groceryListDAO.update(list_1);
         // Get the added product
-        Product addedProduct = list_1.getProduct(productName, productOwner, productComment);
+        Product addedProduct = list_1.getProduct(productName, account, productComment);
 
         // Get the same stuff from dao
         GroceryList listFromDao = groceryListDAO.getList(list_1.getId());
-        Product addedProductFromDao = listFromDao.getProduct(productName, productOwner, productComment);
+        Product addedProductFromDao = listFromDao.getProduct(productName, account, productComment);
 
         // Verify the products are there & equal
         assertEquals(addedProduct, addedProductFromDao);

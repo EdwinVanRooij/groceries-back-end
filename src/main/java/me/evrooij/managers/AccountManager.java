@@ -7,7 +7,6 @@ import me.evrooij.exceptions.InstanceDoesNotExistException;
 import me.evrooij.exceptions.InvalidFriendRequestException;
 import me.evrooij.exceptions.InvalidLoginCredentialsException;
 import me.evrooij.util.HashUtil;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;

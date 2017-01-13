@@ -1,6 +1,7 @@
 package me.evrooij.managers;
 
 import me.evrooij.daos.GroceryListDAO;
+import me.evrooij.daos.ProductDAO;
 import me.evrooij.data.Account;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
@@ -11,12 +12,14 @@ import java.util.List;
 public class GroceryListManager {
 
     private GroceryListDAO groceryListDAO;
+    private ProductDAO productDAO;
 
     private String EXCEPTION_LIST_DOES_NOT_EXIST = "List with id %s does not exist.";
     private String EXCEPTION_PRODUCT_DOES_NOT_EXIST = "Product with id %s does not exist.";
 
     public GroceryListManager() {
         groceryListDAO = new GroceryListDAO();
+        productDAO = new ProductDAO();
     }
 
     /**
@@ -94,6 +97,7 @@ public class GroceryListManager {
             throw new NullPointerException(String.format(EXCEPTION_PRODUCT_DOES_NOT_EXIST, productId));
         }
         groceryListDAO.deleteProduct(listId, productId);
+        productDAO.updateDeletionTime(product);
         return true;
     }
 
