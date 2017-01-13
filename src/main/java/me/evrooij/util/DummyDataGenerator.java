@@ -4,6 +4,7 @@ import me.evrooij.data.Account;
 import me.evrooij.data.Feedback;
 import me.evrooij.data.GroceryList;
 import me.evrooij.data.Product;
+import me.evrooij.exceptions.DuplicateUsernameException;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.managers.FeedbackManager;
 import me.evrooij.managers.GroceryListManager;
@@ -70,7 +71,7 @@ public class DummyDataGenerator {
     /**
      * Generates a new Account, max 4 accounts
      */
-    public Account generateAccount() {
+    public Account generateAccount() throws DuplicateUsernameException {
         accountIndex++;
         return accountManager.registerAccount(CORRECT_USERNAMES[accountIndex], CORRECT_EMAILS[accountIndex], CORRECT_PASS);
     }

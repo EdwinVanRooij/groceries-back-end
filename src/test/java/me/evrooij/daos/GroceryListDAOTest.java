@@ -37,10 +37,12 @@ public class GroceryListDAOTest {
     public void setUp() throws Exception {
         // Create an account to work with
         String username = "ThisIsAUsername34";
+        String username2 = "ThisIsAUsername342";
         String email = "email@mail.com";
+        String email2 = "email2@mail.com";
         String password = "thisis!dapassword";
         account = new AccountManager().registerAccount(username, email, password);
-        anotherAccount = new AccountManager().registerAccount(username, email, password);
+        anotherAccount = new AccountManager().registerAccount(username2, email2, password);
 
         groceryListDAO = new GroceryListDAO();
     }

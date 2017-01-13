@@ -91,11 +91,10 @@ public class AccountManagerTest {
         assertNotNull(account2);
         Account account3 = accountManager.registerAccount(CORRECT_USERNAME_3, CORRECT_EMAIL_3, CORRECT_PASS_3);
         assertNotNull(account3);
+    }
 
-        /*
-         * Check whether the registration fails at any incorrect parameter
-         */
-
+    @Test
+    public void registerAccountIncorrectUsername() throws Exception {
         // Check incorrect username
         try {
             accountManager.registerAccount(INCORRECT_USERNAME_1, CORRECT_EMAIL_1, CORRECT_PASS_1);
@@ -112,7 +111,11 @@ public class AccountManagerTest {
             fail();
         } catch (InvalidParameterException e) {
         }
+    }
 
+
+    @Test
+    public void registerAccountIncorrectEmail() throws Exception {
         // Check incorrect email
         try {
             accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_1, CORRECT_PASS_1);
@@ -120,16 +123,20 @@ public class AccountManagerTest {
         } catch (InvalidParameterException e) {
         }
         try {
-            accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_2, CORRECT_PASS_1);
+            accountManager.registerAccount(CORRECT_USERNAME_2, INCORRECT_EMAIL_2, CORRECT_PASS_1);
             fail();
         } catch (InvalidParameterException e) {
         }
         try {
-            accountManager.registerAccount(CORRECT_USERNAME_1, INCORRECT_EMAIL_3, CORRECT_PASS_1);
+            accountManager.registerAccount(CORRECT_USERNAME_3, INCORRECT_EMAIL_3, CORRECT_PASS_1);
             fail();
         } catch (InvalidParameterException e) {
         }
 
+    }
+
+    @Test
+    public void registerAccountIncorrectPass() throws Exception {
         // Check incorrect pass
         try {
             accountManager.registerAccount(CORRECT_USERNAME_2, CORRECT_EMAIL_3, INCORRECT_PASS_1);
@@ -146,7 +153,11 @@ public class AccountManagerTest {
             fail();
         } catch (InvalidParameterException e) {
         }
+    }
 
+
+    @Test
+    public void testRegisterAccountRobustness() throws Exception {
         // Now let's get batshit crazy
         try {
             accountManager.registerAccount(INCORRECT_USERNAME_1, INCORRECT_EMAIL_1, INCORRECT_PASS_1);
