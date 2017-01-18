@@ -37,6 +37,7 @@ public class DatabaseUtil {
         entityManager.getTransaction().begin();
 
         entityManager.createNativeQuery("delete from Account_Account").executeUpdate();
+        entityManager.createNativeQuery("delete from Account_Product").executeUpdate();
         entityManager.createNativeQuery("delete from GroceryList_Account").executeUpdate();
         entityManager.createNativeQuery("delete from GroceryList_Product").executeUpdate();
         for (Class<?> entityType : ENTITY_TYPES) {

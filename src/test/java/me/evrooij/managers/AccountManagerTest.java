@@ -1,10 +1,13 @@
 package me.evrooij.managers;
 
 import me.evrooij.data.Account;
+import me.evrooij.data.GroceryList;
+import me.evrooij.data.Product;
 import me.evrooij.exceptions.DuplicateUsernameException;
 import me.evrooij.exceptions.InvalidFriendRequestException;
 import me.evrooij.exceptions.InvalidLoginCredentialsException;
 import me.evrooij.util.DatabaseUtil;
+import me.evrooij.util.DummyDataGenerator;
 import org.junit.*;
 
 import java.security.InvalidParameterException;
@@ -43,6 +46,7 @@ public class AccountManagerTest {
     private static final String INCORRECT_PASS_3 = "r11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
 
     private AccountManager accountManager;
+    private DummyDataGenerator dummyDataGenerator;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -52,6 +56,7 @@ public class AccountManagerTest {
     @Before
     public void setUp() throws Exception {
         accountManager = new AccountManager();
+        dummyDataGenerator = new DummyDataGenerator();
     }
 
     @After
@@ -174,6 +179,58 @@ public class AccountManagerTest {
             fail();
         } catch (InvalidParameterException e) {
         }
+    }
+
+    @Test
+    public void addToMyProducts() throws Exception {
+        /*
+         * Add a product to products of user
+         */
+        Account thisAccount = dummyDataGenerator.generateAccount();
+        GroceryList list = dummyDataGenerator.generateList(thisAccount);
+        Product product = dummyDataGenerator.generateProduct(list, thisAccount);
+        boolean result = accountManager.addToMyProducts(thisAccount.getId(), product);
+        assertTrue(result);
+
+        Product product2 = dummyDataGenerator.generateProduct(list, thisAccount);
+        boolean result2 = accountManager.addToMyProducts(thisAccount.getId(), product2);
+        assertTrue(result2);
+
+        // Now use a fake id, expect nullpointer exception
+        try {
+            accountManager.addToMyProducts(thisAccount.getId() - 1, product);
+            fail();
+        } catch (NullPointerException e) {
+        }
+    }
+
+    @Test
+    public void getMyProducts() throws Exception {
+        /**
+         * Returns all the personal products of an account
+         *
+         * @param accountId id of account to get products from
+         * @return list of products
+         */
+        /*
+         * Create some 'my products'
+         */
+        Account thisAccount = dummyDataGenerator.generateAccount();
+        GroceryList list = dummyDataGenerator.generateList(thisAccount);
+        Product product = dummyDataGenerator.generateProduct(list, thisAccount);
+        Product product2 = dummyDataGenerator.generateProduct(list, thisAccount);
+        accountManager.addToMyProducts(thisAccount.getId(), product);
+        /*
+         * Validate if they're correct
+         */
+        List<Product> products = accountManager.getAllMyProducts(thisAccount.getId());
+        assertEquals(product, products.get(0));
+        assertEquals(1, products.size());
+
+        // Now check if there are two products
+        accountManager.addToMyProducts(thisAccount.getId(), product2);
+        List<Product> products2 = accountManager.getAllMyProducts(thisAccount.getId());
+        assertEquals(2, products2.size());
     }
 
     @Test
@@ -412,7 +469,11 @@ public class AccountManagerTest {
          * Verify there's nothing returned on invalid accountId
          */
         int invalidAccountId = account_1.getId() - 1;
-        assertNull(accountManager.getFriends(invalidAccountId));
+        try {
+            accountManager.getFriends(invalidAccountId);
+            fail();
+        } catch (NullPointerException e) {
+        }
     }
 
     @Test

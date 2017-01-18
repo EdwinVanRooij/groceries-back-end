@@ -21,6 +21,9 @@ public class Account {
     @Expose
     private String email;
     private String password;
+    @Expose
+    @OneToMany
+    List<Product> myProducts;
 
     @ManyToMany
     private List<Account> friends;
@@ -30,6 +33,7 @@ public class Account {
         this.email = email;
         this.password = password;
         friends = new ArrayList<>();
+        myProducts = new ArrayList<>();
     }
 
     public Account() {
@@ -53,6 +57,10 @@ public class Account {
 
     public List<Account> getFriends() {
         return friends;
+    }
+
+    public List<Product> getMyProducts() {
+        return myProducts;
     }
 
     /**
@@ -80,6 +88,15 @@ public class Account {
     @SuppressWarnings("JavaDoc")
     public void addFriend(Account friend) {
         friends.add(friend);
+    }
+
+    /**
+     * Adds a product to the user's own products
+     *
+     * @param product product to add
+     */
+    public void addProduct(Product product) {
+        myProducts.add(product);
     }
 
     /**

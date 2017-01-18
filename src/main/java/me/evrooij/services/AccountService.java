@@ -2,6 +2,7 @@ package me.evrooij.services;
 
 import com.google.gson.Gson;
 import me.evrooij.data.Account;
+import me.evrooij.data.Product;
 import me.evrooij.data.ResponseMessage;
 import me.evrooij.managers.AccountManager;
 import me.evrooij.util.JsonUtil;
@@ -79,6 +80,18 @@ public class AccountService {
             } else {
                 return new ResponseMessage("Could not add friend.");
             }
+        }, json());
+
+        get("/:accountId/myproducts", (request, response) -> {
+            int accountId = Integer.valueOf(request.params(":accountId"));
+
+            return accountManager.getAllMyProducts(accountId);
+        }, json());
+        
+        get("/:accountId/myproducts", (request, response) -> {
+            int accountId = Integer.valueOf(request.params(":accountId"));
+
+            return accountManager.getAllMyProducts(accountId);
         }, json());
 
         after((request, response) -> response.type("application/json"));

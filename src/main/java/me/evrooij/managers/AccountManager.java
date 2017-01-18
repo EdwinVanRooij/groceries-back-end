@@ -2,6 +2,7 @@ package me.evrooij.managers;
 
 import me.evrooij.daos.AccountDAO;
 import me.evrooij.data.Account;
+import me.evrooij.data.Product;
 import me.evrooij.exceptions.DuplicateUsernameException;
 import me.evrooij.exceptions.InstanceDoesNotExistException;
 import me.evrooij.exceptions.InvalidFriendRequestException;
@@ -20,16 +21,6 @@ public class AccountManager {
 
     public AccountManager() {
         accountDAO = new AccountDAO();
-    }
-
-    /**
-     * Retrieves the user's Account on id
-     *
-     * @return account object
-     */
-    @SuppressWarnings("JavaDoc")
-    private Account getAccount(int id) {
-        return accountDAO.get(id);
     }
 
     /**
@@ -159,7 +150,7 @@ public class AccountManager {
      * @return a list with accounts that match the search query
      */
     public List<Account> searchFriends(int searcherId, String searchQuery) {
-        Account searcher = getAccount(searcherId);
+        Account searcher = checkAccountExistence(searcherId);
 
         List<Account> matchList = new ArrayList<>();
         for (Account a : accountDAO.getAccounts()) {
@@ -187,18 +178,9 @@ public class AccountManager {
      * @throws InvalidFriendRequestException if they're already friends
      */
     public boolean addFriend(int accountId, Account friend) throws InstanceDoesNotExistException, InvalidFriendRequestException {
-        Account account = accountDAO.get(accountId);
-        if (account == null) {
-            // If account doesn't even exist, throw exception
-            throw new InstanceDoesNotExistException(String.format("Account with id %s doesn't exist in database", accountId));
-        }
+        Account account = checkAccountExistence(accountId);
 
-        Account friendAccount = accountDAO.get(friend.getId());
-        if (friendAccount == null) {
-            // If friend doesn't exist, throw exception
-            throw new InstanceDoesNotExistException(String.format("Friend account %s does not exist in database", friend.toString()));
-        }
-
+        checkAccountExistence(friend.getId());
 
         if (account.isFriendsWith(friend.getId())) {
             // Already friends, don't add again
@@ -222,10 +204,49 @@ public class AccountManager {
      * @return list of account objects if accountId was valid, null if it wasn't
      */
     public List<Account> getFriends(int accountId) {
+        Account account = checkAccountExistence(accountId);
+        return account.getFriends();
+    }
+
+    /**
+     * Adds a product to products of a user
+     *
+     * @param accountId account id of the user
+     * @param product   product to add
+     * @return true if account id is valid, false if not
+     */
+    public boolean addToMyProducts(int accountId, Product product) {
+        Account account = checkAccountExistence(accountId);
+
+        account.addProduct(product);
+        accountDAO.update(account);
+        return true;
+    }
+
+    /**
+     * Returns all the personal products of an account
+     *
+     * @param accountId id of account to get products from
+     * @return list of products
+     */
+    public List<Product> getAllMyProducts(int accountId) {
+        Account account = checkAccountExistence(accountId);
+
+        return account.getMyProducts();
+    }
+
+    /**
+     * Checks for account existence
+     *
+     * @param accountId id of account to check
+     * @return account if it exists
+     * @throws NullPointerException if account with id does not exist
+     */
+    private Account checkAccountExistence(int accountId) throws NullPointerException {
         Account account = accountDAO.get(accountId);
-        if (account != null) {
-            return account.getFriends();
+        if (account == null) {
+            throw new NullPointerException(String.format("Account with id %s does not exist.", accountId));
         }
-        return null;
+        return account;
     }
 }

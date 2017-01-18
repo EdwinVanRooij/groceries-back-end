@@ -144,4 +144,17 @@ public class AccountDAO {
         entityManager.getTransaction().commit();
         return result;
     }
+
+    /**
+     * Updates an existing account
+     *
+     * @param account account to update
+     */
+    public void update(Account account) {
+        entityManager.getTransaction().begin();
+
+        entityManager.merge(account);
+
+        entityManager.getTransaction().commit();
+    }
 }
