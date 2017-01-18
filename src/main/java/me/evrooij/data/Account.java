@@ -22,7 +22,7 @@ public class Account {
     private String email;
     private String password;
     @Expose
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     List<Product> myProducts;
 
     @ManyToMany

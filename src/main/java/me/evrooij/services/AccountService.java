@@ -87,11 +87,14 @@ public class AccountService {
 
             return accountManager.getAllMyProducts(accountId);
         }, json());
-        
-        get("/:accountId/myproducts", (request, response) -> {
+
+        post("/:accountId/myproducts", (request, response) -> {
             int accountId = Integer.valueOf(request.params(":accountId"));
 
-            return accountManager.getAllMyProducts(accountId);
+            Product product = new Gson().fromJson(request.body(), Product.class);
+            System.out.println(String.format("Retrieved product: %s", product.toString()));
+
+            return accountManager.addToMyProducts(accountId, product);
         }, json());
 
         after((request, response) -> response.type("application/json"));
