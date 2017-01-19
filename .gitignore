@@ -20,6 +20,7 @@
 .idea/gradle.xml
 .idea/libraries
 .gradle/2.10/
+.gradle/2.10
 
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
