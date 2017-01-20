@@ -16,7 +16,7 @@ public class Feedback {
     @Expose
     private int id;
     @Expose
-    @Column(length = 5000)
+    @Column(length = 50000)
     private String message;
 
     // GSON annotation for deserialization
