@@ -187,14 +187,13 @@ public class AccountManagerTest {
          * Add a product to products of user
          */
         Account thisAccount = dummyDataGenerator.generateAccount();
-        GroceryList list = dummyDataGenerator.generateList(thisAccount);
-        Product product = dummyDataGenerator.generateProduct(list, thisAccount);
-        boolean result = accountManager.addToMyProducts(thisAccount.getId(), product);
-        assertTrue(result);
+        Product product = dummyDataGenerator.generateProductNoId(thisAccount);
+        Product result = accountManager.addToMyProducts(thisAccount.getId(), product);
+        assertNotNull(result);
 
-        Product product2 = dummyDataGenerator.generateProduct(list, thisAccount);
-        boolean result2 = accountManager.addToMyProducts(thisAccount.getId(), product2);
-        assertTrue(result2);
+        Product product2 = dummyDataGenerator.generateProductNoId(thisAccount);
+        Product result2 = accountManager.addToMyProducts(thisAccount.getId(), product2);
+        assertNotNull(result2);
 
         // Now use a fake id, expect nullpointer exception
         try {
@@ -206,19 +205,12 @@ public class AccountManagerTest {
 
     @Test
     public void getMyProducts() throws Exception {
-        /**
-         * Returns all the personal products of an account
-         *
-         * @param accountId id of account to get products from
-         * @return list of products
-         */
         /*
          * Create some 'my products'
          */
         Account thisAccount = dummyDataGenerator.generateAccount();
-        GroceryList list = dummyDataGenerator.generateList(thisAccount);
-        Product product = dummyDataGenerator.generateProduct(list, thisAccount);
-        Product product2 = dummyDataGenerator.generateProduct(list, thisAccount);
+        Product product = dummyDataGenerator.generateProductNoId(thisAccount);
+        Product product2 = dummyDataGenerator.generateProductNoId(thisAccount);
         accountManager.addToMyProducts(thisAccount.getId(), product);
         /*
          * Validate if they're correct

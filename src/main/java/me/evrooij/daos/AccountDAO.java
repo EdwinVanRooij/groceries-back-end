@@ -1,6 +1,7 @@
 package me.evrooij.daos;
 
 import me.evrooij.data.Account;
+import me.evrooij.data.Product;
 import me.evrooij.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -145,16 +146,15 @@ public class AccountDAO {
         return result;
     }
 
-    /**
-     * Updates an existing account
-     *
-     * @param account account to update
-     */
-    public void update(Account account) {
+    public Product addProduct(Account account, Product product) {
         entityManager.getTransaction().begin();
-
+        System.out.println(String.format("Adding product: %s", product.toString()));
+        System.out.println(String.format("Currently have %s products", account.getMyProducts().size()));
+        account.addProduct(product);
         entityManager.merge(account);
-
         entityManager.getTransaction().commit();
+        Product prod = account.getProduct(product.getName(), product.getAmount(), product.getComment());
+        System.out.println(String.format("Product received: %s", prod.toString()));
+        return prod;
     }
 }

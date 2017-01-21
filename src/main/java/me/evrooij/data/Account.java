@@ -174,4 +174,21 @@ public class Account {
         return getId() == other.getId() || super.equals(obj);
     }
 
+    /**
+     * Gets a product by characteristics
+     *
+     * @param name
+     * @param amount
+     * @param comment
+     * @return
+     */
+    @SuppressWarnings("JavaDoc")
+    public Product getProduct(String name, int amount, String comment) {
+        for (Product p : getMyProducts()) {
+            if (p.getName().equals(name) && p.getAmount() == amount && p.getComment().equals(comment)) {
+                return p;
+            }
+        }
+        return null;
+    }
 }

@@ -213,14 +213,12 @@ public class AccountManager {
      *
      * @param accountId account id of the user
      * @param product   product to add
-     * @return true if account id is valid, false if not
+     * @return the created product
      */
-    public boolean addToMyProducts(int accountId, Product product) {
+    public Product addToMyProducts(int accountId, Product product) {
         Account account = checkAccountExistence(accountId);
 
-        account.addProduct(product);
-        accountDAO.update(account);
-        return true;
+        return accountDAO.addProduct(account, product);
     }
 
     /**

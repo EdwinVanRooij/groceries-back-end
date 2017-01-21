@@ -57,6 +57,11 @@ public class DummyDataGenerator {
         return listManager.addProduct(list.getId(), new Product(String.format("%s - %s", PRODUCT_NAME, productIndex), PRODUCT_AMOUNT, PRODUCT_COMMENT, owner));
     }
 
+    public Product generateProductNoId(Account owner) {
+        productIndex++;
+        return new Product(String.format("%s - %s", PRODUCT_NAME, productIndex), PRODUCT_AMOUNT, PRODUCT_COMMENT, owner);
+    }
+
     /**
      * Generates a new GroceryList
      *
