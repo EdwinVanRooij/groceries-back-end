@@ -21,7 +21,6 @@ public class Account {
     @Expose
     private String email;
     private String password;
-    @Expose
     @OneToMany(cascade = CascadeType.ALL)
     List<Product> myProducts;
 
