@@ -15,6 +15,8 @@ public class Config {
 //    public static final int PORT = 6438;
 
     public String BASE_URL;
+    public String EXTERNAL_URL;
+    public String EXTERNAL_BASE_URL;
 
     private static Config ourInstance = new Config();
 
@@ -33,6 +35,8 @@ public class Config {
 
             PORT = Integer.valueOf(prop.getProperty("port"));
             BASE_URL = String.format("http://127.0.0.1:%d", PORT);
+            EXTERNAL_URL = prop.getProperty("external_url");
+            EXTERNAL_BASE_URL = String.format("http://%s:%d", EXTERNAL_URL, PORT);
             System.out.println(String.format("Found port %s", String.valueOf(PORT)));
         } catch (IOException e) {
             e.printStackTrace();

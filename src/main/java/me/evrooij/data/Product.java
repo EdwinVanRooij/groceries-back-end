@@ -32,6 +32,9 @@ public class Product {
     @Expose
     private Date deletionDate;
 
+    @Expose
+    private String imageUrl;
+
     public int getId() {
         return id;
     }
@@ -56,6 +59,7 @@ public class Product {
         return deletionDate;
     }
 
+
     public Product() {
     }
 
@@ -64,6 +68,13 @@ public class Product {
         this.amount = amount;
         this.owner = owner;
         this.comment = comment;
+    }
+    public Product(String name, int amount, String comment, Account owner, String imageUrl) {
+        this.name = name;
+        this.amount = amount;
+        this.owner = owner;
+        this.comment = comment;
+        this.imageUrl = imageUrl;
     }
 
     public void setName(String name) {
@@ -76,6 +87,10 @@ public class Product {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     /**
@@ -98,6 +113,14 @@ public class Product {
 
     @Override
     public String toString() {
-        return String.format("%s, id %s - %s times of %s, %s", getName(), getId(), getAmount(), getOwner(), getComment());
+        if (imageUrl == null) {
+            return String.format("%s, id %s - %s times of %s, %s", getName(), getId(), getAmount(), getOwner(), getComment());
+        } else {
+            return String.format("%s, id %s - %s times of %s, %s, url %s", getName(), getId(), getAmount(), getOwner(), getComment(), imageUrl);
+        }
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

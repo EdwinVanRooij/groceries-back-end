@@ -247,4 +247,19 @@ public class AccountManager {
         }
         return account;
     }
+
+    /**
+     * Adds an url to the image
+     *
+     * @param accountId
+     * @param productId
+     * @param url
+     * @return
+     */
+    @SuppressWarnings("JavaDoc")
+    public void addProductImageUrl(int accountId, int productId, String url) {
+        Account account = checkAccountExistence(accountId);
+
+        accountDAO.addImageUrl(account, productId, url);
+    }
 }

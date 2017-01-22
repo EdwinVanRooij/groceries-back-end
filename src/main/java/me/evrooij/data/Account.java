@@ -191,4 +191,13 @@ public class Account {
         }
         return null;
     }
+
+    public Product getProduct(int productId) {
+        for (Product p : myProducts) {
+            if (p.getId() == productId) {
+                return p;
+            }
+        }
+        return null;
+    }
 }

@@ -119,6 +119,9 @@ public class GroceryList {
      * @param comment comment about the product
      * @param owner   user who added this product
      */
+    public void addProduct(String name, int amount, String comment, Account owner, String imageUrl) {
+        productList.add(new Product(name, amount, comment, owner, imageUrl));
+    }
     public void addProduct(String name, int amount, String comment, Account owner) {
         productList.add(new Product(name, amount, comment, owner));
     }

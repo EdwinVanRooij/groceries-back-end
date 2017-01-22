@@ -100,7 +100,7 @@ public class GroceryListDAO {
         GroceryList list = getList(listId);
 
         entityManager.getTransaction().begin();
-        list.addProduct(product.getName(), product.getAmount(), product.getComment(), product.getOwner());
+        list.addProduct(product.getName(), product.getAmount(), product.getComment(), product.getOwner(), product.getImageUrl());
         entityManager.merge(list);
         entityManager.getTransaction().commit();
         return list.getProduct(product.getName(), product.getOwner(), product.getComment());

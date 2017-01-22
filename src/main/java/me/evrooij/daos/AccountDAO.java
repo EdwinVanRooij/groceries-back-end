@@ -148,13 +148,18 @@ public class AccountDAO {
 
     public Product addProduct(Account account, Product product) {
         entityManager.getTransaction().begin();
-        System.out.println(String.format("Adding product: %s", product.toString()));
-        System.out.println(String.format("Currently have %s products", account.getMyProducts().size()));
         account.addProduct(product);
         entityManager.merge(account);
         entityManager.getTransaction().commit();
-        Product prod = account.getProduct(product.getName(), product.getAmount(), product.getComment());
-        System.out.println(String.format("Product received: %s", prod.toString()));
-        return prod;
+        return account.getProduct(product.getName(), product.getAmount(), product.getComment());
+    }
+
+    public void addImageUrl(Account account, int productId, String url) {
+        entityManager.getTransaction().begin();
+
+        account.getProduct(productId).setImageUrl(url);
+        entityManager.merge(account);
+
+        entityManager.getTransaction().commit();
     }
 }
