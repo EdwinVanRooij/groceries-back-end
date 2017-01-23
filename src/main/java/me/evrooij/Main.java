@@ -30,13 +30,13 @@ public class Main {
             // Quite unsafe!
             before(new CorsFilter());
 
-            // Build swagger json description
-            final String swaggerJson = SwaggerParser.getSwaggerJson(APP_PACKAGE);
-            get("/swagger", (req, res) -> swaggerJson);
-
             new AccountService();
             new GroceryListService();
             new FeedbackService();
+
+            // Build swagger json description
+            final String swaggerJson = SwaggerParser.getSwaggerJson(APP_PACKAGE);
+            get("/swagger", (req, res) -> swaggerJson);
         } catch (Exception e) {
             e.printStackTrace();
         }
