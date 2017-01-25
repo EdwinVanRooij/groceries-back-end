@@ -1,9 +1,11 @@
 package me.evrooij.daos;
 
 import me.evrooij.data.Account;
+
+import javax.persistence.Query;
+
 import me.evrooij.data.Product;
 import me.evrooij.util.HibernateUtil;
-import org.hibernate.Query;
 import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
@@ -38,8 +40,8 @@ public class AccountDAO {
         String result;
 
         entityManager.getTransaction().begin();
-        Query query = getSession().createQuery("SELECT a.password FROM Account a WHERE a.username = :username");
-        query.setString("username", username);
+        Query query = entityManager.createQuery("SELECT a.password FROM Account a WHERE a.username = :username");
+        query.setParameter("username", username);
         List resultList = query.getResultList();
         if (resultList == null) {
             result = null;
@@ -61,10 +63,10 @@ public class AccountDAO {
      */
     public Account get(String username, String password) {
         entityManager.getTransaction().begin();
-        Query query = getSession().createQuery("SELECT a FROM Account a WHERE a.username = :username AND a.password = :password");
-        query.setString("username", username);
-        query.setString("password", password);
-        Account account = (Account) query.uniqueResult();
+        Query query = entityManager.createQuery("SELECT a FROM Account a WHERE a.username = :username AND a.password = :password");
+        query.setParameter("username", username);
+        query.setParameter("password", password);
+        Account account = (Account) query.getSingleResult();
         entityManager.getTransaction().commit();
         return account;
     }
@@ -132,8 +134,8 @@ public class AccountDAO {
         boolean result;
 
         entityManager.getTransaction().begin();
-        Query query = getSession().createQuery("SELECT a.username FROM Account a WHERE a.username = :username");
-        query.setString("username", username);
+        Query query =entityManager.createQuery("SELECT a.username FROM Account a WHERE a.username = :username");
+        query.setParameter("username", username);
         List resultList = query.getResultList();
         if (resultList == null) {
             result = false;

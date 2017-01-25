@@ -19,8 +19,6 @@
 # Gradle:
 .idea/gradle.xml
 .idea/libraries
-.gradle/2.10/
-.gradle/2.10
 
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
@@ -32,7 +30,6 @@
 
 # IntelliJ
 /out/
-/build/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -46,5 +43,8 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-# Ignore (generated) jar files
-*.jar
+# Build files by gradle
+/build/
+
+# Idk what this was supposed to be
+.gradle/
