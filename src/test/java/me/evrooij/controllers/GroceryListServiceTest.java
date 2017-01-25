@@ -1,4 +1,4 @@
-package me.evrooij.services;
+package me.evrooij.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

@@ -1,11 +1,10 @@
-package me.evrooij.services;
+package me.evrooij.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import me.evrooij.data.Account;
 import me.evrooij.data.ResponseMessage;
 import me.evrooij.util.DatabaseUtil;
-import me.evrooij.util.DummyDataGenerator;
 import okhttp3.Response;
 import org.junit.*;
 import org.junit.runners.MethodSorters;

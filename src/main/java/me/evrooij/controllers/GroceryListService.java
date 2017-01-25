@@ -1,4 +1,4 @@
-package me.evrooij.services;
+package me.evrooij.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,7 +9,6 @@ import me.evrooij.data.ResponseMessage;
 import me.evrooij.managers.GroceryListManager;
 import me.evrooij.util.JsonUtil;
 
-import static me.evrooij.Config.*;
 import static me.evrooij.util.JsonUtil.json;
 import static spark.Spark.*;
 

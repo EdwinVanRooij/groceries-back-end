@@ -1,8 +1,5 @@
 package me.evrooij
 
-import me.evrooij.services.AccountService
-import me.evrooij.services.FeedbackService
-import me.evrooij.services.GroceryListService
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
